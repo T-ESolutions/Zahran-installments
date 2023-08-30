@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع الالكترونى</title>
+    <!-- <link rel="shortcut icon" href="assets/img/logo.svg"> -->
+    <!-- bootstrap 5 id english -->
+    <!-- <link href="https://fastly.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+
+    <!-- bootstrap 5 if arabic -->
+    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css"
+        integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css" />
+    <link rel="stylesheet" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link href="https://fastly.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!--    to load google font faster-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+
+    <link href="assets/css/style.css" rel="stylesheet" />
+
+</head>
+<!-- if arabic add class="rtl" dir="rtl" to body  -->
+
+<body class="rtl" dir="rtl">
+    <!-- start hedaer Section -->
+    <header>
+        <div class="top-header">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg align-items-center justify-content-between top-content">
+                    <div>
+                        <a class="navbar-brand" href="home.html">
+                            <img data-src="assets/images/logo-bg-white.svg" src="assets/images/logo-bg-white.svg" class="lazyload logo"
+                                alt="Logo">
+                        </a>
+                    </div>
+                    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarHeader">
+                        <ul class="navbar-nav m-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="home.html">الرئيسية</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="healthy-restaurant.html">المطعم الصحي</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="health-plans.html">الخطط الصحية</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="calories-calculate.html">احسب سعراتك</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contactus.html">تواصل معنا</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center align-items-center">
+                        <div class="header-login">
+                            <div class="before-login d-none"> <!-- Add class="d-none" if user not logged -->
+                                <div class="sign-in">
+                                    <a href="signIn.html">
+                                        <span>تسجيل الدخول</span>
+                                    </a>
+                                </div>
+                                <div class="seperate mx-2 text-white">/</div>
+                                <div class="sign-up">
+                                    <a href="signUp.html">
+                                        <span>تسجيل جديد</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="after-login"> <!-- Remove class="d-none" if user logged -->
+                                <div class="account">
+                                    <a href="javascript:void(0)" class="profile">
+                                        <i class="lar la-user-circle"></i>
+                                    </a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li>
+                                                <a class="dropdown-item" href="profile.html">
+                                                    <i class="far fa-address-card fa-lg ms-1"></i>
+                                                    <span>الملف الشخصي</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="my-plans.html">
+                                                    <i class="las la-file-alt fa-2xl"></i>
+                                                    <span>خططي</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="my-orders.html">
+                                                    <i class="las la-cart-arrow-down fa-2xl"></i>
+                                                    <span>طلباتي</span>
+                                                </a>
+                                            </li>
+                                            <li class="logout">
+                                                <a class="dropdown-item" href="#">
+                                                    <i class="fas fa-arrow-right-from-bracket ms-1"></i>
+                                                    <span>تسجيل الخروج</span>
+                                                </a>
+    
+                                                <form id="logout-form" action="https://runner.roqay.solutions/ar/logout" method="POST" style="display: none;">
+                                                    <input type="hidden" name="_token" value="0u1gLTndJI7b1UO2vJz7s6kmLOUPHXXiT12sVax4">                                                    </form>
+                                            </li>
+    
+    
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="top-options d-flex align-items-center justify-content-center">
+                            <div class="cart">
+                                <div class="icon">
+                                    <a href="cart.html">
+                                        <i class="las la-shopping-cart fa-2xl"></i>
+                                        <span class="dot"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="lang">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-white dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      AR
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                      <li><a class="dropdown-item" href="#">العربية</a></li>
+                                      <li><a class="dropdown-item" href="#">الانجليزية</a></li>
+                                    </ul>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- Start Page Title-->
+    <div id="page-title">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">الرئيسيه</a></li>
+                  <li class="breadcrumb-item"><a href="#">المطاعم الصحيه</a></li>
+                  <li class="breadcrumb-item"><a href="#">الاقسام الرئيسيه</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">سلة الشراء</li>
+                </ol>
+              </nav>    
+        </div>
+    </div>
+    <!-- End hedaer Section -->
+    <div class="content">
+        <!-- Start Purchase basket Section -->
+        <div id="purchase-basket">
+            <div class="heading-title text-center py-4">
+                <h5 class="fw-bold">سله الشراء</h5>
+            </div>
+            <div class="container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>السعر</th>
+                            <th>الخصم</th>
+                            <th>الكميه</th>
+                            <th>السعر الكلي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="img">
+                                        <img src="assets/images/food-img-1.png" data-src="assets/images/food-img-1.png" alt="food image" class="lazyload">
+                                    </div>
+                                    <h5 class="pro-name text-primary fw-bold">اسم المنتج</h5>
+                                </div>
+                            </td>
+                            <td data-column="السعر">
+                                <p class="text-darkGray1 fw-bold"><s>350ر.س</s></p>
+                            </td>
+                            <td data-column="الخصم">
+                                <p class="text-darkGray1 fw-bold">10%</p>
+                            </td>
+                            <td data-column="الكمية">
+                                <div class="quantity">
+                                    <input type="button" value="+" class="qtyplus plus cart-qty-btn" field="quantity">
+                                    <input type="text" name="quantity" data-id="443" readonly="" value="0" class="qty cart-qty-input">
+                                    <input type="button" value="-" class="qtyminus minus cart-qty-btn" field="quantity">
+                                </div>
+                            </td>
+                            <td data-column="السعر الكلى">
+                                <p class="text-primary fw-bold">250ر.س</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="img">
+                                        <img src="assets/images/food-img-1.png" data-src="assets/images/food-img-1.png" alt="food image" class="lazyload">
+                                    </div>
+                                    <h5 class="pro-name text-primary fw-bold">اسم المنتج</h5>
+                                </div>
+                            </td>
+                            <td data-column="السعر">
+                                <p class="text-darkGray1 fw-bold"><s>350ر.س</s></p>
+                            </td>
+                            <td data-column="الخصم">
+                                <p class="text-darkGray1 fw-bold">10%</p>
+                            </td>
+                            <td data-column="الكمية">
+                                <div class="quantity">
+                                    <input type="button" value="+" class="qtyplus plus cart-qty-btn" field="quantity">
+                                    <input type="text" name="quantity" data-id="443" readonly="" value="0" class="qty cart-qty-input">
+                                    <input type="button" value="-" class="qtyminus minus cart-qty-btn" field="quantity">
+                                </div>
+                            </td>
+                            <td data-column="السعر الكلى">
+                                <p class="text-primary fw-bold">250ر.س</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="img">
+                                        <img src="assets/images/food-img-1.png" data-src="assets/images/food-img-1.png" alt="food image" class="lazyload">
+                                    </div>
+                                    <h5 class="pro-name text-primary fw-bold">اسم المنتج</h5>
+                                </div>
+                            </td>
+                            <td data-column="السعر">
+                                <p class="text-darkGray1 fw-bold"><s>350ر.س</s></p>
+                            </td>
+                            <td data-column="الخصم">
+                                <p class="text-darkGray1 fw-bold">10%</p>
+                            </td>
+                            <td data-column="الكمية">
+                                <div class="quantity">
+                                    <input type="button" value="+" class="qtyplus plus cart-qty-btn" field="quantity">
+                                    <input type="text" name="quantity" data-id="443" readonly="" value="0" class="qty cart-qty-input">
+                                    <input type="button" value="-" class="qtyminus minus cart-qty-btn" field="quantity">
+                                </div>
+                            </td>
+                            <td data-column="السعر الكلى">
+                                <p class="text-primary fw-bold">250ر.س</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Purchase basket Section -->
+        <!-- Start Payment Method Section -->
+        <div id="payment-method">
+            <div class="container">
+                <div class="heading-title">
+                    <h5 class="fw-bold">الدفع</h5>
+                </div>
+                <div class="d-flex gap-5">
+                    <div class="form-check">
+                        <input class="form-check-input" name="remember" type="radio" id="flexCheckChecked-1" checked>
+                        <label class="form-check-label" for="flexCheckChecked-1">التحويل الالكتروني</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="remember" type="radio" id="flexCheckChecked-2">
+                        <label class="form-check-label" for="flexCheckChecked-2">الدفع عند الاستلام</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Start Payment Method Section -->
+        <!-- Start Online Payment Section -->
+        <div id="online-payment" class="mb-4">
+            <div class="container">
+                <div class="online-form">
+                    <h5 class="fw-bold mb-3">بيانات الدفع الالكتروني</h5>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="way">اختر طريقه الدفع</label>
+                                <div class="payment-select">
+                                    <span class="icon"><i class="far fa-credit-card"></i></span>
+                                    <select class="select2 form-control form-control-sm payment-way" placeholder="طريقة الدفع">
+                                        <option label="Choose one"> </option>
+                                        <option value="1"> بطاقة ائتمان</option>
+                                        <option value="2"> باى بال</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex gap-2 mt-2">
+                                    <img src="assets/images/paypal-icon.svg" data-src="assets/images/paypal-icon.svg" alt="" class="lazyload">
+                                    <img src="assets/images/visa-icon.svg" data-src="assets/images/visa-icon.svg" alt="" class="lazyload">
+                                    <img src="assets/images/mastercard-icon.svg" data-src="assets/images/mastercard-icon.svg" alt="" class="lazyload">
+                                </div>
+                            </div>
+                            <div class="col-sm-8 mb-3">
+                                <label class="form-label" for="ID Number">رقم البطاقه</label>
+                                <input type="text" id="ID Number" class="form-control">
+                            </div>
+                            <div class="col-sm-4 mb-3">
+                                <label class="form-label" for="CVV">CVV</label>
+                                <input type="text" id="CVV" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="CVV">تاريخ الانتهاء</label>
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <select class="select2 form-control form-control-sm monthes" placeholder="الشهور">
+                                            <option label="Choose one"> </option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <select class="select2 form-control form-control-sm monthes" placeholder="السنة">
+                                            <option label="Choose one"> </option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Start Bill Section -->
+        <div id="bill">
+            <div class="container">
+                <div class="heading-title text-center mb-4">
+                    <h5 class="fw-bold">الفاتورة</h5>
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h5 class="fw-600">عدد المنتجات</h5>
+                    <p class="fs-4">6</p>
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h5 class="fw-600">السعر المنتجات قبل الخصم</h5>
+                    <p class="fs-4">350 ر.س</p>
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h5 class="fw-600">اجمالي الخصم</h5>
+                    <p class="fs-4">500 ر.س</p>
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h5 class="fw-600">السعر المنتجات بعد الخصم</h5>
+                    <p class="fs-4">350 ر.س</p>
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h5 class="fw-600">القيمه المضافه</h5>
+                    <p class="fs-4">20 ر.س</p>
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold">الحساب الكلي</h5>
+                    <p class="fw-bold fs-4">370ر.س</p>
+                </div>
+            </div>
+        </div>
+        <!-- End Bill Section -->
+        <div class="payment text-center my-5">
+            <a data-bs-toggle="modal" href="#signInModal" role="button" class="btn btn-secondary w-50">الدفع</a>
+        </div>
+    </div>
+
+    <!-- Start footer Section-->
+    <footer>
+        <div id="footer">
+            <div class="container">
+                <div class="main-logo mb-3">
+                    <img src="assets/images/logo-lg.svg" data-src="assets/images/logo-lg.svg" alt="logo image" class="lazyload">
+                </div>
+                <div class="menu">
+                    <ul class="d-flex flex-wrap justify-content-center gap-sm-4 gap-3 mb-3">
+                        <li>
+                            <a href="home.html">الصفحة الرئيسية</a>
+                        </li>
+                        <li>
+                            <a href="aboutus.html">من نحن</a>
+                        </li>
+                        <li>
+                            <a href="health-plans.html">الخطط الصحية</a>
+                        </li>
+                        <li>
+                            <a href="calories-calculate.html">احسب سعراتك</a>
+                        </li>
+                    </ul>
+                    <ul class="d-flex flex-wrap justify-content-center gap-sm-4 gap-3 mb-3">
+                        <li>
+                            <a href="terms-conditions.html">الأحكام والشروط</a>
+                        </li>
+                        <li>
+                            <a href="privacy-policy.html">سياسة الخصوصية</a>
+                        </li>
+                        <li>
+                            <a href="contactus.html">تواصل معنا</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="social-links d-flex justify-content-center align-items-center gap-4 mt-5">
+                    <p class="fs-7 fw-bold mb-0">تابعونا علي :</p>
+                    <a href="#"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in fa-lg"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright text-center py-2">
+            <div class="container">
+                <p class="mb-0 py-2">جميع الحقوق محفوظه 2022-2023</p>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Section-->
+
+    <!-- Start sign in Modal -->
+    <div class="modal main-modal fade" id="signInModal" aria-hidden="true" aria-labelledby="signInLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 d-block">
+                    <button type="button" class="btn-close d-block" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="text-secondary text-center fw-bold">تسجيل الدخول</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <input type="text" name="phone" id="phone" class="form-control mb-3" placeholder="رقم الجوال">
+                        <input type="password" name="password" id="password" class="form-control mb-3" placeholder="كلمه المرور">
+                        <div class="d-flex justify-content-between flex-column flex-sm-row mb-5 mt-4 mt-sm-0">
+                            <div class="form-check order-2 order-sm-1">
+                                <input class="form-check-input" name="remember" type="checkbox" value="1" id="flexCheckChecked-1">
+                                <label class="form-check-label text-darkGray1" for="flexCheckChecked-1">تذكرني</label>
+                            </div>
+                            <div class="order-1 order-sm-2 mb-3 mb-sm-0">
+                                <a href="forgotpassword.html" class="forgotpassword text-darkGray1">هل نسيت كلمه المرور ؟</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary w-100">تسجيل الدخول</button>
+                    </form>
+                    <div class="create-account text-center mt-4">
+                        <span class="text-primary">ليس لديك حساب ؟ </span>
+                        <a href="signUp.html" class="text-secondary fw-bold"><u>انشاء حساب جديد</u></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End sign in Modal -->
+
+
+    <!-- Start Go to top Section-->
+    <div id="scrollTop" class="icon-angle-up">
+        <i class="fas fa-angle-up"></i>
+    </div>
+    <!-- End Go to top Section-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://fastly.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap 5 -->
+    <script src="https://fastly.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // select2
+        $('.select2').select2({
+            searchInputPlaceholder: 'Search',
+            placeholder: 'Select',
+            width: '100%'
+        });
+        $('.select2-no-search').select2({
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Select',
+            width: '100%'
+        });
+        $('.select2').each(function () {
+            $(this).select2({
+                placeholder: $(this).attr('placeholder'),
+            })
+        })
+    </script>
+</body>
+
+</html>
