@@ -46,17 +46,17 @@
         <div class="d-flex align-items-center mt-5">
 
             <div class="d-flex flex-column">
-                <a class="font-weight-bold font-size-h5 text-dark-75 text-hover-success">{{auth()->user()->name}}</a>
+                <a class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{auth()->user()->name}}</a>
                 <div class="navi mt-2">
                     <a class="navi-item">
 
-                        <span class="navi-text text-muted text-hover-success">{{auth()->user()->email}}</span>
+                        <span class="navi-text text-muted text-hover-primary">{{auth()->user()->email}}</span>
                         </span>
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                                class="btn btn-sm btn-light-success font-weight-bolder py-2 px-5">{{trans('lang.logout')}}</button>
+                                class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">{{trans('lang.logout')}}</button>
                         <br>
                     </form>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="navi-link">
                     <div class="symbol symbol-40 bg-light mr-3">
                         <div class="symbol-label">
-                                    <span class="svg-icon svg-icon-md svg-icon-success">
+                                    <span class="svg-icon svg-icon-md svg-icon-primary">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
