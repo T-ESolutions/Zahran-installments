@@ -146,24 +146,30 @@ class PermissionsSeeder extends Seeder
             // customer permissions
 
             [
-                'path' => 'customer',
+                'path' => 'customers',
                 'name' => 'read-customer',
                 'display_name' => 'read customer',
             ],
             [
-                'path' => 'customer',
+                'path' => 'customers',
                 'name' => 'update-customer',
                 'display_name' => 'update customer',
             ],
             [
-                'path' => 'customer',
+                'path' => 'customers',
                 'name' => 'create-customer',
                 'display_name' => 'create customer',
             ],
             [
-                'path' => 'customer',
+                'path' => 'customers',
                 'name' => 'delete-customer',
                 'display_name' => 'delete customer',
+            ],
+
+            [
+                'path' => 'customers',
+                'name' => 'change-activation-customers',
+                'display_name' => 'activate customer',
             ],
 
 

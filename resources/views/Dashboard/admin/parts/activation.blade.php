@@ -1,4 +1,4 @@
-@can('change-activation-admins')
+@can('change-activation-customers')
     <form class="form">
         <div class="form-group row">
              <div class="col-3">

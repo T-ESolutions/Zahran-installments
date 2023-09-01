@@ -1,7 +1,7 @@
 @php($title=trans('lang.customers'))
 @extends('adminLayouts.app')
 @section('title')
-   {{$title}}
+    {{$title}}
 @endsection
 @section('header')
 
@@ -25,84 +25,146 @@
 
     <div class="card">
         <div class="text-right">
-        <div class="card-header">
-            @can('create-customer')
-            <a href="{{route('customers.create')}}" class="btn btn-sm btn-light-primary font-weight-bolder mr-2">
-                <i class="fa fa-plus"></i>{{trans('lang.create')}}</a>
-            @endcan
+            <div class="card-header">
+                @can('create-customer')
+                    <a href="{{route('customers.create')}}"
+                       class="btn btn-sm btn-light-primary font-weight-bolder mr-2">
+                        <i class="fa fa-plus"></i>{{trans('lang.create')}}</a>
+                @endcan
+            </div>
         </div>
-        </div>
-            <div class="card-body">
+        <div class="card-body">
             {!! $dataTable->table() !!}
+        </div>
     </div>
-    </div>
-
 
 @endsection
 @push('scripts')
 
-
     {!! $dataTable->scripts() !!}
-   <script type="text/javascript">
-       $(document).ready(function () {
+    <script type="text/javascript">
+        $(document).ready(function () {
 
-           // Add the CSRF token to all AJAX requests
-           $.ajaxSetup({
-               headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
+            // Add the CSRF token to all AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-           $('body').on('click', '#Customer_delete', function (event) {
-               event.preventDefault();
-               var url = $(this).attr('data-action');
-               Swal.fire({
-                   icon: 'warning',
-                   title: 'هل انت متاكد من حذف هذا العنصر ؟',
-                   showDenyButton: false,
-                   showCancelButton: true,
-                   confirmButtonText: 'نعم',
-                   cancelButtonText: 'لا, الغاء'
-               }).then((result) => {
+            $('body').on('click', '#Customer_delete', function (event) {
+                event.preventDefault();
+                var url = $(this).attr('data-action');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'هل انت متاكد من حذف هذا العنصر ؟',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
 
-                   if (result.isConfirmed) {
-                       $.ajax({
-                           url: url,
-                           method: 'delete',
-                           dataType: 'JSON',
-                           contentType: false,
-                           cache: false,
-                           processData: false,
-                           success: function (response) {
-                               if (response.success) {
-                                   $('#Customer-table').DataTable().ajax.reload();
-                                   Swal.fire({
-                                       icon: 'success',
-                                       title: response.success,
-                                       showDenyButton: false,
-                                       showCancelButton: false,
-                                       confirmButtonText: 'تم'
-                                   })
-                               } else {
-                                   Swal.fire({
-                                       icon: 'error',
-                                       title: response.error,
-                                       showDenyButton: false,
-                                       showCancelButton: false,
-                                       confirmButtonText: 'تم'
-                                   })
-                               }
-                           },
-                           error: function (response) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            method: 'delete',
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.success) {
+                                    $('#Customer-table').DataTable().ajax.reload();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: response.success,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: response.error,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                }
+                            },
+                            error: function (response) {
 
-                           }
-                       });
-                   }
-               });
+                            }
+                        });
+                    }
+                });
 
-           })
-       });
-   </script>
+            })
+        });
+
+        $(document).ready(function () {
+
+            // Add the CSRF token to all AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('body').on('click', '#customer_activation', function (event) {
+                event.preventDefault();
+                var url = $(this).attr('data-action');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'هل انت متاكد من اضافه/حذف الي القائمه السوداء ؟',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            method: 'post',
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.success) {
+                                    $('#Customer-table').DataTable().ajax.reload();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: response.success,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: response.error,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                }
+                            },
+                            error: function (response) {
+
+                            }
+                        });
+                    }
+                });
+
+            })
+        });
+
+    </script>
+
+
+
 
 @endpush
 

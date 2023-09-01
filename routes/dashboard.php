@@ -34,6 +34,7 @@ Route::group(
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
 
+        Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
         Route::resource('customers', CustomerController::class);
 
 

@@ -74,4 +74,6 @@ return [
     'change-activation-admins' => 'تغير فاعليه مشرف',
     'logout' => 'تسجيل الخروج',
     'update_profile' => 'تحديث الملف الشخصي',
+    'black_list' => 'قائمه السوداء',
+    'change-activation-customers' => 'تغير قائمه سوداء العملاء',
 ];

@@ -104,4 +104,11 @@ class CustomerController extends GeneralController
             return response()->json(['error' => trans('lang.wrong')]);
         }
     }
+    public function changeActivation(Request $request,Customer $customer)
+    {
+        $customer->is_blocked = !$customer->is_blocked;
+        $customer->save();
+        return response()->json(['success' => trans('lang.updated')]);
+
+    }
 }
