@@ -31,8 +31,6 @@ return new class extends Migration
             $table->tinyInteger('is_blocked')->default(BlockEnum::UNBLOCKED->value);
             $table->string('id_image_front');
             $table->string('id_image_back');
-            $table->string('government');
-            $table->string('center');
             $table->timestamps();
         });
     }

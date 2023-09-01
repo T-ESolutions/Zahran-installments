@@ -21,12 +21,9 @@ class Customer extends Authenticatable
         return [];
     }
 
-    public function setPasswordAttribute($password)
-    {
-         if (!empty($password)) {
-             $this->attributes['password'] = bcrypt($password);
-        }
-    }
-
+   public function relatives()
+   {
+       return $this->hasMany(CustomerRelatives::class , 'customer_id');
+   }
 
 }

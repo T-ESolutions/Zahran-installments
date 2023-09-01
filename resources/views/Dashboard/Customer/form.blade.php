@@ -127,7 +127,7 @@
                            data-original-title="اختر صوره">
                         <i class="fa fa-pen icon-sm text-muted"></i>
                         <input type="file" value="{{ old('image', @url('/').@$data->id_image_front ??'') }}"
-                               name="image" accept=".png, .jpg, .jpeg"/>
+                               name="id_image_front" accept=".png, .jpg, .jpeg"/>
                     </label>
                 </div>
             </div>
@@ -146,7 +146,7 @@
                            data-original-title="اختر صوره">
                         <i class="fa fa-pen icon-sm text-muted"></i>
                         <input type="file" value="{{ old('image', @url('/').@$data->id_image_back ??'') }}"
-                               name="image" accept=".png, .jpg, .jpeg"/>
+                               name="id_image_back" accept=".png, .jpg, .jpeg"/>
                     </label>
                 </div>
             </div>
@@ -160,37 +160,76 @@
         <div id="kt_repeater_1">
             <div class="form-group row">
                 <label class="col-lg-2 col-form-label text-right">@lang('lang.relatives') :</label>
-                <div data-repeater-list="relatives" class="col-lg-12">
-                    <div data-repeater-item="" class="form-group row align-items-center">
 
-                        <div class="col-md-3">
-                            <label>@lang('lang.name')</label>
-                            <input type="text" class="form-control" placeholder="@lang('lang.name')" />
-                            <div class="d-md-none mb-2"></div>
+
+                 @if(old('relatives') || (isset($data->relatives) && $data->relatives))
+                     @foreach($data->relatives ?? old('relatives') as $relatives)
+                        <div data-repeater-list="relatives" class="col-lg-12">
+                            <div data-repeater-item="" class="form-group row align-items-center">
+
+                                <div class="col-md-3">
+                                    <label>@lang('lang.name')</label>
+                                    <input type="text" value="{{ $relatives['name'] }}"  name= "name"  class="form-control" placeholder="@lang('lang.name')" />
+                                    <div class="d-md-none mb-2"></div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label>@lang('lang.phone')</label>
+                                    <input type="tel" name= "phone" value="{{ $relatives['phone'] }}" class="form-control" placeholder="@lang('lang.phone')" />
+                                    <div class="d-md-none mb-2"></div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label>@lang('lang.note')</label>
+                                    <textarea name="note" placeholder="{{trans('lang.note')}}"
+                                              class="form-control" type="text"
+                                              maxlength="255">value="{{ $relatives['note'] }}"</textarea>
+                                    <div class="d-md-none mb-2"></div>
+                                </div>
+
+                                <div class="col-lg-1 col-md-1">
+                                    <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
+                                        <i class="la la-trash-o"></i>{{trans('lang.delete')}}</a>
+                                </div>
+                            </div>
                         </div>
+                    @endforeach
+
+                @else
+                    <div data-repeater-list="relatives" class="col-lg-12">
+                        <div data-repeater-item="" class="form-group row align-items-center">
+
+                            <div class="col-md-3">
+                                <label>@lang('lang.name')</label>
+                                <input type="text"  name= "name"  class="form-control" placeholder="@lang('lang.name')" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
 
 
-                        <div class="col-md-3">
-                            <label>@lang('lang.phone')</label>
-                            <input type="tel" class="form-control" placeholder="@lang('lang.phone')" />
-                            <div class="d-md-none mb-2"></div>
-                        </div>
+                            <div class="col-md-3">
+                                <label>@lang('lang.phone')</label>
+                                <input type="tel" name= "phone" class="form-control" placeholder="@lang('lang.phone')" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
 
 
-                        <div class="col-md-3">
-                            <label>@lang('lang.note')</label>
-                            <textarea name="note" placeholder="{{trans('lang.note')}}"
-                                      class="form-control" type="text"
-                                      maxlength="255"></textarea>
-                            <div class="d-md-none mb-2"></div>
-                        </div>
+                            <div class="col-md-3">
+                                <label>@lang('lang.note')</label>
+                                <textarea name="note" placeholder="{{trans('lang.note')}}"
+                                          class="form-control" type="text"
+                                          maxlength="255"></textarea>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
 
-                        <div class="col-lg-1 col-md-1">
-                            <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
-                                <i class="la la-trash-o"></i>{{trans('lang.delete')}}</a>
+                            <div class="col-lg-1 col-md-1">
+                                <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
+                                    <i class="la la-trash-o"></i>{{trans('lang.delete')}}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
 
             <div class="form-group row">
@@ -201,6 +240,12 @@
             </div>
         </div>
     </div>
+
+
+
+    @if($errors->has('relatives'))
+        <span class="text-danger m-2 ">{{ $errors->first('relatives') }}</span>
+    @endif
 </div>
 <div class="card-footer text-left">
     <button type="Submit" id="submit" class="btn btn-primary btn-default ">{{trans('lang.save')}}</button>

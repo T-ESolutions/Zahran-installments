@@ -12,22 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends GeneralController
 {
-
-     /*  Cut this in Translations
-
-     'customers'=>'',
-     'customer'=>'',
-     'read-customer'=>'',
-     'create-customer'=>'',
-     'edit-customer'=>'',
-     'update-customer'=>'',
-     'delete-customer'=>'',
-
-     */
-
-       protected $viewPath = 'Customer';
-       protected $path = 'customer';
-       private $route = 'customers.index';
+    protected $viewPath = 'Customer';
+    protected $path = 'customer';
+    private $route = 'customers.index';
 
     public function __construct(Customer $model)
     {
@@ -43,7 +30,7 @@ class CustomerController extends GeneralController
         return $dataTable->render('Dashboard.Customer.index');
     }
 
-   public function create()
+    public function create()
     {
         return view('Dashboard.Customer.create');
     }
@@ -53,10 +40,15 @@ class CustomerController extends GeneralController
         try {
             DB::beginTransaction();
             $data = $request->validated();
-            if ($request->hasFile('image')) {
-                $data['image'] = $this->uploadImage($request->file('image'), $this->path, null, settings('images_size'));
+            $data['admin_id'] = auth()->user()->id;
+            if ($request->hasFile('id_image_back')) {
+                $data['id_image_back'] = $this->uploadImage($request->file('id_image_back'), $this->path, null, settings('images_size'));
             }
-            $this->model::create($data);
+            if ($request->hasFile('id_image_front')) {
+                $data['id_image_front'] = $this->uploadImage($request->file('id_image_front'), $this->path, null, settings('images_size'));
+            }
+            $customer = $this->model::create($data);
+            $customer->relatives()->createMany($data['relatives']);
             DB::commit();
             return redirect()->route($this->route)->with('success', trans('lang.created'));
         } catch (\Exception $e) {
@@ -65,13 +57,13 @@ class CustomerController extends GeneralController
         }
     }
 
-     public function edit(Customer $customer)
-     {
-         $data = $customer;
-         return view('Dashboard.Customer.edit', compact('data'));
-     }
+    public function edit(Customer $customer)
+    {
+        $data = $customer;
+        return view('Dashboard.Customer.edit', compact('data'));
+    }
 
-    public function update(CustomerCreateRequest $request,Customer $customer)
+    public function update(CustomerCreateRequest $request, Customer $customer)
     {
         try {
             DB::beginTransaction();
@@ -88,24 +80,24 @@ class CustomerController extends GeneralController
         }
     }
 
-  public function destroy(Request $request,Customer $customer)
-  {
-      try {
-       DB::beginTransaction();
-          $data = $customer;
+    public function destroy(Request $request, Customer $customer)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $customer;
 
-       foreach ($data->getRelations() as $relation) {
-              if ($data->$relation()->count()) {
-                  return response()->json(['error' => trans('lang.wrong')]);
-              }
-          }
+            foreach ($data->getRelations() as $relation) {
+                if ($data->$relation()->count()) {
+                    return response()->json(['error' => trans('lang.wrong')]);
+                }
+            }
 
-          $data->delete();
-          DB::commit();
-          return response()->json(['success' => trans('lang.deleted')]);
-      } catch (\Exception $e) {
-          DB::rollback();
-          return response()->json(['error' => trans('lang.wrong')]);
-      }
-  }
+            $data->delete();
+            DB::commit();
+            return response()->json(['success' => trans('lang.deleted')]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => trans('lang.wrong')]);
+        }
+    }
 }
