@@ -136,6 +136,11 @@ class PermissionsSeeder extends Seeder
                 'name' => 'delete-admins',
                 'display_name' => 'delete admins',
             ],
+            [
+                'path' => 'admins',
+                'name' => 'change-activation-admins',
+                'display_name' => 'delete admins',
+            ],
 
 
             // customer permissions

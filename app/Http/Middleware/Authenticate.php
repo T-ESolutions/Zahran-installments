@@ -16,7 +16,7 @@ class Authenticate extends Middleware
     {
 
         if (! $request->expectsJson()) {
-            alert()->warning(trans('web.login_first'), '');
+            alert()->warning(trans('lang.login_first'), '');
             return route('web-home');
         }
     }

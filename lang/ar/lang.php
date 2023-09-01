@@ -71,4 +71,7 @@ return [
     'created' => 'تم الاضافه بنجاح',
     'deleted' => 'تم الحذف بنجاح',
     'wrong' => 'خطأ',
+    'change-activation-admins' => 'تغير فاعليه مشرف',
+    'logout' => 'تسجيل الخروج',
+    'update_profile' => 'تحديث الملف الشخصي',
 ];

@@ -38,4 +38,4 @@ Route::group(
     })->name('web-home');
 
 });
-require __DIR__ . '/auth.php';
+

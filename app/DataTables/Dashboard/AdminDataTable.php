@@ -43,12 +43,13 @@ class AdminDataTable extends DataTable
 
     protected function getColumns()
     {
+
         return [
             Column::make('id')->title(trans('lang.id')),
             Column::make('name')->title(trans('lang.name')),
             Column::make('email')->title(trans('lang.email')),
-            Column::make('activation')->title(trans('lang.activation')),
-            Column::make('action')->title(trans('lang.action')),
+            Column::make('activation')->title(trans('lang.activation'))->visible(auth()->user()->can('change-activation-admins')),
+            Column::make('action')->title(trans('lang.action'))->visible(auth()->user()->can('delete-admins') || auth()->user()->can('update-admins') ),
         ];
     }
 

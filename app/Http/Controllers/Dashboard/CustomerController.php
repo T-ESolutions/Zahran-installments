@@ -68,8 +68,12 @@ class CustomerController extends GeneralController
         try {
             DB::beginTransaction();
             $data = $request->validated();
-            if ($request->hasFile('image')) {
-                $data['image'] = $this->uploadImage($request->file('image'), $this->path, null, settings('images_size'));
+
+            if ($request->hasFile('id_image_back')) {
+                $data['id_image_back'] = $this->uploadImage($request->file('id_image_back'), $this->path, $data['id_image_back'], settings('images_size'));
+            }
+            if ($request->hasFile('id_image_front')) {
+                $data['id_image_front'] = $this->uploadImage($request->file('id_image_front'), $this->path, $data['id_image_front'], settings('images_size'));
             }
             $customer->update($data);
             DB::commit();
