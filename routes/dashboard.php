@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Dashboard\InstallmentRequestController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,9 @@ Route::group(
 
         Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
         Route::resource('customers', CustomerController::class);
+
+
+        Route::resource('installment_requests', InstallmentRequestController::class);
 
 
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');

@@ -76,4 +76,12 @@ return [
     'update_profile' => 'تحديث الملف الشخصي',
     'black_list' => 'قائمه السوداء',
     'change-activation-customers' => 'تغير قائمه سوداء العملاء',
+
+    'installment_requests'=>'طلبات التقسيط',
+    'installment_request'=> 'طلب تقسيط',
+    'read-installment_request'=> 'مراجعة طلبات تقسيط',
+    'create-installment_request'=> 'اضافه طلبات تقسيط',
+    'edit-installment_request'=> 'تعديل طلبات تقسيط',
+    'update-installment_request'=> 'تحديث طلبات تقسيط',
+    'delete-installment_request'=> 'حذف طلبات تقسيط',
 ];

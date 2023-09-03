@@ -23,6 +23,15 @@
                     </a>
                 </li>
             @endcan
+            @can('read-installment_request')
+                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'installment_requests') menu-item-open @endif "
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('installment_requests.index')}}" class="menu-link menu-toggle">
+                        <i class="menu-icon  flaticon-users-1"></i>
+                        <span class="menu-text">{{__('lang.installment_requests')}}</span>
+                    </a>
+                </li>
+            @endcan
             @can('read-admins')
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'admins') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">

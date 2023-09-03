@@ -172,6 +172,35 @@ class PermissionsSeeder extends Seeder
                 'display_name' => 'activate customer',
             ],
 
+            // installment_request permissions
+
+            [
+                'path' => 'installment_requests',
+                'name' => 'read-installment_request',
+                'display_name' => 'read installment_request',
+            ],
+            [
+                'path' => 'installment_requests',
+                'name' => 'update-installment_request',
+                'display_name' => 'update installment_request',
+            ],
+            [
+                'path' => 'installment_requests',
+                'name' => 'create-installment_request',
+                'display_name' => 'create installment_request',
+            ],
+            [
+                'path' => 'installment_requests',
+                'name' => 'delete-installment_request',
+                'display_name' => 'delete installment_request',
+            ],
+
+            [
+                'path' => 'installment_requests',
+                'name' => 'change-activation-installment_requests',
+                'display_name' => 'activate installment_request',
+            ],
+
 
         ];
         Schema::disableForeignKeyConstraints();
