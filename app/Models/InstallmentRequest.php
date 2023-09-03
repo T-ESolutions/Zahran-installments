@@ -64,6 +64,9 @@ class InstallmentRequest extends Model
      * START RELATIONS
      */
 
+    public function customers(){
+        return $this->belongsToMany(Customer::class, 'customer_installment_requests','installment_request_id','customer_id');
+    }
 
 
 

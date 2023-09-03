@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Requests\Dashboard\InstallmentRequestCreateRequest;
 use App\DataTables\Dashboard\InstallmentRequestDataTable;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\GeneralController;
 use App\Models\InstallmentRequest;
@@ -13,21 +14,9 @@ use Illuminate\Support\Facades\DB;
 class InstallmentRequestController extends GeneralController
 {
 
-     /*  Cut this in Translations
-
-     'installment_requests'=>'',
-     'installment_request'=>'',
-     'read-installment_request'=>'',
-     'create-installment_request'=>'',
-     'edit-installment_request'=>'',
-     'update-installment_request'=>'',
-     'delete-installment_request'=>'',
-
-     */
-
        protected $viewPath = 'InstallmentRequest';
        protected $path = 'installmentRequest';
-       private $route = 'installmentrequests.index';
+       private $route = 'installment_requests.index';
 
     public function __construct(InstallmentRequest $model)
     {
@@ -40,12 +29,14 @@ class InstallmentRequestController extends GeneralController
 
     public function index(InstallmentRequestDataTable $dataTable)
     {
+        $customers = Customer::get(['id','name']);
         return $dataTable->render('Dashboard.InstallmentRequest.index');
     }
 
    public function create()
     {
-        return view('Dashboard.InstallmentRequest.create');
+        $customers = Customer::get(['id','name']);
+        return view('Dashboard.InstallmentRequest.create',compact('customers'));
     }
 
     public function store(InstallmentRequestCreateRequest $request)
@@ -53,13 +44,15 @@ class InstallmentRequestController extends GeneralController
         try {
             DB::beginTransaction();
             $data = $request->validated();
-            if ($request->hasFile('image')) {
-                $data['image'] = $this->uploadImage($request->file('image'), $this->path, null, settings('images_size'));
+            $data['admin_id'] = auth()->user()->id;
+            $installmentRequest= $this->model::create($data);
+            if ($request->customers_ids) {
+                $installmentRequest->customers()->attach($request->customers_ids);
             }
-            $this->model::create($data);
             DB::commit();
             return redirect()->route($this->route)->with('success', trans('lang.created'));
         } catch (\Exception $e) {
+            info($e->getMessage());
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));
         }
@@ -67,8 +60,9 @@ class InstallmentRequestController extends GeneralController
 
      public function edit(InstallmentRequest $installmentRequest)
      {
-         $data = $installmentRequest;
-         return view('Dashboard.InstallmentRequest.edit', compact('data'));
+         $data = $installmentRequest->load('customers');
+          $customers= Customer::get(['id','name']);
+         return view('Dashboard.InstallmentRequest.edit', compact('data','customers'));
      }
 
     public function update(InstallmentRequestCreateRequest $request,InstallmentRequest $installmentRequest)

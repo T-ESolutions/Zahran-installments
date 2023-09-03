@@ -18,7 +18,7 @@
                    class="text-muted">{{trans('lang.dashboard')}}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{route('installmentrequests.index')}}"
+                <a href="{{route('installment_requests.index')}}"
                    class="text-muted">{{trans('lang.installment_request')}}</a>
             </li>
 
@@ -30,7 +30,7 @@
     @can('update-installment_request')
     <div class="card">
         <div class="card-body">
-            <form method="post" action="{{route('installmentrequests.update',$data->id)}}" enctype="multipart/form-data">
+            <form method="post" action="{{route('installment_requests.update',$data->id)}}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @include('Dashboard.InstallmentRequest.form')

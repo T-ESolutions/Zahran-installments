@@ -4,7 +4,7 @@
 </a>
 @endcan
 @can('delete-installment_request')
- <a  id="Installmentrequest_delete" data-action="{{route('installment_requests.destroy',$id)}}"   title="@lang('lang.delete')"
+ <a  id="InstallmentRequest_delete" data-action="{{route('installment_requests.destroy',$id)}}"   title="@lang('lang.delete')"
    class="btn btn-icon btn-light-danger btn-circle mr-2">
     <i class="flaticon2-rubbish-bin-delete-button"></i>
 </a>

@@ -15,7 +15,12 @@ class InstallmentRequestCreateRequest extends FormRequest
    public function rules()
    {
        $validation = [
-           'example_input' => 'nullable',
+           'customers_ids' => 'required|array',
+           'customers_ids.*' => 'required|exists:customers,id',
+           'customer_id' => 'required|exists:customers,id',
+           'deposit' => 'required|gt:0',
+           'price' => 'required|gt:deposit',
+           'product' => 'required|max:255',
        ];
 
        return $validation;
