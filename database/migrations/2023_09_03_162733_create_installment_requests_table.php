@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\IRIdReceivedStatusEnum;
 use App\Enums\IRStatusEnum;
 use App\Models\Admin;
 use App\Models\Customer;
@@ -25,7 +24,7 @@ return new class extends Migration
             $table->double('price');
             $table->text('product')->nullable();
             $table->tinyInteger('status')->default(IRStatusEnum::PENDING->value);
-            $table->tinyInteger('id_received_status')->default(IRIdReceivedStatusEnum::WITHOUT_ID->value);
+            $table->dateTime('id_received_at')->nullable();
             $table->timestamps();
         });
     }

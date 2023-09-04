@@ -46,7 +46,7 @@
     <div class="form-group  col-lg-6 col-sm-6 ">
         <label>{{trans('lang.deposit')}}<span
                 class="text-danger">*</span></label>
-        <input name="deposit" placeholder="{{trans('lang.placeholder-deposit')}}"
+        <input name="deposit" placeholder="{{trans('lang.deposit')}}"
                value="{{ old('deposit', $data->deposit ?? '') }}"
                class="form-control  {{ $errors->has('deposit') ? 'border-danger' : '' }}" type="number"
                maxlength="255"/>
@@ -58,7 +58,7 @@
     <div class="form-group  col-lg-6 col-sm-6 ">
         <label>{{trans('lang.price')}}<span
                 class="text-danger">*</span></label>
-        <input name="price" placeholder="{{trans('lang.placeholder-price')}}"
+        <input name="price" placeholder="{{trans('lang.price')}}"
                value="{{ old('price', $data->price ?? '') }}"
                class="form-control  {{ $errors->has('price') ? 'border-danger' : '' }}" type="number"
                maxlength="255"/>

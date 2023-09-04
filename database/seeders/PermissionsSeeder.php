@@ -197,7 +197,12 @@ class PermissionsSeeder extends Seeder
 
             [
                 'path' => 'installment_requests',
-                'name' => 'change-activation-installment_requests',
+                'name' => 'change-status-installment_requests',
+                'display_name' => 'activate installment_request',
+            ],
+            [
+                'path' => 'installment_requests',
+                'name' => 'receive_id-installment_request',
                 'display_name' => 'activate installment_request',
             ],
 

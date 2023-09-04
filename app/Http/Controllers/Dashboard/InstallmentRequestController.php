@@ -25,6 +25,7 @@ class InstallmentRequestController extends GeneralController
         $this->middleware('permission:create-installment_request', ['only' => ['create', 'store']]);
         $this->middleware('permission:update-installment_request', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-installment_request', ['only' => ['delete']]);
+        $this->middleware('permission:receive_id-installment_request', ['only' => ['changeIdReceived']]);
     }
 
     public function index(InstallmentRequestDataTable $dataTable)
@@ -35,7 +36,7 @@ class InstallmentRequestController extends GeneralController
 
    public function create()
     {
-        $customers = Customer::get(['id','name']);
+        $customers = Customer::WhiteList()->get(['id','name']);
         return view('Dashboard.InstallmentRequest.create',compact('customers'));
     }
 
@@ -60,13 +61,22 @@ class InstallmentRequestController extends GeneralController
 
      public function edit(InstallmentRequest $installmentRequest)
      {
+         if ($installmentRequest->id_received_at)
+         {
+             abort(404);
+         }
          $data = $installmentRequest->load('customers');
-          $customers= Customer::get(['id','name']);
+          $customers= Customer::WhiteList()->get(['id','name']);
          return view('Dashboard.InstallmentRequest.edit', compact('data','customers'));
      }
 
     public function update(InstallmentRequestCreateRequest $request,InstallmentRequest $installmentRequest)
     {
+        if ($installmentRequest->id_received_at)
+        {
+            abort(404);
+        }
+
         try {
             DB::beginTransaction();
             $data = $request->validated();
@@ -84,6 +94,10 @@ class InstallmentRequestController extends GeneralController
 
   public function destroy(Request $request,InstallmentRequest $installmentRequest)
   {
+      if ($installmentRequest->id_received_at)
+      {
+          abort(404);
+      }
       try {
        DB::beginTransaction();
           $data = $installmentRequest;
@@ -101,5 +115,13 @@ class InstallmentRequestController extends GeneralController
           DB::rollback();
           return response()->json(['error' => trans('lang.wrong')]);
       }
+  }
+  public function changeIdReceived (Request $request,InstallmentRequest $installmentRequest)
+  {
+      if (!$installmentRequest->id_received_at)
+      {
+          $installmentRequest->update(['id_received_at' => now()]);
+      }
+      return response()->json(['success' => trans('lang.updated')]);
   }
 }

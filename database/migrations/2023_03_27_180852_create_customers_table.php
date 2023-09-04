@@ -29,8 +29,9 @@ return new class extends Migration
             $table->string('center');
             $table->text('note')->nullable();
             $table->tinyInteger('is_blocked')->default(BlockEnum::UNBLOCKED->value);
-            $table->string('id_image_front');
-            $table->string('id_image_back');
+            $table->string('id_image');
+//            $table->string('id_image_front');
+//            $table->string('id_image_back');
             $table->timestamps();
         });
     }

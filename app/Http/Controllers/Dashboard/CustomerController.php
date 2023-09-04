@@ -41,12 +41,10 @@ class CustomerController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
-            if ($request->hasFile('id_image_back')) {
-                $data['id_image_back'] = $this->uploadImage($request->file('id_image_back'), $this->path, null, settings('images_size'));
+            if ($request->hasFile('id_image')) {
+                $data['id_image'] = $this->uploadImage($request->file('id_image'), $this->path, null, settings('images_size'));
             }
-            if ($request->hasFile('id_image_front')) {
-                $data['id_image_front'] = $this->uploadImage($request->file('id_image_front'), $this->path, null, settings('images_size'));
-            }
+
             $customer = $this->model::create($data);
             $customer->relatives()->createMany($data['relatives']);
             DB::commit();
@@ -69,11 +67,8 @@ class CustomerController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
 
-            if ($request->hasFile('id_image_back')) {
-                $data['id_image_back'] = $this->uploadImage($request->file('id_image_back'), $this->path, $data['id_image_back'], settings('images_size'));
-            }
-            if ($request->hasFile('id_image_front')) {
-                $data['id_image_front'] = $this->uploadImage($request->file('id_image_front'), $this->path, $data['id_image_front'], settings('images_size'));
+            if ($request->hasFile('id_image')) {
+                $data['id_image'] = $this->uploadImage($request->file('id_image'), $this->path, $data['id_image'], settings('images_size'));
             }
             $customer->update($data);
             DB::commit();

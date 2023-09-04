@@ -29,7 +29,11 @@ class InstallmentRequest extends Model
     /**
      * START MUTATOR
      */
-
+    protected $appends=['remaining_price'];
+    public function getRemainingPriceAttribute()
+    {
+        return $this->price - $this->deposit;
+    }
 
 
 
@@ -68,6 +72,9 @@ class InstallmentRequest extends Model
         return $this->belongsToMany(Customer::class, 'customer_installment_requests','installment_request_id','customer_id');
     }
 
+    public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id');
+    }
 
 
 

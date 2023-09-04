@@ -117,44 +117,25 @@
     </div>
     <div class="row col-3 border-left m-1" >
         <div class="col-6">
-            <label for="">{{trans('lang.id_image_front')}}</label>
+            <label for="">{{trans('lang.id_image')}}</label>
             <div class="col-lg-8">
-                <div class="image-input image-input-outline" id="id_image_front">
-                    <div class="image-input-wrapper {{ $errors->has('id_image_front') ? 'border-danger' : '' }}"
-                         style="background-image: url( {{asset('/')}}{{ $data->id_image_front ?? ''}})"></div>
+                <div class="image-input image-input-outline" id="id_image">
+                    <div class="image-input-wrapper {{ $errors->has('id_image') ? 'border-danger' : '' }}"
+                         style="background-image: url( {{asset('/')}}{{ $data->id_image ?? ''}})"></div>
                     <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
                            data-action="change" data-toggle="tooltip" title=""
                            data-original-title="اختر صوره">
                         <i class="fa fa-pen icon-sm text-muted"></i>
-                        <input type="file" value="{{ old('image', @url('/').@$data->id_image_front ??'') }}"
-                               name="id_image_front" accept=".png, .jpg, .jpeg"/>
+                        <input type="file" value="{{ old('image', @url('/').@$data->id_image ??'') }}"
+                               name="id_image" accept=".png, .jpg, .jpeg"/>
                     </label>
                 </div>
             </div>
-            @if($errors->has('id_image_front'))
-                <span class="text-danger m-2 ">{{ $errors->first('id_image_front') }}</span>
+            @if($errors->has('id_image'))
+                <span class="text-danger m-2 ">{{ $errors->first('id_image') }}</span>
             @endif
         </div>
-        <div class="col-6">
-            <label for="">{{trans('lang.id_image_back')}}</label>
-            <div class="col-lg-8">
-                <div class="image-input image-input-outline" id="id_image_back">
-                    <div class="image-input-wrapper {{ $errors->has('id_image_back') ? 'border-danger' : '' }}"
-                         style="background-image: url( {{asset('/')}}{{ $data->id_image_back ?? ''}})"></div>
-                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                           data-action="change" data-toggle="tooltip" title=""
-                           data-original-title="اختر صوره">
-                        <i class="fa fa-pen icon-sm text-muted"></i>
-                        <input type="file" value="{{ old('image', @url('/').@$data->id_image_back ??'') }}"
-                               name="id_image_back" accept=".png, .jpg, .jpeg"/>
-                    </label>
-                </div>
-            </div>
-            @if($errors->has('id_image_back'))
-                <span class="text-danger m-2 ">{{ $errors->first('id_image_back') }}</span>
-            @endif
-        </div>
-    </div>
+     </div>
 
     <div class="col-12 border-top " >
         <div id="kt_repeater_1">
@@ -255,8 +236,7 @@
 @push('scripts')
 
     <script !src="">
-        var avatar1 = new KTImageInput('id_image_front');
-        var avatar1 = new KTImageInput('id_image_back');
+        var avatar1 = new KTImageInput('id_image');
         var KTFormRepeater = function () {
 
             // Private functions

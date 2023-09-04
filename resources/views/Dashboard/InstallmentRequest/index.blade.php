@@ -102,6 +102,65 @@
 
            })
        });
+
+       $(document).ready(function () {
+
+           // Add the CSRF token to all AJAX requests
+           $.ajaxSetup({
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+           });
+
+           $('body').on('click', '#IR_receive_id', function (event) {
+               event.preventDefault();
+               var url = $(this).attr('data-action');
+               Swal.fire({
+                   icon: 'warning',
+                   title: 'هل انت متاكد من استلام البطاقه ؟',
+                   showDenyButton: false,
+                   showCancelButton: true,
+                   confirmButtonText: 'نعم',
+                   cancelButtonText: 'لا, الغاء'
+               }).then((result) => {
+
+                   if (result.isConfirmed) {
+                       $.ajax({
+                           url: url,
+                           method: 'post',
+                           dataType: 'JSON',
+                           contentType: false,
+                           cache: false,
+                           processData: false,
+                           success: function (response) {
+                               if (response.success) {
+                                   $('#InstallmentRequest-table').DataTable().ajax.reload();
+                                   Swal.fire({
+                                       icon: 'success',
+                                       title: response.success,
+                                       showDenyButton: false,
+                                       showCancelButton: false,
+                                       confirmButtonText: 'تم'
+                                   })
+                               } else {
+                                   Swal.fire({
+                                       icon: 'error',
+                                       title: response.error,
+                                       showDenyButton: false,
+                                       showCancelButton: false,
+                                       confirmButtonText: 'تم'
+                                   })
+                               }
+                           },
+                           error: function (response) {
+
+                           }
+                       });
+                   }
+               });
+
+           })
+       });
    </script>
 
 @endpush

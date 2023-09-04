@@ -43,7 +43,7 @@ class CustomerSeeder extends Seeder
 //            }
 
 
-            for ($j = 0; $j < 1000; $j++) {
+            for ($j = 0; $j < 500; $j++) {
                 $data= [
                     'admin_id' => 1,
                     'name' => fake()->name(),
@@ -56,8 +56,7 @@ class CustomerSeeder extends Seeder
                     'center' => fake()->address,
                     'governorate' => fake()->address,
                     'note' => fake()->text(100),
-                    'id_image_front' => 'image',
-                    'id_image_back' => 'image',
+                    'id_image' => 'image',
                 ];
                 $customer = Customer::create($data);
                 $customer->relatives()->create([

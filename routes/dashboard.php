@@ -39,6 +39,7 @@ Route::group(
         Route::resource('customers', CustomerController::class);
 
 
+        Route::post('installment_requests.change.id_received/{installmentRequest}', [InstallmentRequestController::class, 'changeIdReceived'])->name('installment_requests.change.id_received');
         Route::resource('installment_requests', InstallmentRequestController::class);
 
 
