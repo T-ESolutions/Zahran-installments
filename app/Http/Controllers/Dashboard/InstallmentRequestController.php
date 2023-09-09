@@ -94,7 +94,7 @@ class InstallmentRequestController extends GeneralController
 
     public function destroy(Request $request, InstallmentRequest $installmentRequest)
     {
-        if ($installmentRequest->id_received_at) {
+        if ($installmentRequest->id_received_at   && $installmentRequest->status == IRStatusEnum::PENDING->value) {
             abort(404);
         }
         try {

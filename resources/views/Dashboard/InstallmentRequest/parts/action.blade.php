@@ -1,4 +1,4 @@
-@if(!$id_received_at)
+@if(!$id_received_at  && $status == \App\Enums\IRStatusEnum::PENDING->value)
     @can('update-installment_request')
         <a href="{{route('installment_requests.edit',$id)}}" title="@lang('lang.update')"
            class="btn btn-icon btn-light-primary btn-circle mr-2">
