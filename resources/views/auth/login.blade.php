@@ -49,7 +49,7 @@
                     <!--begin::Title-->
                         <!--begin::Form group-->
                         <div class="form-group">
-                            <label class="font-size-h6 font-weight-bolder text-dark">Email</label>
+                            <label class="font-size-h6 font-weight-bolder text-dark">@lang('lang.email')</label>
                             <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg border-0" type="text" name="email" autocomplete="off" />
 
                             @if($errors->has('email'))
@@ -60,7 +60,7 @@
                         <!--begin::Form group-->
                         <div class="form-group">
                             <div class="d-flex justify-content-between mt-n5">
-                                <label class="font-size-h6 font-weight-bolder text-dark pt-5">password</label>
+                                <label class="font-size-h6 font-weight-bolder text-dark pt-5">@lang('lang.password')</label>
                             </div>
                             <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" autocomplete="off" />
                             @if($errors->has('password'))
@@ -71,7 +71,7 @@
                         <!--end::Form group-->
                         <!--begin::Action-->
                         <div class="pb-lg-0 pb-5">
-                            <button type="submit"  id="submit" id="kt_login_singin_form_submit_button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Sign In</button>
+                            <button type="submit"  id="submit" id="kt_login_singin_form_submit_button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">@lang('lang.login')</button>
 
                         </div>
                         <!--end::Action-->
@@ -87,9 +87,10 @@
         <div class="login-aside order-1 order-lg-2 bgi-no-repeat bgi-position-x-right">
             <div class="login-conteiner bgi-no-repeat bgi-position-x-right bgi-position-y-bottom" style="background-image: url({{asset('/')}}assets/media/svg/illustrations/login-visual-4.svg)  ">
                 <!--begin::Aside title-->
-                <h3 class="pt-lg-40 pl-lg-20 pb-lg-0 pl-10 py-20 m-0 d-flex justify-content-lg-start font-weight-boldest display5 display1-lg text-secondary">We Got
-                    <br />A Surprise
-                    <br />For You</h3>
+            {{--    <h3 class="pt-lg-40 pl-lg-20 pb-lg-0 pl-10 py-20 m-0 d-flex justify-content-lg-start font-weight-boldest display5 display1-lg text-secondary">
+
+
+                </h3>--}}
                 <!--end::Aside title-->
             </div>
         </div>

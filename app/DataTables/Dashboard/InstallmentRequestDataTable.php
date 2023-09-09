@@ -33,7 +33,8 @@ class InstallmentRequestDataTable extends DataTable
             })
             ->addColumn('action', 'Dashboard.InstallmentRequest.parts.action')
             ->addColumn('id_received', 'Dashboard.InstallmentRequest.parts.id_received')
-            ->rawColumns(['action','id_received']);
+            ->addColumn('status', 'Dashboard.InstallmentRequest.parts.status')
+            ->rawColumns(['action','id_received','status']);
     }
 
     /**
@@ -99,6 +100,7 @@ class InstallmentRequestDataTable extends DataTable
             Column::make('remaining_price')->title(trans('lang.remaining_price'))->orderable(false)->searchable(false),
             Column::make('created_at')->title(trans('lang.created_at')),
             Column::make('id_received')->title(trans('lang.id_received'))->orderable(false),
+            Column::make('status')->title(trans('lang.status'))->width(150)->orderable(false),
             Column::make('action')->title(trans('lang.action'))->orderable(false),
         ];
     }

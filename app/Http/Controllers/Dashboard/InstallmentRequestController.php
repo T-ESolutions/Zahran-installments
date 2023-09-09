@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\BlockEnum;
+use App\Enums\IRStatusEnum;
 use App\Http\Requests\Dashboard\InstallmentRequestCreateRequest;
 use App\DataTables\Dashboard\InstallmentRequestDataTable;
 use App\Models\Customer;
-use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\GeneralController;
 use App\Models\InstallmentRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
 class InstallmentRequestController extends GeneralController
 {
 
-       protected $viewPath = 'InstallmentRequest';
-       protected $path = 'installmentRequest';
-       private $route = 'installment_requests.index';
+    protected $viewPath = 'InstallmentRequest';
+    protected $path = 'installmentRequest';
+    private $route = 'installment_requests.index';
 
     public function __construct(InstallmentRequest $model)
     {
@@ -30,14 +32,14 @@ class InstallmentRequestController extends GeneralController
 
     public function index(InstallmentRequestDataTable $dataTable)
     {
-        $customers = Customer::get(['id','name']);
+        $customers = Customer::get(['id', 'name']);
         return $dataTable->render('Dashboard.InstallmentRequest.index');
     }
 
-   public function create()
+    public function create()
     {
-        $customers = Customer::WhiteList()->get(['id','name']);
-        return view('Dashboard.InstallmentRequest.create',compact('customers'));
+        $customers = Customer::WhiteList()->get(['id', 'name']);
+        return view('Dashboard.InstallmentRequest.create', compact('customers'));
     }
 
     public function store(InstallmentRequestCreateRequest $request)
@@ -46,7 +48,7 @@ class InstallmentRequestController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
-            $installmentRequest= $this->model::create($data);
+            $installmentRequest = $this->model::create($data);
             if ($request->customers_ids) {
                 $installmentRequest->customers()->attach($request->customers_ids);
             }
@@ -59,21 +61,19 @@ class InstallmentRequestController extends GeneralController
         }
     }
 
-     public function edit(InstallmentRequest $installmentRequest)
-     {
-         if ($installmentRequest->id_received_at)
-         {
-             abort(404);
-         }
-         $data = $installmentRequest->load('customers');
-          $customers= Customer::WhiteList()->get(['id','name']);
-         return view('Dashboard.InstallmentRequest.edit', compact('data','customers'));
-     }
-
-    public function update(InstallmentRequestCreateRequest $request,InstallmentRequest $installmentRequest)
+    public function edit(InstallmentRequest $installmentRequest)
     {
-        if ($installmentRequest->id_received_at)
-        {
+        if ($installmentRequest->id_received_at) {
+            abort(404);
+        }
+        $data = $installmentRequest->load('customers');
+        $customers = Customer::WhiteList()->get(['id', 'name']);
+        return view('Dashboard.InstallmentRequest.edit', compact('data', 'customers'));
+    }
+
+    public function update(InstallmentRequestCreateRequest $request, InstallmentRequest $installmentRequest)
+    {
+        if ($installmentRequest->id_received_at) {
             abort(404);
         }
 
@@ -92,36 +92,61 @@ class InstallmentRequestController extends GeneralController
         }
     }
 
-  public function destroy(Request $request,InstallmentRequest $installmentRequest)
-  {
-      if ($installmentRequest->id_received_at)
-      {
-          abort(404);
-      }
-      try {
-       DB::beginTransaction();
-          $data = $installmentRequest;
+    public function destroy(Request $request, InstallmentRequest $installmentRequest)
+    {
+        if ($installmentRequest->id_received_at) {
+            abort(404);
+        }
+        try {
+            DB::beginTransaction();
+            $data = $installmentRequest;
 
-       foreach ($data->getRelations() as $relation) {
-              if ($data->$relation()->count()) {
-                  return response()->json(['error' => trans('lang.wrong')]);
-              }
-          }
+            foreach ($data->getRelations() as $relation) {
+                if ($data->$relation()->count()) {
+                    return response()->json(['error' => trans('lang.wrong')]);
+                }
+            }
 
-          $data->delete();
-          DB::commit();
-          return response()->json(['success' => trans('lang.deleted')]);
-      } catch (\Exception $e) {
-          DB::rollback();
-          return response()->json(['error' => trans('lang.wrong')]);
-      }
-  }
-  public function changeIdReceived (Request $request,InstallmentRequest $installmentRequest)
-  {
-      if (!$installmentRequest->id_received_at)
-      {
-          $installmentRequest->update(['id_received_at' => now()]);
-      }
-      return response()->json(['success' => trans('lang.updated')]);
-  }
+            $data->delete();
+            DB::commit();
+            return response()->json(['success' => trans('lang.deleted')]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => trans('lang.wrong')]);
+        }
+    }
+
+    public function changeIdReceived(Request $request, InstallmentRequest $installmentRequest)
+    {
+        if (!$installmentRequest->id_received_at) {
+            $installmentRequest->update(['id_received_at' => now()]);
+        }
+        return response()->json(['success' => trans('lang.updated')]);
+    }
+
+    public function accept(Request $request, InstallmentRequest $installmentRequest)
+    {
+        if ($installmentRequest->status == IRStatusEnum::PENDING->value) {
+            $installmentRequest->update(['status' => IRStatusEnum::APPROVED->value]);
+        }
+        return response()->json(['success' => trans('lang.updated')]);
+    }
+
+    public function reject(Request $request, InstallmentRequest $installmentRequest)
+    {
+
+        if ($installmentRequest->status == IRStatusEnum::PENDING->value) {
+            $installmentRequest->update(['status' => IRStatusEnum::REJECTED->value]);
+        }
+
+        if ($request->add_to_black_list) {
+
+            $installmentRequest->customer->update(
+                ['is_blocked' => BlockEnum::BLOCKED->value]
+            );
+        }
+
+
+        return response()->json(['success' => trans('lang.updated')]);
+    }
 }

@@ -40,6 +40,8 @@ Route::group(
 
 
         Route::post('installment_requests.change.id_received/{installmentRequest}', [InstallmentRequestController::class, 'changeIdReceived'])->name('installment_requests.change.id_received');
+        Route::post('installment_requests.accept/{installmentRequest}', [InstallmentRequestController::class, 'accept'])->name('installment_requests.accept');
+        Route::post('installment_requests.reject/{installmentRequest}', [InstallmentRequestController::class, 'reject'])->name('installment_requests.reject');
         Route::resource('installment_requests', InstallmentRequestController::class);
 
 

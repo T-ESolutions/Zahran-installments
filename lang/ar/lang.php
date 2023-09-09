@@ -94,4 +94,9 @@ return [
     'remaining_price' => 'السعر المتبقي',
     'id_received' => 'استلام البطاقه',
     'id_received_successfully' => 'تم استلام البطاقه',
+    "login" => "تسجيل الدخول",
+    "status" => "الحاله",
+    "approved" => "موافقه",
+    "pending" => "قيد الانتظار",
+    "rejected" => "مرفوض",
 ];

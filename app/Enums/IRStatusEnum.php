@@ -12,9 +12,9 @@ enum IRStatusEnum: int
     public static  function getStatusText($status) :string
     {
         return match ($status) {
-            self::PENDING->value => 'pending',
-            self::APPROVED->value => 'approved',
-            self::REJECTED->value => 'rejected',
+            self::PENDING->value => __('lang.pending'),
+            self::APPROVED->value => __('lang.approved'),
+            self::REJECTED->value => __('lang.rejected'),
          };
     }
 

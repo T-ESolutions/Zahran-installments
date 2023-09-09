@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
         if (!auth()->user()->is_active) {
             auth()->logout();
              throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => trans('auth.not_allowed'),
             ]);
         }
 
