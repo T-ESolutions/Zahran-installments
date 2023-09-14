@@ -207,6 +207,19 @@ class PermissionsSeeder extends Seeder
             ],
 
 
+            // invoice permissions
+
+            [
+                'path' => 'invoices',
+                'name' => 'read-invoice',
+                'display_name' => 'read invoice',
+            ],
+            [
+                'path' => 'invoices',
+                'name' => 'create-invoice',
+                'display_name' => 'create invoice',
+            ],
+
         ];
         Schema::disableForeignKeyConstraints();
         DB::table('permissions')->truncate();

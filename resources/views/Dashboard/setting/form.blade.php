@@ -29,6 +29,16 @@
                    placeholder=""/>
         </div>
     </div>
+
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="copyright">{{trans('lang.monthly_profit_percent')}}<span class="text-danger">*</span></label>
+            <input type="number" name="monthly_profit_percent" id="location"
+                   value="{{ old('monthly_profit_percent', $data->where('key', 'monthly_profit_percent')->first()->val) }}"
+                   class="form-control {{ $errors->has('monthly_profit_percent') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
 </div>
 
 

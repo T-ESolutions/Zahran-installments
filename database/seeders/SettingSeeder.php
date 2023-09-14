@@ -22,6 +22,7 @@ class SettingSeeder extends Seeder
             'logo_login' => 'uploads/setting/zahran.png',
             'copyright' => 'جميع الحقوق محفوظة منصة Zahran، تنفيذ و تطوير بواسطة',
             'images_size' => '1000',
+            'monthly_profit_percent' => 30,
          ];
 
         Cache::forget('settings');

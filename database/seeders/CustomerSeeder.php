@@ -43,7 +43,7 @@ class CustomerSeeder extends Seeder
 //            }
 
 
-            for ($j = 0; $j < 500; $j++) {
+            for ($j = 0; $j < 100; $j++) {
                 $data= [
                     'admin_id' => 1,
                     'name' => fake()->name(),

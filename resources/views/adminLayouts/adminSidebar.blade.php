@@ -32,6 +32,15 @@
                     </a>
                 </li>
             @endcan
+            @can('read-invoice')
+                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'invoices') menu-item-open @endif "
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('invoices.index')}}" class="menu-link menu-toggle">
+                        <i class="menu-icon  flaticon-users-1"></i>
+                        <span class="menu-text">{{__('lang.invoices')}}</span>
+                    </a>
+                </li>
+            @endcan
             @can('read-admins')
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'admins') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">

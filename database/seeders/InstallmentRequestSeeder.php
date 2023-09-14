@@ -18,7 +18,7 @@ class InstallmentRequestSeeder extends Seeder
     {
         $customers = collect(Customer::whiteList()->get('id')->pluck('id')->toArray());
 
-        for ($j = 0; $j < 1000; $j++) {
+        for ($j = 0; $j < 100; $j++) {
             $data = [
                 'admin_id' => 1,
                 'customer_id' => $customers->random(),

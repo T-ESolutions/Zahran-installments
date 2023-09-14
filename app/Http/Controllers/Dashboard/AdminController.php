@@ -50,6 +50,8 @@ namespace App\Http\Controllers\Dashboard;
         }
 
         DB::beginTransaction();
+        $inputs['admin_id'] = auth()->user()->id;
+
         $admin = $this->model->create($inputs);
         // Assign Roles
         $admin->assignRole($request->input('role_id'));

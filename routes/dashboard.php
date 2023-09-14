@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\InstallmentRequestController;
+use App\Http\Controllers\Dashboard\InvoiceController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -35,14 +36,26 @@ Route::group(
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
 
+        //customers
         Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
         Route::resource('customers', CustomerController::class);
 
-
+        //installment_requests
         Route::post('installment_requests.change.id_received/{installmentRequest}', [InstallmentRequestController::class, 'changeIdReceived'])->name('installment_requests.change.id_received');
         Route::post('installment_requests.accept/{installmentRequest}', [InstallmentRequestController::class, 'accept'])->name('installment_requests.accept');
         Route::post('installment_requests.reject/{installmentRequest}', [InstallmentRequestController::class, 'reject'])->name('installment_requests.reject');
         Route::resource('installment_requests', InstallmentRequestController::class);
+
+        //invoices
+        Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
+
+
+
+
+
+
+
+
 
 
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');

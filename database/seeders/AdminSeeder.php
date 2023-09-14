@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
     {
         $admin = Admin::create([
             'name' => 'admin',
+            'admin_id' => 1,
             'email' => 'admin@admin.com',
             'password' => '123456',
             'phone' => '123456',
@@ -32,6 +33,7 @@ class AdminSeeder extends Seeder
                 for ($j = 0; $j < $chunkSize; $j++) {
                     $data[] = [
                         'name' => fake()->name(),
+                        'admin_id' => 1,
                         'email' => fake()->unique()->safeEmail(),
                         'password' => '123456',
                         'phone' => fake()->phoneNumber,
