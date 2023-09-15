@@ -17,7 +17,7 @@
                 class="text-danger">*</span></label>
         <input name="pay_day" id="pay_day" placeholder="{{trans('lang.pay_day')}}"
                value="{{ old('pay_day', $data->pay_day ?? '') }}"
-               class="form-control  {{ $errors->has('pay_day') ? 'border-danger' : '' }}" type="text"
+               class="form-control  {{ $errors->has('pay_day') ? 'border-danger' : '' }}" type="number"
                maxlength="255"/>
 
         @if($errors->has('pay_day'))
@@ -244,6 +244,59 @@
             tags: true
         });
         var avatar1 = new KTImageInput('kt_image_1');
+
+
+
+        $("#pay_day").on("input", function() {
+            var inputValue = parseFloat($("#pay_day").val());
+            if (isNaN(inputValue) || inputValue < 1 || inputValue > 30) {
+                 $("#pay_day").val("");
+            }
+        });
+
+
+        $("#total_price").on("input", function() {
+            var inputValue = parseFloat($("#total_price").val());
+            if (isNaN(inputValue) || inputValue < 1 ) {
+                 $("#total_price").val("");
+            }
+        });
+
+
+        $("#deposit").on("input", function() {
+            var inputValue = parseFloat($("#deposit").val());
+            if (isNaN(inputValue) || inputValue < 1 ) {
+                 $("#deposit").val("");
+            }
+        });
+
+
+
+        $("#monthly_profit_percent").on("input", function() {
+            var inputValue = parseFloat($("#monthly_profit_percent").val());
+            if (isNaN(inputValue) || inputValue < 1 ) {
+                 $("#monthly_profit_percent").val("");
+            }
+        });
+
+
+        $("#monthly_installment").on("input", function() {
+            var inputValue = parseFloat($("#monthly_installment").val());
+            if (isNaN(inputValue) || inputValue < 1 ) {
+                 $("#monthly_installment").val("");
+            }
+        });
+
+
+        $("#months_count").on("input", function() {
+            var inputValue = parseFloat($("#months_count").val());
+            if (isNaN(inputValue) || inputValue < 1 ) {
+                 $("#months_count").val("");
+            }
+        });
+
+
+
 
 
         let pay_day = null
