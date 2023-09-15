@@ -78,7 +78,10 @@ return [
     'black_list' => 'قائمه السوداء',
     'change-activation-customers' => 'تغير قائمه سوداء العملاء',
     'guarantor' => 'الضامن',
+    'guarantors' =>  'الضامنين',
+
     'price' => 'السعر',
+    'total_price' =>'السعر الكلي',
     'deposit' => 'المقدم',
     'product' => 'المنتجات',
     'installment_requests' => 'طلبات التقسيط',
@@ -109,4 +112,11 @@ return [
     'monthly_profit_percent' => 'نسبه الربح الشهري',
     'started' => 'بدأت',
     'finished' => 'انتهت',
+    'invoice_number' => 'رقم الفاتوره',
+    'transaction_number'=>'رقم المعامله',
+    'pay_day'=>'يوم الدفع',
+    'invoice_date'=>'تاريخ الفاتوره',
+    'months_count' =>'عدد الاشهر',
+    'monthly_installment'=>'القسط الشهري',
+    'profit'=>'الربح'
 ];

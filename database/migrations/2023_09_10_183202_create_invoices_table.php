@@ -30,7 +30,7 @@ return new class extends Migration
             $table->double('remaining_price', 8, 2);
             $table->double('monthly_profit_percent',2, 2);
             $table->double('monthly_pay',8, 2);
-            $table->integer('monthly_count');
+            $table->integer('monthly_installment');
 
             $table->double('profit',8, 2);
             $table->tinyInteger('status')->default(0);
