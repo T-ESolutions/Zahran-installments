@@ -394,9 +394,15 @@
 
             if (monthly_profit_percent && remaining_price && months_count ) {
 
-                monthly_profit_percent=((((months_count*monthly_installment) - remaining_price) / remaining_price  ) / months_count ) * 12 * 100
 
-                monthly_profit_percent = monthly_profit_percent.toFixed(2);
+                let eq_every_month = months_count*monthly_installment
+                let eq_total_money = eq_every_month - remaining_price
+                let eq_additional_money = eq_total_money / remaining_price
+                let eq_month_percent = eq_additional_money / months_count;
+                let eq_percent =( eq_month_percent * 100) * 12;
+
+
+                monthly_profit_percent = eq_percent.toFixed(2);
 
                 if(monthly_profit_percent < 0 )
                 {
@@ -409,8 +415,9 @@
                     })
 
                     $("#monthly_installment").val(null);
+                    $("#profit").val(null);
                 }else{
-
+                    $("#profit").val(eq_total_money);
                     $("#monthly_profit_percent").val(monthly_profit_percent);
 
                 }
