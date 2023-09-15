@@ -209,7 +209,7 @@
     <div class="form-group  col-4">
         <label>{{trans('lang.profit')}}<span
                 class="text-danger">*</span></label>
-        <input name="profit" id="profit" placeholder="{{trans('lang.profit')}}"
+        <input name="profit" disabled id="profit" placeholder="{{trans('lang.profit')}}"
                value="{{ old('profit', $data->profit ?? '') }}"
                class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
                type="number"
@@ -384,7 +384,8 @@
                 monthly_installment=eq_every_month
 
 
-
+                eq_additional_money  = eq_additional_money.toFixed(2);
+                $("#profit").val(eq_additional_money);
                 $("#monthly_installment").val(eq_every_month);
 
             }
