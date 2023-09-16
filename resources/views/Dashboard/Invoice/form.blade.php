@@ -230,6 +230,9 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
+
+
+
     <script !src="">
         $('#kt_select2_2_modal').select2({
             placeholder: `{{trans('lang.guarantor')}}`,
@@ -316,13 +319,21 @@
         });
 
 
+        $("#monthly_profit_percent").on("change", function (e) {
+            monthly_profit_percent = e.target.value
+            monthlyInstallment()
+        });
+
         $("#total_price").on("change", function (e) {
             total_price = e.target.value
             remainingPrice()
+
         });
+
         $("#deposit").on("change", function (e) {
             deposit = e.target.value
             remainingPrice()
+
         });
         $("#remaining_price").on("change", function (e) {
             remaining_price = e.target.value
@@ -365,6 +376,7 @@
                 } else {
                     remaining_price = total_price - deposit;
                     $("#remaining_price").val(total_price - deposit);
+                    monthlyInstallment()
                 }
             }
         }
