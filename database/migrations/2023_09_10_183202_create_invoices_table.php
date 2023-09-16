@@ -28,9 +28,8 @@ return new class extends Migration
             $table->double('total_price', 8, 2);
             $table->double('deposit', 8, 2);
             $table->double('remaining_price', 8, 2);
-            $table->double('monthly_profit_percent',2, 2);
-            $table->double('monthly_pay',8, 2);
-            $table->integer('monthly_installment');
+            $table->double('monthly_profit_percent',8, 2);
+            $table->double('monthly_installment',8, 2);
 
             $table->double('profit',8, 2);
             $table->tinyInteger('status')->default(0);

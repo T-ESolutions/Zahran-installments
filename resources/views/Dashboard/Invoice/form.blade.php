@@ -92,20 +92,16 @@
             <span class="text-danger m-2 ">{{ $errors->first('note') }}</span>
         @endif
     </div>
+
     <div class="form-group  col-lg-4 col-sm-4 ">
         <label>{{trans('lang.guarantors')}}</label>
         <div class="  {{ $errors->has('guarantors_id') ? ' border  border-danger rounded' : '' }}">
-            <select name="guarantors_id"
+            <select name="guarantors_id[]"
                     class="form-control select2"
                     id="guarantors_select" multiple>
-                <option selected disabled></option>
+
                 @foreach($customers as $row)
-                    <option @if(Request::segment(3)== 'invoices' && Request::segment(5)== 'edit')
-                                {{ $row->id == old('guarantors_id',  $data->guarantors_id)  ? 'selected' : '' }}
-                            @else
-                                {{ $row->id == old('guarantors_id') ? 'selected' : '' }}
-                            @endif
-                            value="{{ $row->id }}">{{ $row->name }}</option>
+                    <option  value="{{ $row->id }}">{{ $row->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -147,7 +143,13 @@
     <div class="form-group  col-4">
         <label>{{trans('lang.remaining_price')}}<span
                 class="text-danger">*</span></label>
-        <input name="remaining_price" disabled id="remaining_price" placeholder="{{trans('lang.remaining_price')}}"
+        <input disabled id="remaining_price_view" placeholder="{{trans('lang.remaining_price')}}"
+               value="{{ old('remaining_price', $data->remaining_price ?? '') }}"
+               class="form-control  {{ $errors->has('remaining_price') ? 'border-danger' : '' }}"
+               type="number"
+               step="0.01"
+               maxlength="255"/>
+        <input name="remaining_price" hidden="" id="remaining_price" placeholder="{{trans('lang.remaining_price')}}"
                value="{{ old('remaining_price', $data->remaining_price ?? '') }}"
                class="form-control  {{ $errors->has('remaining_price') ? 'border-danger' : '' }}"
                type="number"
@@ -209,7 +211,15 @@
     <div class="form-group  col-4">
         <label>{{trans('lang.profit')}}<span
                 class="text-danger">*</span></label>
-        <input name="profit" disabled id="profit" placeholder="{{trans('lang.profit')}}"
+
+        <input  id="profit_view" readonly placeholder="{{trans('lang.profit')}}"
+               value="{{ old('profit', $data->profit ?? '') }}"
+               class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
+               type="number"
+               step="0.01"
+               maxlength="255"/>
+
+        <input name="profit" hidden="" id="profit" placeholder="{{trans('lang.profit')}}"
                value="{{ old('profit', $data->profit ?? '') }}"
                class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
                type="number"
@@ -360,6 +370,7 @@
                 } else {
                     remaining_price = total_price - deposit;
                     $("#remaining_price").val(total_price - deposit);
+                    $("#remaining_price_view").val(total_price - deposit);
                     monthlyInstallment()
                 }
             }
@@ -381,6 +392,7 @@
 
                 eq_additional_money  = eq_additional_money.toFixed(2);
                 $("#profit").val(eq_additional_money);
+                $("#profit_view").val(eq_additional_money);
                 $("#monthly_installment").val(eq_every_month);
 
             }

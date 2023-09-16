@@ -42,13 +42,12 @@ class InvoiceController extends GeneralController
         try {
             DB::beginTransaction();
             $data = $request->validated();
-            if ($request->hasFile('image')) {
-                $data['image'] = $this->uploadImage($request->file('image'), $this->path, null, settings('images_size'));
-            }
-            $this->model::create($data);
-            DB::commit();
+            $data['admin_id'] = auth()->user()->id;
+             $invoice= $this->model::create($data);
+             DB::commit();
             return redirect()->route($this->route)->with('success', trans('lang.created'));
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));
         }
