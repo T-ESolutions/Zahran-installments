@@ -249,6 +249,7 @@
         var avatar1 = new KTImageInput('kt_image_1');
 
 
+        /*                                  validations                                 */
 
         $("#pay_day").on("input", function() {
             var inputValue = parseFloat($("#pay_day").val());
@@ -256,41 +257,30 @@
                  $("#pay_day").val("");
             }
         });
-
-
         $("#total_price").on("input", function() {
             var inputValue = parseFloat($("#total_price").val());
             if (isNaN(inputValue) || inputValue < 1 ) {
                  $("#total_price").val("");
             }
         });
-
-
         $("#deposit").on("input", function() {
             var inputValue = parseFloat($("#deposit").val());
             if (isNaN(inputValue) || inputValue < 1 ) {
                  $("#deposit").val("");
             }
         });
-
-
-
         $("#monthly_profit_percent").on("input", function() {
             var inputValue = parseFloat($("#monthly_profit_percent").val());
             if (isNaN(inputValue) || inputValue < 1 ) {
                  $("#monthly_profit_percent").val("");
             }
         });
-
-
         $("#monthly_installment").on("input", function() {
             var inputValue = parseFloat($("#monthly_installment").val());
             if (isNaN(inputValue) || inputValue < 1 ) {
                  $("#monthly_installment").val("");
             }
         });
-
-
         $("#months_count").on("input", function() {
             var inputValue = parseFloat($("#months_count").val());
             if (isNaN(inputValue) || inputValue < 1 ) {
@@ -299,9 +289,7 @@
         });
 
 
-
-
-
+        /*                                  vars                                 */
         let pay_day = null
         let customer = null
         let profit = null
@@ -317,19 +305,15 @@
             monthlyInstallment()
 
         });
-
-
         $("#monthly_profit_percent").on("change", function (e) {
             monthly_profit_percent = e.target.value
             monthlyInstallment()
         });
-
         $("#total_price").on("change", function (e) {
             total_price = e.target.value
             remainingPrice()
 
         });
-
         $("#deposit").on("change", function (e) {
             deposit = e.target.value
             remainingPrice()
@@ -338,7 +322,6 @@
         $("#remaining_price").on("change", function (e) {
             remaining_price = e.target.value
         });
-
         $("#monthly_installment").on("change", function (e) {
             monthly_installment = e.target.value
             reverseMonthlyInstallment()
@@ -356,12 +339,13 @@
         });
 
 
+        /*                                  methods                                 */
+
         function TransactionNumber() {
             if (pay_day && customer) {
                 $("#transaction_number").val(pay_day + '.' + customer);
             }
         }
-
         function remainingPrice() {
 
             if (total_price && deposit) {
@@ -380,7 +364,6 @@
                 }
             }
         }
-
         function monthlyInstallment() {
 
 
