@@ -33,7 +33,6 @@ class InvoiceCreateRequest extends FormRequest
             'monthly_installment'=>['required'],
             'profit'=>['required'],
             'remaining_price'=>['required'],
-
         ];
 
         return $validation;

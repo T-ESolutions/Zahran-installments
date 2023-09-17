@@ -47,6 +47,7 @@ Route::group(
         Route::resource('installment_requests', InstallmentRequestController::class);
 
         //invoices
+        Route::get('invoices/installments/{id}', [InvoiceController::class, 'indexInstallments'])->name('invoices.installments');
         Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
 
 

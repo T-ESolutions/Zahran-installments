@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\InvoiceInstallmentsStatusEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model
+class InvoiceInstallments extends Model
 {
     protected $guarded=['id'];
 
@@ -30,6 +32,10 @@ class Invoice extends Model
      */
 
 
+    public function getStatusAttribute()
+    {
+        return InvoiceInstallmentsStatusEnum::getStatusText($this->attributes['status']);
+    }
 
 
 
@@ -64,13 +70,7 @@ class Invoice extends Model
      */
 
 
-    public function guarantors(){
-        return $this->belongsToMany(Customer::class, 'customer_invoice','invoice_id','customer_id');
-    }
 
-    public function installments()
-    {
-        return $this->hasMany(InvoiceInstallments::class, 'invoice_id');
-    }
+
 
 }
