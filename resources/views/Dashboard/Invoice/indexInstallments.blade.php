@@ -30,10 +30,7 @@
     <div class="card">
         <div class="text-right">
         <div class="card-header">
-            @can('create-invoice')
-            <a href="{{route('invoices.create')}}" class="btn btn-sm btn-light-primary font-weight-bolder mr-2">
-                <i class="fa fa-plus"></i>{{trans('lang.create')}}</a>
-            @endcan
+
         </div>
         </div>
             <div class="card-body">

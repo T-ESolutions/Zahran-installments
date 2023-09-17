@@ -85,8 +85,9 @@ class InvoiceInstallmentsDataTable extends DataTable
             Column::make('id')->hidden(),
 
             Column::make('status')->title(trans('lang.status')),
+            Column::make('monthly_installment')->title(trans('lang.monthly_installment')),
             Column::make('pay_date')->title(trans('lang.pay_date')),
-            Column::make('action')->title(trans('lang.action')),
+//            Column::make('action')->title(trans('lang.action')),
         ];
     }
 
