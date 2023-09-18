@@ -19,7 +19,7 @@
             </li>
             <li class="breadcrumb-item">
                 <a href="{{route('customers.index')}}"
-                   class="text-muted">{{trans('lang.customer')}}</a>
+                   class="text-muted">{{trans('lang.customers')}}</a>
             </li>
 
         </ul>
@@ -35,7 +35,7 @@
 
                 <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
                     <div class="symbol symbol-50 symbol-lg-120">
-                        <img alt="Pic" src="{{$data->id_image}}">
+                        <img alt="Pic" src="{{url($data->id_image)}}">
                     </div>
 
                 </div>

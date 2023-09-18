@@ -19,7 +19,7 @@ class CustomerController extends GeneralController
     public function __construct(Customer $model)
     {
         parent::__construct($model);
-        $this->middleware('permission:read-customer', ['only' => ['index']]);
+        $this->middleware('permission:read-customer', ['only' => ['index','show']]);
         $this->middleware('permission:create-customer', ['only' => ['create', 'store']]);
         $this->middleware('permission:update-customer', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-customer', ['only' => ['delete']]);
