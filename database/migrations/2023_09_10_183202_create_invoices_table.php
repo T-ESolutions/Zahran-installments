@@ -18,7 +18,6 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number')->nullable();
-            $table->string('transaction_number')->nullable();
             $table->date('invoice_date')->nullable();
             $table->integer('pay_day');
             $table->text('note')->nullable();

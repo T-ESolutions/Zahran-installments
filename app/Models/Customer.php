@@ -15,6 +15,8 @@ class Customer extends Authenticatable
 
     protected $guarded = ['id'];
 
+
+
     protected $hidden = ['password'];
 
     public function getRelations()
@@ -36,8 +38,6 @@ class Customer extends Authenticatable
     /**
      * START MUTATOR
      */
-
-
 
 
 
@@ -77,6 +77,10 @@ class Customer extends Authenticatable
    public function relatives()
    {
        return $this->hasMany(CustomerRelatives::class , 'customer_id');
+   }
+   public function invoices()
+   {
+       return $this->hasMany(Invoice::class , 'customer_id');
    }
 
 }

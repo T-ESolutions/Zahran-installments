@@ -61,6 +61,13 @@ class CustomerController extends GeneralController
         return view('Dashboard.Customer.edit', compact('data'));
     }
 
+    public function show(Customer $customer)
+    {
+        $data=$customer->load('relatives','invoices.unInstallments');
+
+        return view('Dashboard.Customer.show', compact('data'));
+    }
+
     public function update(CustomerCreateRequest $request, Customer $customer)
     {
         try {

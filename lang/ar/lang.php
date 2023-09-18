@@ -122,4 +122,8 @@ return [
     'monthly_installment' => 'القسط الشهري',
     'profit' => 'الربح',
     'invoices_installments'=> 'ايصالات الفواتير',
+    'installments' => 'الايصالات',
+    'show-customer' =>'مراجعه العميل',
+    'created_by'=>'انشء  بواسطه',
+    'late_installment'=>'اقساط متاخره',
 ];

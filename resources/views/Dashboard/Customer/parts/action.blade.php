@@ -3,9 +3,18 @@
     <i class="flaticon-edit"></i>
 </a>
 @endcan
+
+
 @can('delete-customer')
  <a  id="Customer_delete" data-action="{{route('customers.destroy',$id)}}"   title="@lang('lang.delete')"
    class="btn btn-icon btn-light-danger btn-circle mr-2">
     <i class="flaticon2-rubbish-bin-delete-button"></i>
 </a>
+@endcan
+
+@can('read-customer')
+    <a  href="{{route('customers.show',$id)}}"   title="@lang('lang.show')"
+        class="btn btn-icon btn-light-info btn-circle mr-2">
+        <i class="flaticon-eye"></i>
+    </a>
 @endcan
