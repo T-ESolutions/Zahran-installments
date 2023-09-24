@@ -7,11 +7,12 @@ use App\Http\Requests\Dashboard\InvoiceCreateRequest;
 use App\DataTables\Dashboard\InvoiceDataTable;
 use App\Models\Customer;
 use App\Models\InvoiceInstallments;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Request;
-use App\Http\Controllers\GeneralController;
+ use App\Http\Controllers\GeneralController;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 
 class InvoiceController extends GeneralController
@@ -33,10 +34,6 @@ class InvoiceController extends GeneralController
 
         return $dataTable->render('Dashboard.Invoice.index');
     }
-    public function indexInstallments(Request $request ,InvoiceInstallmentsDataTable $dataTable,$id)
-    {
-        return $dataTable->with(['id'=>$id])->render('Dashboard.Invoice.indexInstallments');
-    }
 
     public function create()
     {
@@ -51,32 +48,68 @@ class InvoiceController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
+            $data['transaction_number'] = $request->pay_day . '.' .$request->customer_id;
+
             $invoice = $this->model::create($data);
 
             if ($request->guarantors_id) {
                 $invoice->guarantors()->attach($request->guarantors_id);
             }
-
-            $months_count = $data['months_count'];
-            $pay_day = $data['pay_day'];
-            $monthly_installment = $data['monthly_installment'];
-
-            for ($i = 0; $i < $months_count; ++$i) {
-                $data = Carbon::now()->addMonth($i+1)->day($pay_day)->format('Y-m-d');
-                InvoiceInstallments::create([
-                    'invoice_id' => $invoice->id,
-                    'pay_date' => $data,
-                    'monthly_installment' => $monthly_installment,
-                ]);
-            }
-
+            $this->createInstallments($invoice, $data);
             DB::commit();
-            return redirect()->route($this->route)->with('success', trans('lang.created'));
+             Session::flash('success',  trans('lang.created'));
+             return response()->json([], 200);
         } catch (\Exception $e) {
+
             info($e->getMessage());
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));
         }
+    }
+
+    private function createInstallments($invoice, $data)
+    {
+        $months_count = $data['months_count'];
+        $pay_day = $data['pay_day'];
+        $monthly_installment = $data['monthly_installment'];
+
+        for ($i = 0; $i < $months_count; ++$i) {
+            $pay_date = Carbon::now()->addMonth($i + 1)->day($pay_day);
+
+            $invoice->installments()->create([
+                'pay_date' => $pay_date,
+                'monthly_installment' => $monthly_installment,
+            ]);
+        }
+
+    }
+
+    public function getInvoice(Request $request)
+    {
+        $customerId = $request->customer_id;
+        $invoices = Invoice::where('customer_id', $customerId)->get(['id','invoice_number']);
+        return response()->json($invoices);
+    }
+
+    public function indexInstallments(Request $request ,InvoiceInstallmentsDataTable $dataTable,$id)
+    {
+        return $dataTable->with(['id'=>$id])->render('Dashboard.Invoice.indexInstallments');
+    }
+
+    public function changeInstallmentDate(Request $request)
+    {
+
+
+        $request->validate([
+            'id' => 'required|exists:invoice_installments,id',
+            'pay_date' => ['required','date','after_or_equal:today'],
+        ]);
+
+        $installment = InvoiceInstallments::find($request->id);
+
+        $installment->pay_date = $request->pay_date;
+        $installment->save();
+        return response()->json([], 200);
     }
 
 }

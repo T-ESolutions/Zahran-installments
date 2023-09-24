@@ -29,21 +29,20 @@
 @section('content')
 
     @if($data->is_blocked)
-
-            <div class="alert alert-custom alert-outline-danger fade show mb-5 bg-white" role="alert">
-                <div class="alert-icon">
-                    <i class="flaticon-warning"></i>
-                </div>
-                <div class="alert-text h1">هذا العميل ضمن القائمه السوداء !</div>
-                <div class="alert-close">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <div class="alert alert-custom alert-outline-danger fade show mb-5 bg-white" role="alert">
+            <div class="alert-icon">
+                <i class="flaticon-warning"></i>
+            </div>
+            <div class="alert-text h1">هذا العميل ضمن القائمه السوداء !</div>
+            <div class="alert-close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 																	<span aria-hidden="true">
 																		<i class="ki ki-close"></i>
 																	</span>
-                    </button>
-                </div>
+                </button>
+            </div>
 
-    </div>
+        </div>
     @endif
     <div class="card card-custom gutter-b">
         <div class="card-body">
@@ -262,6 +261,22 @@
 
 @endsection
 @push('scripts')
+
+    <script>
+        $(document).ready(function () {
+
+            // Add the CSRF token to all AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+
+            });
+
+        });
+
+
+    </script>
 
 @endpush
 

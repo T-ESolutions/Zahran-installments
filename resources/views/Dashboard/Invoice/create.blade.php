@@ -29,7 +29,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form method="post"  id="form" action="{{route('invoices.store')}}" enctype="multipart/form-data">
+            <form method="post"  id="formInvoice" action="javascript:void(0)" enctype="multipart/form-data">
                 @csrf
                 @include('Dashboard.Invoice.form')
             </form>

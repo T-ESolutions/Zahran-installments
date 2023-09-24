@@ -1,29 +1,6 @@
 <div class="card-body row">
 
-    <div class="form-group  col-4">
-        <label>{{trans('lang.invoice_number')}}</label>
-        <input name="invoice_number" placeholder="{{trans('lang.invoice_number')}}"
-               value="{{ old('invoice_number', $data->invoice_number ?? '') }}"
-               class="form-control  {{ $errors->has('invoice_number') ? 'border-danger' : '' }}" type="text"
-               maxlength="255"/>
 
-        @if($errors->has('invoice_number'))
-            <span class="text-danger m-2 ">{{ $errors->first('invoice_number') }}</span>
-        @endif
-    </div>
-
-    <div class="form-group  col-4">
-        <label>{{trans('lang.pay_day')}}<span
-                class="text-danger">*</span></label>
-        <input name="pay_day" id="pay_day" placeholder="{{trans('lang.pay_day')}}"
-               value="{{ old('pay_day', $data->pay_day ?? '') }}"
-               class="form-control  {{ $errors->has('pay_day') ? 'border-danger' : '' }}" type="number"
-               maxlength="255"/>
-
-        @if($errors->has('pay_day'))
-            <span class="text-danger m-2 ">{{ $errors->first('pay_day') }}</span>
-        @endif
-    </div>
     <div class="form-group  col-lg-4 col-sm-4 ">
         <label>{{trans('lang.customer')}}</label>
         <div class="  {{ $errors->has('customer_id') ? ' border  border-danger rounded' : '' }}">
@@ -42,12 +19,57 @@
                 @endforeach
             </select>
         </div>
-        @if($errors->has('customer_id'))
-            <span class="text-danger m-2 ">{{ $errors->first('customer_id') }}</span>
-        @endif
+        <span class="text-danger errors form_error_customer_id" role="alert"></span>
+    </div>
+    <div class="form-group  col-lg-4 col-sm-4 ">
+        <label>{{trans('lang.invoice_type')}}</label>
+        <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
+            <select name="invoice_type"
+                    class="form-control select2"
+                    id="invoice_type">
+                <option selected disabled></option>
+                <option value="{{ \App\Enums\InvoiceTypeEnum::INVOICE }}">{{trans('lang.invoice')}} </option>
+                <option value="{{ \App\Enums\InvoiceTypeEnum::ATTORNEY }}">{{trans('lang.attorney')}} </option>
+                <option value="{{ \App\Enums\InvoiceTypeEnum::INSURANCE }}">{{trans('lang.insurance')}} </option>
+
+            </select>
+        </div>
+
+        <span class="text-danger errors form_error_invoice_type" role="alert"></span>
+    </div>
+    <div id="customer_invoices_group" class="form-group  col-lg-4 col-sm-4 d-none">
+        <label>{{trans('lang.old_invoice')}}</label>
+        <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
+            <select name="invoice_id"
+                    class="form-control select2"
+                    id="customer_invoices">
+                <option selected disabled></option>
+
+            </select>
+        </div>
+        <span class="text-danger errors form_error_invoice_id" role="alert"></span>
+
+    </div>
+    <div class="form-group  col-4">
+        <label>{{trans('lang.invoice_number')}}</label>
+        <input name="invoice_number" placeholder="{{trans('lang.invoice_number')}}"
+               value="{{ old('invoice_number', $data->invoice_number ?? '') }}"
+               class="form-control  {{ $errors->has('invoice_number') ? 'border-danger' : '' }}" type="text"
+               maxlength="255"/>
+
+        <span class="text-danger errors form_error_invoice_number" role="alert"></span>
     </div>
 
+    <div class="form-group  col-4">
+        <label>{{trans('lang.pay_day')}}<span
+                class="text-danger">*</span></label>
+        <input name="pay_day" id="pay_day" placeholder="{{trans('lang.pay_day')}}"
+               value="{{ old('pay_day', $data->pay_day ?? '') }}"
+               class="form-control  {{ $errors->has('pay_day') ? 'border-danger' : '' }}" type="number"
+               maxlength="255"/>
 
+        <span class="text-danger errors form_error_pay_day" role="alert"></span>
+    </div>
     <div class="form-group  col-4">
         <label>{{trans('lang.transaction_number')}}</label>
         <input name="transaction_number" id="transaction_number" disabled
@@ -56,9 +78,7 @@
                class="form-control  {{ $errors->has('transaction_number') ? 'border-danger' : '' }}" type="text"
                maxlength="255"/>
 
-        @if($errors->has('transaction_number'))
-            <span class="text-danger m-2 ">{{ $errors->first('transaction_number') }}</span>
-        @endif
+        <span class="text-danger errors form_error_transaction_number" role="alert"></span>
     </div>
     <div class="form-group  col-4">
         <label>{{trans('lang.invoice_date')}}<span
@@ -68,9 +88,7 @@
                class="form-control  {{ $errors->has('invoice_date') ? 'border-danger' : '' }}" type="date"
                maxlength="255"/>
 
-        @if($errors->has('invoice_date'))
-            <span class="text-danger m-2 ">{{ $errors->first('invoice_date') }}</span>
-        @endif
+        <span class="text-danger errors form_error_invoice_date" role="alert"></span>
     </div>
     <div class="form-group  col-4">
         <label>{{trans('lang.product')}}</label>
@@ -78,9 +96,7 @@
                   class="form-control  {{ $errors->has('product') ? 'border-danger' : '' }}" type="text"
                   maxlength="255">{{ old('product', $data->product ?? '') }}</textarea>
 
-        @if($errors->has('product'))
-            <span class="text-danger m-2 ">{{ $errors->first('product') }}</span>
-        @endif
+        <span class="text-danger errors form_error_product" role="alert"></span>
     </div>
     <div class="form-group  col-4">
         <label>{{trans('lang.note')}}</label>
@@ -88,11 +104,8 @@
                   class="form-control  {{ $errors->has('note') ? 'border-danger' : '' }}" type="text"
                   maxlength="255">{{ old('note', $data->note ?? '') }}</textarea>
 
-        @if($errors->has('note'))
-            <span class="text-danger m-2 ">{{ $errors->first('note') }}</span>
-        @endif
+        <span class="text-danger errors form_error_note" role="alert"></span>
     </div>
-
     <div class="form-group  col-lg-4 col-sm-4 ">
         <label>{{trans('lang.guarantors')}}</label>
         <div class="  {{ $errors->has('guarantors_id') ? ' border  border-danger rounded' : '' }}">
@@ -101,15 +114,12 @@
                     id="guarantors_select" multiple>
 
                 @foreach($customers as $row)
-                    <option  value="{{ $row->id }}">{{ $row->name }}</option>
+                    <option value="{{ $row->id }}">{{ $row->name }}</option>
                 @endforeach
             </select>
         </div>
-        @if($errors->has('guarantors_id'))
-            <span class="text-danger m-2 ">{{ $errors->first('guarantors_id') }}</span>
-        @endif
+        <span class="text-danger errors form_error_guarantors_id" role="alert"></span>
     </div>
-
     <div class="form-group  col-4">
         <label>{{trans('lang.total_price')}}<span
                 class="text-danger">*</span></label>
@@ -120,11 +130,8 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('total_price'))
-            <span class="text-danger m-2 ">{{ $errors->first('total_price') }}</span>
-        @endif
+        <span class="text-danger errors form_error_total_price" role="alert"></span>
     </div>
-
     <div class="form-group  col-4">
         <label>{{trans('lang.deposit')}}<span
                 class="text-danger">*</span></label>
@@ -135,11 +142,8 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('deposit'))
-            <span class="text-danger m-2 ">{{ $errors->first('deposit') }}</span>
-        @endif
+        <span class="text-danger errors form_error_deposit" role="alert"></span>
     </div>
-
     <div class="form-group  col-4">
         <label>{{trans('lang.remaining_price')}}<span
                 class="text-danger">*</span></label>
@@ -156,11 +160,8 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('remaining_price'))
-            <span class="text-danger m-2 ">{{ $errors->first('remaining_price') }}</span>
-        @endif
+        <span class="text-danger errors form_error_remaining_price" role="alert"></span>
     </div>
-
     <div class="form-group  col-4">
         <label>{{trans('lang.monthly_profit_percent')}}<span
                 class="text-danger">*</span></label>
@@ -172,12 +173,9 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('monthly_profit_percent'))
-            <span class="text-danger m-2 ">{{ $errors->first('monthly_profit_percent') }}</span>
-        @endif
+
+        <span class="text-danger errors form_error_monthly_profit_percent" role="alert"></span>
     </div>
-
-
     <div class="form-group  col-4">
         <label>{{trans('lang.months_count')}}<span
                 class="text-danger">*</span></label>
@@ -188,11 +186,8 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('months_count'))
-            <span class="text-danger m-2 ">{{ $errors->first('months_count') }}</span>
-        @endif
+        <span class="text-danger errors form_error_months_count" role="alert"></span>
     </div>
-
     <div class="form-group  col-4">
         <label>{{trans('lang.monthly_installment')}}<span
                 class="text-danger">*</span></label>
@@ -203,16 +198,14 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('monthly_installment'))
-            <span class="text-danger m-2 ">{{ $errors->first('monthly_installment') }}</span>
-        @endif
-    </div>
+        <span class="text-danger errors form_error_monthly_installment" role="alert"></span>
 
+    </div>
     <div class="form-group  col-4">
         <label>{{trans('lang.profit')}}<span
                 class="text-danger">*</span></label>
 
-        <input  id="profit_view" readonly placeholder="{{trans('lang.profit')}}"
+        <input id="profit_view" readonly placeholder="{{trans('lang.profit')}}"
                value="{{ old('profit', $data->profit ?? '') }}"
                class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
                type="number"
@@ -226,14 +219,12 @@
                step="0.01"
                maxlength="255"/>
 
-        @if($errors->has('profit'))
-            <span class="text-danger m-2 ">{{ $errors->first('profit') }}</span>
-        @endif
+        <span class="text-danger errors form_error_profit" role="alert"></span>
     </div>
 
 </div>
 <div class="card-footer text-left">
-    <button type="Submit" id="submit" class="btn btn-primary btn-default ">{{trans('lang.save')}}</button>
+    <button   id="InvoiceSubmit" class="btn btn-primary btn-default ">{{trans('lang.save')}}</button>
     <a href="{{ URL::previous() }}" class="btn btn-secondary">{{trans('lang.cancel')}}</a>
 </div>
 
@@ -244,8 +235,14 @@
 
 
     <script !src="">
+
         $('#kt_select2_2_modal').select2({
             placeholder: `{{trans('lang.guarantor')}}`,
+            tags: true
+        });
+        $('#customer_invoices').select2({
+            placeholder: `{{trans('lang.customer_invoices')}}`,
+            width: '100%',
             tags: true
         });
         $('#guarantors_select').select2({
@@ -256,45 +253,49 @@
             placeholder: `{{trans('lang.customer')}}`,
             tags: true
         });
+        $('#invoice_type').select2({
+            placeholder: `{{trans('lang.invoice_type')}}`,
+            tags: true
+        });
         var avatar1 = new KTImageInput('kt_image_1');
 
 
         /*                                  validations                                 */
 
-        $("#pay_day").on("input", function() {
+        $("#pay_day").on("input", function () {
             var inputValue = parseFloat($("#pay_day").val());
             if (isNaN(inputValue) || inputValue < 1 || inputValue > 30) {
-                 $("#pay_day").val("");
+                $("#pay_day").val("");
             }
         });
-        $("#total_price").on("input", function() {
+        $("#total_price").on("input", function () {
             var inputValue = parseFloat($("#total_price").val());
-            if (isNaN(inputValue) || inputValue < 1 ) {
-                 $("#total_price").val("");
+            if (isNaN(inputValue) || inputValue < 1) {
+                $("#total_price").val("");
             }
         });
-        $("#deposit").on("input", function() {
+        $("#deposit").on("input", function () {
             var inputValue = parseFloat($("#deposit").val());
-            if (isNaN(inputValue) || inputValue < 1 ) {
-                 $("#deposit").val("");
+            if (isNaN(inputValue) || inputValue < 1) {
+                $("#deposit").val("");
             }
         });
-        $("#monthly_profit_percent").on("input", function() {
+        $("#monthly_profit_percent").on("input", function () {
             var inputValue = parseFloat($("#monthly_profit_percent").val());
-            if (isNaN(inputValue) || inputValue < 1 ) {
-                 $("#monthly_profit_percent").val("");
+            if (isNaN(inputValue) || inputValue < 1) {
+                $("#monthly_profit_percent").val("");
             }
         });
-        $("#monthly_installment").on("input", function() {
+        $("#monthly_installment").on("input", function () {
             var inputValue = parseFloat($("#monthly_installment").val());
-            if (isNaN(inputValue) || inputValue < 1 ) {
-                 $("#monthly_installment").val("");
+            if (isNaN(inputValue) || inputValue < 1) {
+                $("#monthly_installment").val("");
             }
         });
-        $("#months_count").on("input", function() {
+        $("#months_count").on("input", function () {
             var inputValue = parseFloat($("#months_count").val());
-            if (isNaN(inputValue) || inputValue < 1 ) {
-                 $("#months_count").val("");
+            if (isNaN(inputValue) || inputValue < 1) {
+                $("#months_count").val("");
             }
         });
 
@@ -309,7 +310,14 @@
         let deposit = null
         let total_price = null
         let months_count = null
+        let invoice_type = null
 
+        $("#invoice_type").on("change", function (e) {
+            invoice_type = e.target.value
+            monthlyInstallment()
+            getInvoices()
+
+        });
         $("#months_count").on("change", function (e) {
             months_count = e.target.value
             monthlyInstallment()
@@ -342,6 +350,7 @@
         $("#customer_select").on("change", function (e) {
             customer = e.target.value
             TransactionNumber()
+            getInvoices()
         });
         $("#pay_day").on("change", function (e) {
             pay_day = e.target.value
@@ -356,9 +365,12 @@
                 $("#transaction_number").val(pay_day + '.' + customer);
             }
         }
+
         function remainingPrice() {
 
             if (total_price && deposit) {
+                total_price = parseFloat(total_price)
+                deposit = parseFloat(deposit)
                 if (total_price < deposit) {
                     Swal.fire({
                         icon: 'error',
@@ -375,44 +387,45 @@
                 }
             }
         }
+
         function monthlyInstallment() {
 
 
             if (monthly_profit_percent && remaining_price && months_count) {
 
-                let eq_percent =( monthly_profit_percent / 100) / 12;
+                let eq_percent = (monthly_profit_percent / 100) / 12;
                 let eq_month_percent = eq_percent * months_count;
                 let eq_additional_money = eq_month_percent * remaining_price
                 let eq_total_money = eq_additional_money + remaining_price
                 let eq_every_month = eq_total_money / months_count
 
-                eq_every_month  = eq_every_month.toFixed(2);
-                monthly_installment=eq_every_month
+                eq_every_month = eq_every_month.toFixed(2);
+                monthly_installment = eq_every_month
 
 
-                eq_additional_money  = eq_additional_money.toFixed(2);
+                eq_additional_money = eq_additional_money.toFixed(2);
                 $("#profit").val(eq_additional_money);
                 $("#profit_view").val(eq_additional_money);
                 $("#monthly_installment").val(eq_every_month);
 
             }
         }
+
         function reverseMonthlyInstallment() {
 
-            if (monthly_profit_percent && remaining_price && months_count ) {
+            if (monthly_profit_percent && remaining_price && months_count) {
 
 
-                let eq_every_month = months_count*monthly_installment
+                let eq_every_month = months_count * monthly_installment
                 let eq_total_money = eq_every_month - remaining_price
                 let eq_additional_money = eq_total_money / remaining_price
                 let eq_month_percent = eq_additional_money / months_count;
-                let eq_percent =( eq_month_percent * 100) * 12;
+                let eq_percent = (eq_month_percent * 100) * 12;
 
 
                 monthly_profit_percent = eq_percent.toFixed(2);
 
-                if(monthly_profit_percent < 0 )
-                {
+                if (monthly_profit_percent < 0) {
                     Swal.fire({
                         icon: 'error',
                         title: 'لا يكن ان يكون عدد الاشهر ' + monthly_installment,
@@ -423,7 +436,7 @@
 
                     $("#monthly_installment").val(null);
                     $("#profit").val(null);
-                }else{
+                } else {
                     $("#profit").val(eq_total_money);
                     $("#monthly_profit_percent").val(monthly_profit_percent);
 
@@ -432,6 +445,104 @@
             }
         }
 
+        function getInvoices() {
+            // make ajax get request to get invoice of customer
+            let customer_id = $('#customer_select').val()
+            let invoice_type = $('#invoice_type').val()
+            if (invoice_type == `{{\App\Enums\InvoiceTypeEnum::INVOICE->value}}`) {
+                let url = "{{ route('invoice.getInvoice') }}";
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: {
+                        customer_id: customer_id,
+                    },
+                    success: function (data) {
+
+                        if (data.length > 0) {
+                            let html = ''
+                            data.forEach(element => {
+                                html += `<option value="${element.id}">${element.invoice_number}</option>`
+                            });
+                            $('#customer_invoices').html(html)
+                            $('#customer_invoices_group').removeClass('d-none')
+                        } else {
+                            swal.fire({
+                                icon: 'error',
+                                title: 'لا يوجد فواتير لهذا العميل',
+                                showDenyButton: false,
+                                showCancelButton: false,
+                                confirmButtonText: 'تم'
+                            })
+
+                            // make selected invoice_type null
+                            $('#invoice_type').val(null).trigger('change');
+
+
+                            $('#customer_invoices').html('')
+                            $('#customer_invoices_group').addClass('d-none')
+
+                        }
+
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+            }
+
+        }
+
+
+        $('#InvoiceSubmit').unbind('click').bind('click', function (event) {
+
+            $('.errors').hide();
+            event.preventDefault();
+            var form = $('form#formInvoice')[0];
+            var formData = new FormData(form);
+            let route = '{{route('invoices.store')}}';
+
+
+            $.ajax({
+                url: route,
+                type: 'POST',
+                _method: 'POST',
+                data: formData,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                beforeSend: function () {
+                    $("#InvoiceSubmit").prop('disabled', true);
+                },
+                success: function (data) {
+                    window.setTimeout(function () {
+                        window.location.href = '{{route('invoices.index')}}';
+                    }, 50);
+
+                },
+                error: function (data) {
+
+                    $("#InvoiceSubmit").prop('disabled', false);
+
+                    if (data.status === 422) {
+                        $('.errors').empty();
+                        $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                            if (!key.search("dates")) {
+                                var arr = key.split(".");
+                                $('.errors').show();
+                                $('.error_dates' + arr[1] + arr[2]).show();
+                                $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                console.log(JSON.parse(data.responseText).errors[key]);
+                            } else {
+                                $('.errors').show();
+                                $('.form_error_' + key).show();
+                                $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                            }
+                        });
+                    }
+                }
+            });
+        });
 
     </script>
 

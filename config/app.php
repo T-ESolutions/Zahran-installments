@@ -185,7 +185,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-
+        Alkoumi\LaravelArabicNumbers\LaravelArabicNumbersServiceProvider::class,
         /*
          * Package Service Providers...
          */

@@ -21,8 +21,8 @@ class InvoiceInstallmentsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
              ->addIndexColumn()
-            ->addColumn('action', 'Dashboard.Invoice.parts.action')
-            ->rawColumns(['action']);
+            ->addColumn('changeDate', 'Dashboard.Invoice.installmentsParts.changeDate')
+            ->rawColumns(['changeDate']);
     }
 
     /**
@@ -87,7 +87,7 @@ class InvoiceInstallmentsDataTable extends DataTable
             Column::make('status')->title(trans('lang.status')),
             Column::make('monthly_installment')->title(trans('lang.monthly_installment')),
             Column::make('pay_date')->title(trans('lang.pay_date')),
-//            Column::make('action')->title(trans('lang.action')),
+             Column::make('changeDate')->title(trans('lang.change_date')),
         ];
     }
 

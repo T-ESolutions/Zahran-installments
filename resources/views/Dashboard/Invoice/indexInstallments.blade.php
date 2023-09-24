@@ -44,66 +44,80 @@
 
 
     {!! $dataTable->scripts() !!}
-   <script type="text/javascript">
-       $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.changeDateInstallment', function (event) {
+                event.preventDefault();
+                let id = $(this).attr('data-id');
+                let pay_date =  $(this).parent().parent().parent().find('.form-control').val();
+                let data = new FormData();
 
-           // Add the CSRF token to all AJAX requests
-           $.ajaxSetup({
-               headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
+                data.append('id', id);
+                data.append('pay_date', pay_date);
 
-           $('body').on('click', '#Invoice_delete', function (event) {
-               event.preventDefault();
-               var url = $(this).attr('data-action');
-               Swal.fire({
-                   icon: 'warning',
-                   title: 'هل انت متاكد من حذف هذا العنصر ؟',
-                   showDenyButton: false,
-                   showCancelButton: true,
-                   confirmButtonText: 'نعم',
-                   cancelButtonText: 'لا, الغاء'
-               }).then((result) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title:  ' تغير القسط الي تاريخ ' + pay_date + ' ؟',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
 
-                   if (result.isConfirmed) {
-                       $.ajax({
-                           url: url,
-                           method: 'delete',
-                           dataType: 'JSON',
-                           contentType: false,
-                           cache: false,
-                           processData: false,
-                           success: function (response) {
-                               if (response.success) {
-                                   $('#Invoice-table').DataTable().ajax.reload();
-                                   Swal.fire({
-                                       icon: 'success',
-                                       title: response.success,
-                                       showDenyButton: false,
-                                       showCancelButton: false,
-                                       confirmButtonText: 'تم'
-                                   })
-                               } else {
-                                   Swal.fire({
-                                       icon: 'error',
-                                       title: response.error,
-                                       showDenyButton: false,
-                                       showCancelButton: false,
-                                       confirmButtonText: 'تم'
-                                   })
-                               }
-                           },
-                           error: function (response) {
+                        $.ajax({
+                            url: `{{route('invoices.installments.change.date')}}`,
+                            method: 'post',
+                            data: data,
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                $('#InvoiceInstallments-table').DataTable().ajax.reload();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: response.success,
+                                    showDenyButton: false,
+                                    showCancelButton: false,
+                                    confirmButtonText: 'تم'
+                                })
+                                $('.errors').empty();
 
-                           }
-                       });
-                   }
-               });
+                                //close model
+                                $('#changeDateModal'+id).modal('hide');
+                            },
+                            error: function (data) {
+                                if (data.status === 422) {
+                                    $('.errors').empty();
+                                    $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                        if (!key.search("dates")) {
+                                            var arr = key.split(".");
+                                            $('.errors').show();
+                                            $('.error_dates' + arr[1] + arr[2]).show();
+                                            $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                            console.log(JSON.parse(data.responseText).errors[key]);
+                                        } else {
+                                            $('.errors').show();
+                                            $('.form_error_' + key).show();
+                                            $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
 
-           })
-       });
-   </script>
+            })
+
+        });
+    </script>
 
 @endpush
 

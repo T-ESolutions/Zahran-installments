@@ -15,6 +15,7 @@
             <li class="breadcrumb-item">
                 <a href="{{route('dashboard')}}"
                    class="text-muted">{{trans('lang.dashboard')}}</a>
+
             </li>
 
         </ul>

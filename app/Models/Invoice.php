@@ -9,7 +9,7 @@ class Invoice extends Model
 {
     protected $guarded = ['id'];
 
-    protected $appends = ['transaction_number'];
+
 
     public function getRelations()
     {
@@ -27,14 +27,6 @@ class Invoice extends Model
     /**
      * START MUTATOR
      */
-
-
-    public function getTransactionNumberAttribute()
-    {
-
-        return $this->pay_day . '.' . $this->customer->id;
-    }
-
 
 
 
@@ -87,9 +79,9 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id')
             ->where('pay_date','<=' , now() )
-            ->where('status',InvoiceInstallmentsStatusEnum::UNPAID->value )
-
-            ;
+            ->where('status',InvoiceInstallmentsStatusEnum::UNPAID->value ) ;
     }
+
+
 
 }
