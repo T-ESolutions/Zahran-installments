@@ -109,13 +109,15 @@ class InvoiceController extends GeneralController
             'pay_date' => ['required', 'date', 'after_or_equal:today'],
         ]);
         $installment = InvoiceInstallments::find($request->id);
-        $installment->pay_date = $request->pay_date;
-        $installment->save();
+
         $installment->history()->create([
             'description' => '  تغيير موعد القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $request->pay_date . '',
             'invoice_id' => $installment->invoice_id,
             'admin_id' => auth()->user()->id,
         ]);
+
+        $installment->pay_date = $request->pay_date;
+        $installment->save();
         return response()->json([], 200);
     }
 
@@ -127,13 +129,15 @@ class InvoiceController extends GeneralController
         ]);
         $installment = InvoiceInstallments::find($request->id);
         $new_date = Carbon::parse($installment->pay_date)->addDays($request->days_count)->format('Y-m-d');
-        $installment->pay_date = $new_date;
-        $installment->save();
+
         $installment->history()->create([
             'description' => '  ترحيل القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
             'invoice_id' => $installment->invoice_id,
             'admin_id' => auth()->user()->id,
         ]);
+
+        $installment->pay_date = $new_date;
+        $installment->save();
         return response()->json([], 200);
     }
 
@@ -144,13 +148,15 @@ class InvoiceController extends GeneralController
         ]);
         $installment = InvoiceInstallments::find($request->id);
         $new_date = Carbon::parse($installment->pay_date)->addMonth(1)->format('Y-m-d');
-        $installment->pay_date = $new_date;
-        $installment->save();
+
         $installment->history()->create([
             'description' => '  ترحيل القسط شهر من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
             'invoice_id' => $installment->invoice_id,
             'admin_id' => auth()->user()->id,
         ]);
+
+        $installment->pay_date = $new_date;
+        $installment->save();
         return response()->json([], 200);
 
     }

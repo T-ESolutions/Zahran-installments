@@ -17,7 +17,7 @@
                     <div class="modal-body row">
                         <div class="form-group  col-12">
                           @foreach($history as $h)
-                               <span class="h6 mb-1"> قام {{ $h['admin']['name'] . $h['description']  }} </span> <br>
+                               <span class="h6 mb-2 text-center"> قام {{ $h['admin']['name'] . $h['description']  }} في تاريخ  {{ $h['created_at'] }}</span> <br>
                           @endforeach
                         </div>
                     </div>
