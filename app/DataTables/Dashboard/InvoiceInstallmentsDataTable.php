@@ -20,9 +20,12 @@ class InvoiceInstallmentsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-             ->addIndexColumn()
+            ->addIndexColumn()
             ->addColumn('changeDate', 'Dashboard.Invoice.installmentsParts.changeDate')
-            ->rawColumns(['changeDate']);
+            ->addColumn('postingInstallment', 'Dashboard.Invoice.installmentsParts.postingInstallment')
+            ->addColumn('monthPostingInstallment', 'Dashboard.Invoice.installmentsParts.monthPostingInstallment')
+            ->addColumn('history', 'Dashboard.Invoice.installmentsParts.history')
+            ->rawColumns(['changeDate', 'postingInstallment','monthPostingInstallment','history']);
     }
 
     /**
@@ -33,8 +36,8 @@ class InvoiceInstallmentsDataTable extends DataTable
      */
     public function query(InvoiceInstallments $model)
     {
-
-         return $model->newQuery()->where('invoice_id',$this->id)->with([])->orderBy('id', 'ASC');
+        $q = $model->newQuery()->where('invoice_id', $this->id)->with(['history'])->orderBy('id', 'ASC');
+         return $q;
     }
 
     /**
@@ -48,16 +51,15 @@ class InvoiceInstallmentsDataTable extends DataTable
             ->setTableId('InvoiceInstallments-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-               ->orderBy(1)
+            ->orderBy(1)
             ->lengthMenu(
                 [
                     [10, 25, 50, -1],
-                    [trans('lang.10row'), trans('lang.25row'),trans('lang.50row'), trans('lang.allRows')] ])
-
+                    [trans('lang.10row'), trans('lang.25row'), trans('lang.50row'), trans('lang.allRows')]])
             ->parameters([
                 'language' => [app()->getLocale() == 'en' ?: 'url' => '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Arabic.json'],
-                 'responsive' => true,
-                 'scrollX' => true
+                'responsive' => true,
+                'scrollX' => true
 
             ]);
     }
@@ -83,11 +85,14 @@ class InvoiceInstallmentsDataTable extends DataTable
                 'footer' => '',
             ],
             Column::make('id')->hidden(),
-
-            Column::make('status')->title(trans('lang.status')),
+            Column::make('status')->title(trans('lang.status'))->orderable(false),
+            Column::make('late_days')->title(trans('lang.late_days'))->orderable(false),
             Column::make('monthly_installment')->title(trans('lang.monthly_installment')),
             Column::make('pay_date')->title(trans('lang.pay_date')),
-             Column::make('changeDate')->title(trans('lang.change_date')),
+            Column::make('changeDate')->title(trans('lang.change_date')),
+            Column::make('postingInstallment')->title(trans('lang.posting_installment')),
+            Column::make('monthPostingInstallment')->title(trans('lang.month_posting_installment'))->orderable(false),
+            Column::make('history')->title(trans('lang.history'))->orderable(false),
         ];
     }
 

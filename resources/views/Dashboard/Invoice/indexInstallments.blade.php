@@ -117,6 +117,152 @@
             })
 
         });
+
+        $(document).ready(function () {
+            $('body').on('click', '.postingInstallmentButton', function (event) {
+                event.preventDefault();
+                let id = $(this).attr('data-id');
+                let days_count =  $(this).parent().parent().parent().find('.form-control').val();
+                let data = new FormData();
+
+                data.append('id', id);
+                data.append('days_count', days_count);
+
+                Swal.fire({
+                    icon: 'warning',
+                    title:  ' ترحيل القسط ' + days_count + ' يوم ؟',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url: `{{route('invoices.posting.installments')}}`,
+                            method: 'post',
+                            data: data,
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                $('#InvoiceInstallments-table').DataTable().ajax.reload();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: response.success,
+                                    showDenyButton: false,
+                                    showCancelButton: false,
+                                    confirmButtonText: 'تم'
+                                })
+                                $('.errors').empty();
+
+                                //close model
+                                $('#postingInstallment'+id).modal('hide');
+                            },
+                            error: function (data) {
+                                if (data.status === 422) {
+                                    $('.errors').empty();
+                                    $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                        if (!key.search("dates")) {
+                                            var arr = key.split(".");
+                                            $('.errors').show();
+                                            $('.error_dates' + arr[1] + arr[2]).show();
+                                            $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                            console.log(JSON.parse(data.responseText).errors[key]);
+                                        } else {
+                                            $('.errors').show();
+                                            $('.form_error_' + key).show();
+                                            $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+
+            })
+
+        });
+
+        $(document).ready(function () {
+            $('body').on('click', '.monthPostingInstallmentButton', function (event) {
+                event.preventDefault();
+                let id = $(this).attr('data-id');
+
+
+                Swal.fire({
+                    icon: 'warning',
+                    title:  ' ترحيل القسط شهر ؟',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        let data = new FormData();
+                        data.append('id', id);
+
+                        $.ajax({
+                            url: `{{route('invoices.month.posting.installments')}}`,
+                            method: 'post',
+                            data: data,
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                $('#InvoiceInstallments-table').DataTable().ajax.reload();
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: response.success,
+                                    showDenyButton: false,
+                                    showCancelButton: false,
+                                    confirmButtonText: 'تم'
+                                })
+                                $('.errors').empty();
+
+                            },
+                            error: function (data) {
+                                if (data.status === 422) {
+                                    $('.errors').empty();
+                                    $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                        if (!key.search("dates")) {
+                                            var arr = key.split(".");
+                                            $('.errors').show();
+                                            $('.error_dates' + arr[1] + arr[2]).show();
+                                            $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                            console.log(JSON.parse(data.responseText).errors[key]);
+                                        } else {
+                                            $('.errors').show();
+                                            $('.form_error_' + key).show();
+                                            $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+
+            })
+
+        });
     </script>
 
 @endpush

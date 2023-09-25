@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceInstallments extends Model
 {
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
+    protected $appends = [ 'late_days'];
 
     public function getRelations()
     {
@@ -18,10 +19,6 @@ class InvoiceInstallments extends Model
     /**
      * START CASTING
      */
-
-
-
-
 
 
     /**
@@ -34,9 +31,34 @@ class InvoiceInstallments extends Model
 
     public function getStatusAttribute()
     {
-        return InvoiceInstallmentsStatusEnum::getStatusText($this->attributes['status']);
+
+        $status = $this->attributes['status'];
+
+        // check if pay_date less than today
+        if ($this->attributes['pay_date'] < now()->format('Y-m-d')) {
+            $status = InvoiceInstallmentsStatusEnum::LATE->value;
+        }
+
+        if ($this->attributes['collect_date']) {
+            $status = InvoiceInstallmentsStatusEnum::PAID->value;
+        }
+
+
+        return InvoiceInstallmentsStatusEnum::getStatusText($status);
     }
 
+    public function getLateDaysAttribute()
+    {
+        $diff = 0;
+
+        if ($this->attributes['pay_date'] < now()->format('Y-m-d')) {
+
+            $diff = now()->diffInDays($this->attributes['pay_date']);
+            return $diff;
+        }
+
+        return $diff;
+    }
 
 
 
@@ -48,18 +70,12 @@ class InvoiceInstallments extends Model
      */
 
 
-
-
-
-
     /**
      * ***************************************************************************************
      */
     /**
      * START METHODS
      */
-
-
 
 
     /**
@@ -70,7 +86,10 @@ class InvoiceInstallments extends Model
      */
 
 
-
+    public function history()
+    {
+        return $this->hasMany(InvoiceInstallmentsHistory::class,'invoice_installments_id','id')->with('admin');
+    }
 
 
 }

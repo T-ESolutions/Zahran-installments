@@ -132,11 +132,16 @@ return [
     'late_installments_date' => 'تاريخ اقساط متاخره',
     'late_installment_percent' => 'نسبه اقساط متاخره',
     'late_installments_percent' => 'نسبه اقساط متاخره',
-
+    'late' => 'متاخر',
+        'late_days' => 'ايام التاخير',
     'attorney' => 'نوكيل',
     'insurance' => 'وصل امانه',
     'invoice_type' => 'توع الفاتوره',
     'customer_invoices' => 'فواتير العميل',
     'old_invoice' => 'فاتوره قديمه',
     'change_date' => 'تغير التاريخ',
+    'posting_installment' => 'ترحيل القسط',
+    'days_count' => 'عدد الايام',
+    'month_posting_installment' => 'ترحيل القسط شهر',
+    'history' => 'التاريخ',
 ];

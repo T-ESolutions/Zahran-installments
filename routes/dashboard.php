@@ -50,6 +50,8 @@ Route::group(
         Route::get('invoices/customer', [InvoiceController::class, 'getInvoice'])->name('invoice.getInvoice');
         Route::get('invoices/installments/{id}', [InvoiceController::class, 'indexInstallments'])->name('invoices.installments');
         Route::post('invoices/chane/installment/date', [InvoiceController::class, 'changeInstallmentDate'])->name('invoices.installments.change.date');
+        Route::post('invoices/posting/installment', [InvoiceController::class, 'postingInstallment'])->name('invoices.posting.installments');
+        Route::post('invoices/month/posting/installment', [InvoiceController::class, 'monthPostingInstallment'])->name('invoices.month.posting.installments');
 
         Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
 

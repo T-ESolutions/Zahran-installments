@@ -284,6 +284,6 @@ return [
         'installment_request'=>'طلب تقسيط',
         'read-installment_request'=>'مراجعة طلبات تقسيط',
         'today'=>'اليوم',
-
+        'days_count' => 'عدد الايام',
     ],
 ];

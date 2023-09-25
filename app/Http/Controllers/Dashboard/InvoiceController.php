@@ -9,7 +9,7 @@ use App\Models\Customer;
 use App\Models\InvoiceInstallments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
- use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\GeneralController;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -25,7 +25,7 @@ class InvoiceController extends GeneralController
     public function __construct(Invoice $model)
     {
         parent::__construct($model);
-        $this->middleware('permission:read-invoice', ['only' => ['index','indexInstallments']]);
+        $this->middleware('permission:read-invoice', ['only' => ['index', 'indexInstallments']]);
         $this->middleware('permission:create-invoice', ['only' => ['create', 'store']]);
     }
 
@@ -48,7 +48,7 @@ class InvoiceController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
-            $data['transaction_number'] = $request->pay_day . '.' .$request->customer_id;
+            $data['transaction_number'] = $request->pay_day . '.' . $request->customer_id;
 
             $invoice = $this->model::create($data);
 
@@ -57,8 +57,8 @@ class InvoiceController extends GeneralController
             }
             $this->createInstallments($invoice, $data);
             DB::commit();
-             Session::flash('success',  trans('lang.created'));
-             return response()->json([], 200);
+            Session::flash('success', trans('lang.created'));
+            return response()->json([], 200);
         } catch (\Exception $e) {
 
             info($e->getMessage());
@@ -76,9 +76,15 @@ class InvoiceController extends GeneralController
         for ($i = 0; $i < $months_count; ++$i) {
             $pay_date = Carbon::now()->addMonth($i + 1)->day($pay_day);
 
-            $invoice->installments()->create([
+            $installment = $invoice->installments()->create([
                 'pay_date' => $pay_date,
                 'monthly_installment' => $monthly_installment,
+            ]);
+
+            $installment->history()->create([
+                'description' => '  انشاء قسط بمبلغ ' . $monthly_installment . ' وتاريخ الدفع ' . $pay_date . '',
+                'invoice_id' => $invoice->id,
+                'admin_id' => auth()->user()->id,
             ]);
         }
 
@@ -87,29 +93,66 @@ class InvoiceController extends GeneralController
     public function getInvoice(Request $request)
     {
         $customerId = $request->customer_id;
-        $invoices = Invoice::where('customer_id', $customerId)->get(['id','invoice_number']);
+        $invoices = Invoice::where('customer_id', $customerId)->get(['id', 'invoice_number']);
         return response()->json($invoices);
     }
 
-    public function indexInstallments(Request $request ,InvoiceInstallmentsDataTable $dataTable,$id)
+    public function indexInstallments(Request $request, InvoiceInstallmentsDataTable $dataTable, $id)
     {
-        return $dataTable->with(['id'=>$id])->render('Dashboard.Invoice.indexInstallments');
+        return $dataTable->with(['id' => $id])->render('Dashboard.Invoice.indexInstallments');
     }
 
     public function changeInstallmentDate(Request $request)
     {
-
-
         $request->validate([
             'id' => 'required|exists:invoice_installments,id',
-            'pay_date' => ['required','date','after_or_equal:today'],
+            'pay_date' => ['required', 'date', 'after_or_equal:today'],
         ]);
-
         $installment = InvoiceInstallments::find($request->id);
-
         $installment->pay_date = $request->pay_date;
         $installment->save();
+        $installment->history()->create([
+            'description' => '  تغيير موعد القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $request->pay_date . '',
+            'invoice_id' => $installment->invoice_id,
+            'admin_id' => auth()->user()->id,
+        ]);
         return response()->json([], 200);
+    }
+
+    public function postingInstallment(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:invoice_installments,id',
+            'days_count' => ['required', 'numeric', 'max:19'],
+        ]);
+        $installment = InvoiceInstallments::find($request->id);
+        $new_date = Carbon::parse($installment->pay_date)->addDays($request->days_count)->format('Y-m-d');
+        $installment->pay_date = $new_date;
+        $installment->save();
+        $installment->history()->create([
+            'description' => '  ترحيل القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
+            'invoice_id' => $installment->invoice_id,
+            'admin_id' => auth()->user()->id,
+        ]);
+        return response()->json([], 200);
+    }
+
+    public function monthPostingInstallment(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:invoice_installments,id',
+        ]);
+        $installment = InvoiceInstallments::find($request->id);
+        $new_date = Carbon::parse($installment->pay_date)->addMonth(1)->format('Y-m-d');
+        $installment->pay_date = $new_date;
+        $installment->save();
+        $installment->history()->create([
+            'description' => '  ترحيل القسط شهر من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
+            'invoice_id' => $installment->invoice_id,
+            'admin_id' => auth()->user()->id,
+        ]);
+        return response()->json([], 200);
+
     }
 
 }

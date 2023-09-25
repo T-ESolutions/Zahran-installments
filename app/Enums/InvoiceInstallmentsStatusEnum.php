@@ -6,6 +6,9 @@ enum InvoiceInstallmentsStatusEnum: int
 {
     case PAID = 1;
     case  UNPAID = 2;
+    case LATE = 3;
+
+
 
 
 
@@ -14,6 +17,7 @@ enum InvoiceInstallmentsStatusEnum: int
         return match ($status) {
             self::PAID->value => __('lang.paid'),
             self::UNPAID->value => __('lang.unpaid'),
+            self::LATE->value => __('lang.late'),
          };
     }
 
