@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button{{$id}}" id="testTest" class="btn btn-light-primary font-weight-bold " data-dismiss="modal">@lang('lang.cancel')</button>
+
                      </div>
 
             </div>

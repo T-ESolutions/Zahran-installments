@@ -99,7 +99,8 @@ class InvoiceController extends GeneralController
 
     public function indexInstallments(Request $request, InvoiceInstallmentsDataTable $dataTable, $id)
     {
-        return $dataTable->with(['id' => $id])->render('Dashboard.Invoice.indexInstallments');
+        $invoice = Invoice::with('customer')->find($id);
+        return $dataTable->with(['id' => $id])->render('Dashboard.Invoice.indexInstallments', compact('invoice'));
     }
 
     public function changeInstallmentDate(Request $request)
@@ -158,6 +159,18 @@ class InvoiceController extends GeneralController
         $installment->pay_date = $new_date;
         $installment->save();
         return response()->json([], 200);
+
+    }
+    public function pay(Request $request)
+    {
+        $request->validate([
+           'amount' => 'required|numeric|gt:0',
+        ]);
+
+        $invoice = Invoice::with('installments')->find($request->invoice_id);
+         $installments = $invoice->installments();
+
+
 
     }
 

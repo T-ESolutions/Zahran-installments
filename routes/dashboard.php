@@ -38,6 +38,8 @@ Route::group(
 
         //customers
         Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
+        Route::post('customers.change.is-late/{customer}', [CustomerController::class, 'addToLateCustomersList'])->name('customers.addToLateCustomersList');
+
         Route::resource('customers', CustomerController::class);
 
         //installment_requests
@@ -52,6 +54,7 @@ Route::group(
         Route::post('invoices/chane/installment/date', [InvoiceController::class, 'changeInstallmentDate'])->name('invoices.installments.change.date');
         Route::post('invoices/posting/installment', [InvoiceController::class, 'postingInstallment'])->name('invoices.posting.installments');
         Route::post('invoices/month/posting/installment', [InvoiceController::class, 'monthPostingInstallment'])->name('invoices.month.posting.installments');
+        Route::post('invoices/installment/pay', [InvoiceController::class, 'pay'])->name('invoices.installments.pay');
 
         Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
 
