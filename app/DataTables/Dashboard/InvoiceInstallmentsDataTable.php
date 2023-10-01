@@ -88,6 +88,7 @@ class InvoiceInstallmentsDataTable extends DataTable
             Column::make('status')->title(trans('lang.status'))->orderable(false),
             Column::make('late_days')->title(trans('lang.late_days'))->orderable(false),
             Column::make('monthly_installment')->title(trans('lang.monthly_installment')),
+            Column::make('paid_amount')->title(trans('lang.paid_amount')),
             Column::make('pay_date')->title(trans('lang.pay_date')),
             Column::make('changeDate')->title(trans('lang.change_date')),
             Column::make('postingInstallment')->title(trans('lang.posting_installment')),

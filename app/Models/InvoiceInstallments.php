@@ -39,7 +39,7 @@ class InvoiceInstallments extends Model
             $status = InvoiceInstallmentsStatusEnum::LATE->value;
         }
 
-        if ($this->attributes['collect_date']) {
+        if ($this->attributes['paid_amount'] == $this->attributes['monthly_installment']) {
             $status = InvoiceInstallmentsStatusEnum::PAID->value;
         }
 

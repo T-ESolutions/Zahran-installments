@@ -61,7 +61,7 @@
                                                        class="form-control" type="number"
                                                        maxlength="255"/>
 
-                                                <span class="text-danger errors form_error_days_count"
+                                                <span class="text-danger errors form_error_amount"
                                                       role="alert"></span>
                                             </div>
                                         </div>

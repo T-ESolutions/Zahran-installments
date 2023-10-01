@@ -12,23 +12,29 @@
 @endsection
 @section('content')
     <div class="row">
+        <div class="col-12">
 
-           @foreach($data as $key => $value)
-
-        <div class="col-md-3 col-sm-6">
-            <!--begin::Stats Widget 15-->
-            <span href="#" class="card card-custom bg-primary text-center bg-hover-state-success card-stretch gutter-b">
+                <div class="row">
+                    @foreach($data as $key => $value)
+                    <div class="col-md-3 col-sm-6">
+                        <!--begin::Stats Widget 15-->
+                        <span href="#"
+                              class="card card-custom bg-primary text-center bg-hover-state-success card-stretch gutter-b">
                 <!--begin::Body-->
                 <div class="card-body">
-				 	<h1 class="text-dark"  > {{$value}} </h1>
-                    <div class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">{{trans('lang.'.$key)}}</div>
+				 	<h1 class="text-dark"> {{$value}} </h1>
+                    <div
+                        class="text-inverse-success font-weight-bolder font-size-h5 mb-2 mt-5">{{trans('lang.'.$key)}}</div>
                     <div class="font-weight-bold text-inverse-success font-size-sm"> </div>
                 </div>
-                <!--end::Body-->
+                            <!--end::Body-->
             </span>
-            <!--end::Stats Widget 15-->
+                        <!--end::Stats Widget 15-->
+                    </div>
+                    @endforeach
+                </div>
+                <div class="col-12">
+                    
+                </div>
         </div>
-        @endforeach
-
-    </div>
 @endsection

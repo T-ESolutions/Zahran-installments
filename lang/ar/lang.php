@@ -146,4 +146,5 @@ return [
     'history' => 'التاريخ',
     'add_to_late_customers_list' => 'اضافه الي قائمه العملاء المتاخرين',
     'pay_installment' => 'دفع القسط',
+    'paid_amount' => 'المبلغ المدفوع',
 ];
