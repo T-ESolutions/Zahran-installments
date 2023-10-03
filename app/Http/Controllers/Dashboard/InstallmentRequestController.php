@@ -48,7 +48,7 @@ class InstallmentRequestController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
-            $installmentRequest = $this->model::create($data);
+            $installmentRequest = InstallmentRequest::create($data);
             if ($request->customers_ids) {
                 $installmentRequest->customers()->attach($request->customers_ids);
             }

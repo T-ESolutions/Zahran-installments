@@ -12,15 +12,15 @@
         <h5 class="text-primary  font-weight-bold my-1 mr-5">{{$title}}</h5>
         <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
         <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-
+            <li class="breadcrumb-item">
+                <a href="{{route('customers.index')}}"
+                   class="text-muted">{{trans('lang.customers')}}</a>
+            </li>
             <li class="breadcrumb-item">
                 <a href="{{route('dashboard')}}"
                    class="text-muted">{{trans('lang.dashboard')}}</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="{{route('customers.index')}}"
-                   class="text-muted">{{trans('lang.customer')}}</a>
-            </li>
+
 
         </ul>
         <!--end::Breadcrumb-->

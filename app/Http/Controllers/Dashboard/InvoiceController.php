@@ -53,7 +53,7 @@ class InvoiceController extends GeneralController
             $data['admin_id'] = auth()->user()->id;
             $data['transaction_number'] = $request->pay_day . '.' . $request->customer_id;
 
-            $invoice = $this->model::create($data);
+            $invoice = Invoice::create($data);
 
             if ($request->guarantors_id) {
                 $invoice->guarantors()->attach($request->guarantors_id);
@@ -61,9 +61,9 @@ class InvoiceController extends GeneralController
             $this->createInstallments($invoice, $data);
             DB::commit();
             Session::flash('success', trans('lang.created'));
-            return response()->json([], 200);
+//            return response()->json([], 200);
+            return response()->json(['status' => true, 'id' => $invoice->id], 200);
         } catch (\Exception $e) {
-
             info($e->getMessage());
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));

@@ -2,7 +2,7 @@
     @if(!$id_received_at)
         <form class="form">
                 <div class="col-12">
-                    <a class="btn btn-primary btn-hover-bg-danger" id="IR_receive_id"
+                    <a class="btn btn-warning" id="IR_receive_id"
                        data-action="{{route('installment_requests.change.id_received',$id)}}">
                         @lang('lang.id_received')
                     </a>

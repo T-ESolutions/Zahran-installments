@@ -2,6 +2,11 @@
 
 return [
 
+    'choose_guarantor_type' => 'اختر نوع الضمان',
+    'guarantor_type' => 'نوع الضمان',
+    'chose_guarantors' => 'اختر الضامنين',
+    'choose_the_customer' => 'اختر العميل',
+    'the_customer' => 'العميل',
     'id' => 'الرقم التعريفي',
     'activation' => 'التفعيل',
     'image' => 'الصوره',
@@ -136,7 +141,7 @@ return [
         'late_days' => 'ايام التاخير',
     'attorney' => 'نوكيل',
     'insurance' => 'وصل امانه',
-    'invoice_type' => 'توع الفاتوره',
+    'invoice_type' => 'نوع الفاتوره',
     'customer_invoices' => 'فواتير العميل',
     'old_invoice' => 'فاتوره قديمه',
     'change_date' => 'تغير التاريخ',

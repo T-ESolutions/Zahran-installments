@@ -45,7 +45,7 @@ class CustomerController extends GeneralController
                 $data['id_image'] = $this->uploadImage($request->file('id_image'), $this->path, null, settings('images_size'));
             }
 
-            $customer = $this->model::create($data);
+            $customer = Customer::create($data);
             $customer->relatives()->createMany($data['relatives']);
             DB::commit();
             return redirect()->route($this->route)->with('success', trans('lang.created'));

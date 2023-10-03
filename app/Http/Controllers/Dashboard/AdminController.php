@@ -104,7 +104,7 @@ namespace App\Http\Controllers\Dashboard;
         // Get and Check Data
         $data = $this->model->findOrfail($id);
         // Check If User Delete Yourself
-        if (($data->id == '1')) {
+        if (($data->id == 1)) {
             return redirect()->route($this->route)->with('danger', 'لا يمكن حذف مدير الموقع');
         }
 
@@ -119,7 +119,9 @@ namespace App\Http\Controllers\Dashboard;
     {
         try {
             DB::beginTransaction();
-            $admin->update(['is_active'=>!$admin->is_active]);
+            if(!$admin->id == 1){
+                $admin->update(['is_active'=>!$admin->is_active]);
+            }
             DB::commit();
             return response()->json(['success' => trans('lang.updated')]);
         } catch (\Exception $e) {

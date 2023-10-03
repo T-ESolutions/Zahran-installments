@@ -1,6 +1,6 @@
 <div class="card-body row">
     <div class="form-group  col-lg-6 col-sm-6 ">
-        <label>{{trans('lang.customers')}}</label>
+        <label>{{trans('lang.the_customer')}}</label>
         <div class="  {{ $errors->has('customer_id') ? ' border  border-danger rounded' : '' }}">
             <select name="customer_id"
                     class="form-control select2"
@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group  col-lg-6 col-sm-6 ">
-        <label>{{trans('lang.guarantor')}}</label>
+        <label>{{trans('lang.guarantors')}}</label>
         <div class="  {{ $errors->has('customers_ids') ? ' border  border-danger rounded' : '' }}">
             <select name="customers_ids[]"  id="kt_select2_2_modal"  multiple class="form-control select2">
                 @foreach($customers as $key =>$row)
@@ -44,7 +44,7 @@
     </div>
 
     <div class="form-group  col-lg-6 col-sm-6 ">
-        <label>{{trans('lang.deposit')}}<span
+        <label>المقدم المدفوع<span
                 class="text-danger">*</span></label>
         <input name="deposit" placeholder="{{trans('lang.deposit')}}"
                value="{{ old('deposit', $data->deposit ?? '') }}"
@@ -69,7 +69,7 @@
     </div>
 
     <div class="form-group col-lg-6 col-sm-6">
-        <label>{{trans('lang.product')}}</label>
+        <label>المنتج المراد تقسيطه </label>
         <textarea name="product" placeholder="{{trans('lang.product')}}"
                   class="form-control  {{ $errors->has('product') ? 'border-danger' : '' }}" type="text"
                   maxlength="255">{{ old('product', $data->product ?? '') }}</textarea>
@@ -90,11 +90,11 @@
 
     <script !src="">
         $('#kt_select2_2_modal').select2({
-            placeholder: `{{trans('lang.guarantor')}}`,
+            placeholder: `{{trans('lang.chose_guarantors')}}`,
             tags: true
         });
         $('#customer_select').select2({
-            placeholder: `{{trans('lang.customers')}}`,
+            placeholder: `{{trans('lang.choose_the_customer')}}`,
             tags: true
         });
         var avatar1 = new KTImageInput('kt_image_1');

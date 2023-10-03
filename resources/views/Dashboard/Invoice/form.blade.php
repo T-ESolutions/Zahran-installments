@@ -2,7 +2,7 @@
 
 
     <div class="form-group  col-lg-4 col-sm-4 ">
-        <label>{{trans('lang.customer')}}</label>
+        <label>{{trans('lang.the_customer')}}</label>
         <div class="  {{ $errors->has('customer_id') ? ' border  border-danger rounded' : '' }}">
             <select name="customer_id"
                     class="form-control select2"
@@ -11,9 +11,9 @@
                 @foreach($customers as $row)
                     <option
                         @if(Request::segment(3)== 'invoices' && Request::segment(5)== 'edit')
-                            {{ $row->id == old('customer_id',  $data->customer_id)  ? 'selected' : '' }}
+                        {{ $row->id == old('customer_id',  $data->customer_id)  ? 'selected' : '' }}
                         @else
-                            {{ $row->id == old('customer_id') ? 'selected' : '' }}
+                        {{ $row->id == old('customer_id') ? 'selected' : '' }}
                         @endif
                         value="{{ $row->id }}">{{ $row->name }}</option>
                 @endforeach
@@ -22,7 +22,7 @@
         <span class="text-danger errors form_error_customer_id" role="alert"></span>
     </div>
     <div class="form-group  col-lg-4 col-sm-4 ">
-        <label>{{trans('lang.invoice_type')}}</label>
+        <label>{{trans('lang.guarantor_type')}}</label>
         <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
             <select name="invoice_type"
                     class="form-control select2"
@@ -205,7 +205,7 @@
         <label>{{trans('lang.profit')}}<span
                 class="text-danger">*</span></label>
 
-        <input id="profit_view" readonly placeholder="{{trans('lang.profit')}}"
+        <input id="profit_view" disabled readonly placeholder="{{trans('lang.profit')}}"
                value="{{ old('profit', $data->profit ?? '') }}"
                class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
                type="number"
@@ -224,7 +224,7 @@
 
 </div>
 <div class="card-footer text-left">
-    <button   id="InvoiceSubmit" class="btn btn-primary btn-default ">{{trans('lang.save')}}</button>
+    <button id="InvoiceSubmit" class="btn btn-primary btn-default ">{{trans('lang.save')}}</button>
     <a href="{{ URL::previous() }}" class="btn btn-secondary">{{trans('lang.cancel')}}</a>
 </div>
 
@@ -246,15 +246,15 @@
             tags: true
         });
         $('#guarantors_select').select2({
-            placeholder: `{{trans('lang.guarantors')}}`,
+            placeholder: `{{trans('lang.chose_guarantors')}}`,
             tags: true
         });
         $('#customer_select').select2({
-            placeholder: `{{trans('lang.customer')}}`,
+            placeholder: `{{trans('lang.choose_the_customer')}}`,
             tags: true
         });
         $('#invoice_type').select2({
-            placeholder: `{{trans('lang.invoice_type')}}`,
+            placeholder: `{{trans('lang.choose_guarantor_type')}}`,
             tags: true
         });
         var avatar1 = new KTImageInput('kt_image_1');
@@ -516,7 +516,10 @@
                 },
                 success: function (data) {
                     window.setTimeout(function () {
-                        window.location.href = '{{route('invoices.index')}}';
+                        var id = data.id;
+                        var url = "{{ route('invoices.installments', ':id') }}";
+                        url = url.replace(':id', id);
+                        window.location.href = url;
                     }, 50);
 
                 },

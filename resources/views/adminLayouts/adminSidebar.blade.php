@@ -93,51 +93,56 @@
             <!--begin::Topbar-->
             <div class="topbar">
                 <!--begin::Languages-->
-                <div class="dropdown">
-                    <!--begin::Toggle-->
-                    <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
-                        <span style="cursor: pointer;"
-                              class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{__('lang.language')}}</span>
-                    </div>
-                    <!--end::Toggle-->
-                    <!--begin::Dropdown-->
-                    <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right">
-                        <!--begin::Nav-->
-                        <ul class="navi navi-hover py-4">
-                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                <li class="navi-item ">
-                                    <a class="navi-link" hreflang="{{ $localeCode }}"
-                                       href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+            {{--                <div class="dropdown">--}}
+            {{--                    <!--begin::Toggle-->--}}
+            {{--                    <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">--}}
+            {{--                        <span style="cursor: pointer;"--}}
+            {{--                              class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{__('lang.language')}}</span>--}}
+            {{--                    </div>--}}
+            {{--                    <!--end::Toggle-->--}}
+            {{--                    <!--begin::Dropdown-->--}}
+            {{--                    <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right">--}}
+            {{--                        <!--begin::Nav-->--}}
+            {{--                        <ul class="navi navi-hover py-4">--}}
+            {{--                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)--}}
+            {{--                                <li class="navi-item ">--}}
+            {{--                                    <a class="navi-link" hreflang="{{ $localeCode }}"--}}
+            {{--                                       href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">--}}
 
 
-                                        {{ $properties['native'] }}
-                                        &nbsp;
-                                        @if($properties['native'] == 'العربية')
-                                            <span class="symbol symbol-20   ">
-														<img
-                                                            src="{{asset('/')}}assets/media/svg/flags/133-saudi-arabia.svg"
-                                                            alt="">
-													</span>
-                                        @else()
-                                            <span class="symbol symbol-20  ">
-														<img
-                                                            src="{{asset('/')}}assets/media/svg/flags/226-united-states.svg"
-                                                            alt="">
-													</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-                <!--end::Languages-->
+            {{--                                        {{ $properties['native'] }}--}}
+            {{--                                        &nbsp;--}}
+            {{--                                        @if($properties['native'] == 'العربية')--}}
+            {{--                                            <span class="symbol symbol-20   ">--}}
+            {{--														<img--}}
+            {{--                                                            src="{{asset('/')}}assets/media/svg/flags/133-saudi-arabia.svg"--}}
+            {{--                                                            alt="">--}}
+            {{--													</span>--}}
+            {{--                                        @else()--}}
+            {{--                                            <span class="symbol symbol-20  ">--}}
+            {{--														<img--}}
+            {{--                                                            src="{{asset('/')}}assets/media/svg/flags/226-united-states.svg"--}}
+            {{--                                                            alt="">--}}
+            {{--													</span>--}}
+            {{--                                        @endif--}}
+            {{--                                    </a>--}}
+            {{--                                </li>--}}
+            {{--                            @endforeach--}}
+            {{--                        </ul>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            <!--end::Languages-->
                 <!--begin::User-->
                 <div class="topbar-item">
                     <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
                          id="kt_quick_user_toggle">
                         <span
                             class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{auth()->user()->name}}</span>
+                        <span class="symbol symbol-lg-35 symbol-25">
+											<span class="symbol-label font-size-h5 font-weight-bold">
+                                                <img style="width: 35px;" src="{{url('/').'/defaults/user_default.png'}}">
+                                            </span>
+										</span>
                     </div>
                 </div>
                 <!--end::User-->
@@ -157,8 +162,8 @@
                 <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
                     <!--begin::Page Heading-->
-                    @yield('breadcrumb')
-                    <!--end::Page Heading-->
+                @yield('breadcrumb')
+                <!--end::Page Heading-->
                 </div>
                 <!--end::Info-->
             </div>

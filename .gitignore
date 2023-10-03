@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /public/uploads
+/public/vendor
 /storage/*.key
 /vendor
 .env
@@ -19,3 +20,4 @@ yarn-error.log
 /.vscode
 /app/Console/Commands/stubs/
 /app/Console/Commands/CrudCommand.php
+composer.lock

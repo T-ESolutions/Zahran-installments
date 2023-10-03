@@ -35,6 +35,25 @@
     @yield('header')
     @stack('newHeader')
 
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* four country code input */
+        input[id=txt_main_login_countrycode_code] {
+            z-index: -1;
+        }
+    </style>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->

@@ -3,14 +3,14 @@
         <div class="row">
             <form class="form col-12 m-2">
 
-                <a class="btn btn-primary btn-hover-bg-danger" id="IR_accept"
+                <a class="btn btn-primary" id="IR_accept"
                    data-action="{{route('installment_requests.accept',$id)}}">
                     @lang('lang.approved')
                 </a>
             </form>
 
             <form class="form col-12 m-2">
-                <a class="btn btn-danger btn-hover-bg-danger" id="IR_reject"
+                <a class="btn btn-danger" id="IR_reject"
                    data-action="{{route('installment_requests.reject',$id)}}">
                     @lang('lang.rejected')
                 </a>

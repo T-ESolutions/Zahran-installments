@@ -70,7 +70,7 @@
             @endif
         </div>
         <div class="form-group  col-4">
-            <label>{{trans('lang.address')}}</label>
+            <label>عنوان السكن</label>
             <input name="address" placeholder="{{trans('lang.address')}}"
                    value="{{ old('address', $data->address ?? '') }}"
                    class="form-control  {{ $errors->has('address') ? 'border-danger' : '' }}" type="text"
@@ -105,7 +105,7 @@
             @endif
         </div>
         <div class="form-group  col-4">
-            <label>{{trans('lang.note')}}</label>
+            <label>ملاحظات</label>
             <textarea name="note" placeholder="{{trans('lang.note')}}"
                       class="form-control  {{ $errors->has('note') ? 'border-danger' : '' }}" type="text"
                       maxlength="255">{{ old('note', $data->note ?? '') }}</textarea>
@@ -121,7 +121,7 @@
             <div class="col-lg-8">
                 <div class="image-input image-input-outline" id="id_image">
                     <div class="image-input-wrapper {{ $errors->has('id_image') ? 'border-danger' : '' }}"
-                         style="background-image: url( {{asset('/')}}{{ $data->id_image ?? ''}})"></div>
+                         style="background-image: url( {{asset('/')}}{{ $data->id_image ?? 'defaults/default_image.png'}})"></div>
                     <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
                            data-action="change" data-toggle="tooltip" title=""
                            data-original-title="اختر صوره">
