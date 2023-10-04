@@ -9,7 +9,7 @@
 @section('breadcrumb')
     <div class="d-flex align-items-baseline flex-wrap mr-5">
         <!--begin::Breadcrumb-->
-        <h5 class="text-primary  font-weight-bold my-1 mr-5">{{$title}}</h5>
+        <h5 class="text-dark  font-weight-bold my-1 mr-5">الملف الشخصي</h5>
         <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
         <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
 
@@ -35,7 +35,7 @@
                         <div class="form-group  col-4">
                             <label>{{trans('lang.name')}}<span
                                     class="text-danger">*</span></label>
-                            <input name="name" placeholder="{{trans('lang.name')}}"  value="{{ old('name', auth()->user()->name ?? '') }}" class="form-control  {{ $errors->has('name') ? 'border-danger' : '' }}" type="text"
+                            <input name="name"   value="{{ old('name', auth()->user()->name ?? '') }}" class="form-control  {{ $errors->has('name') ? 'border-danger' : '' }}" type="text"
                                    maxlength="255" />
 
                             @if($errors->has('name'))
@@ -45,7 +45,7 @@
                         <div class="form-group  col-4">
                             <label>{{trans('lang.email')}}<span
                                     class="text-danger">*</span></label>
-                            <input name="email" placeholder="{{trans('lang.email')}}"  value="{{ old('email', auth()->user()->email ?? '') }}" class="form-control  {{ $errors->has('email') ? 'border-danger' : '' }}" type="text"
+                            <input name="email"   value="{{ old('email', auth()->user()->email ?? '') }}" class="form-control  {{ $errors->has('email') ? 'border-danger' : '' }}" type="text"
                                    maxlength="255" />
 
                             @if($errors->has('email'))
@@ -55,7 +55,7 @@
                         <div class="form-group  col-4">
                             <label>{{trans('lang.phone')}}<span
                                     class="text-danger">*</span></label>
-                            <input name="phone" placeholder="{{trans('lang.phone')}}"  value="{{ old('phone', auth()->user()->phone ?? '') }}" class="form-control  {{ $errors->has('phone') ? 'border-danger' : '' }}" type="tel"
+                            <input name="phone"  value="{{ old('phone', auth()->user()->phone ?? '') }}" class="form-control  {{ $errors->has('phone') ? 'border-danger' : '' }}" type="tel"
                                    maxlength="255" />
 
                             @if($errors->has('phone'))
@@ -63,9 +63,8 @@
                             @endif
                         </div>
                         <div class="form-group  col-6">
-                            <label>{{trans('lang.password')}}<span
-                                    class="text-danger">*</span></label>
-                            <input name="password" placeholder="{{trans('lang.password')}}"  value="" class="form-control  {{ $errors->has('password') ? 'border-danger' : '' }}" type="password"
+                            <label>{{trans('lang.password')}}</label>
+                            <input name="password"   value="" class="form-control  {{ $errors->has('password') ? 'border-danger' : '' }}" type="password"
                                    maxlength="255" />
 
                             @if($errors->has('password'))
@@ -73,9 +72,8 @@
                             @endif
                         </div>
                         <div class="form-group  col-6">
-                            <label>{{trans('lang.password_confirmation')}}<span
-                                    class="text-danger">*</span></label>
-                            <input name="password_confirmation" placeholder="{{trans('lang.password_confirmation')}}"  value="" class="form-control  {{ $errors->has('password_confirmation') ? 'border-danger' : '' }}" type="password"
+                            <label>{{trans('lang.password_confirmation')}}</label>
+                            <input name="password_confirmation"   value="" class="form-control  {{ $errors->has('password_confirmation') ? 'border-danger' : '' }}" type="password"
                                    maxlength="255" />
 
                             @if($errors->has('password_confirmation'))

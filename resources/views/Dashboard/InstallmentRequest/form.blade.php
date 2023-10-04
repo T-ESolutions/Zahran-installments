@@ -42,7 +42,18 @@
             <span class="text-danger m-2 ">{{ $errors->first('customers_ids') }}</span>
         @endif
     </div>
+    <div class="form-group  col-lg-6 col-sm-6 ">
+        <label>سعر المنتج<span
+                class="text-danger">*</span></label>
+        <input name="price" placeholder="{{trans('lang.price')}}"
+               value="{{ old('price', $data->price ?? '') }}"
+               class="form-control  {{ $errors->has('price') ? 'border-danger' : '' }}" type="number"
+               maxlength="255"/>
 
+        @if($errors->has('price'))
+            <span class="text-danger m-2 ">{{ $errors->first('price') }}</span>
+        @endif
+    </div>
     <div class="form-group  col-lg-6 col-sm-6 ">
         <label>المقدم المدفوع<span
                 class="text-danger">*</span></label>
@@ -55,18 +66,7 @@
             <span class="text-danger m-2 ">{{ $errors->first('deposit') }}</span>
         @endif
     </div>
-    <div class="form-group  col-lg-6 col-sm-6 ">
-        <label>{{trans('lang.price')}}<span
-                class="text-danger">*</span></label>
-        <input name="price" placeholder="{{trans('lang.price')}}"
-               value="{{ old('price', $data->price ?? '') }}"
-               class="form-control  {{ $errors->has('price') ? 'border-danger' : '' }}" type="number"
-               maxlength="255"/>
 
-        @if($errors->has('price'))
-            <span class="text-danger m-2 ">{{ $errors->first('price') }}</span>
-        @endif
-    </div>
 
     <div class="form-group col-lg-6 col-sm-6">
         <label>المنتج المراد تقسيطه </label>

@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     <div class="navi-text">
-                        <div class="font-weight-bold">@lang('lang.update_profile')</div>
+                        <div class="font-weight-bold">الملف الشخصي</div>
                     </div>
                 </div>
             </a>

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('daily_histories', function (Blueprint $table) {
             $table->id();
-            $table->text('description');
-            $table->foreignIdFor(\App\Models\Admin::class);
+            $table->longText('description');
+            $table->foreignId('admin_id')->constrained('admins')->restrictOnDelete();
             $table->timestamps();
         });
     }

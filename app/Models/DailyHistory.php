@@ -63,7 +63,10 @@ class DailyHistory extends Model
     /**
      * START RELATIONS
      */
-
+    public function created_by()
+    {
+        return $this->belongsTo(Admin::class , 'admin_id');
+    }
 
 
 

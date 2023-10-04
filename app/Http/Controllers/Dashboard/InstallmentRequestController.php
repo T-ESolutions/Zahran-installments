@@ -8,6 +8,7 @@ use App\Http\Requests\Dashboard\InstallmentRequestCreateRequest;
 use App\DataTables\Dashboard\InstallmentRequestDataTable;
 use App\Models\Customer;
 use App\Http\Controllers\GeneralController;
+use App\Models\DailyHistory;
 use App\Models\InstallmentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -52,12 +53,20 @@ class InstallmentRequestController extends GeneralController
             if ($request->customers_ids) {
                 $installmentRequest->customers()->attach($request->customers_ids);
             }
+
+            //insert daily history
+            $customer = Customer::where('id',$data['customer_id'])->first();
+
+            $history_data['admin_id'] = auth()->user()->id;
+            $history_data['description'] = $data['deposit'] .' جنية مقدم '.$data['product'].' بقيمة '.$data['price'] .' جنية طرف/  '.
+                $customer->name.' و موبايل '.$customer->phone;
+            DailyHistory::create($history_data);
             DB::commit();
             return redirect()->route($this->route)->with('success', trans('lang.created'));
         } catch (\Exception $e) {
             info($e->getMessage());
             DB::rollback();
-            return redirect()->back()->with('danger', trans('lang.wrong'));
+            return redirect()->back()->with('danger',$e->getMessage());
         }
     }
 
@@ -94,9 +103,9 @@ class InstallmentRequestController extends GeneralController
 
     public function destroy(Request $request, InstallmentRequest $installmentRequest)
     {
-        if ($installmentRequest->id_received_at   && $installmentRequest->status == IRStatusEnum::PENDING->value) {
-            abort(404);
-        }
+        if ($installmentRequest->id_received_at && $installmentRequest->status == IRStatusEnum::PENDING->value) {
+        abort(404);
+    }
         try {
             DB::beginTransaction();
             $data = $installmentRequest;
@@ -127,7 +136,7 @@ class InstallmentRequestController extends GeneralController
     public function accept(Request $request, InstallmentRequest $installmentRequest)
     {
         if ($installmentRequest->status == IRStatusEnum::PENDING->value) {
-            $installmentRequest->update(['status' => IRStatusEnum::APPROVED->value]);
+        $installmentRequest->update(['status' => IRStatusEnum::APPROVED->value]);
         }
         return response()->json(['success' => trans('lang.updated')]);
     }
@@ -136,7 +145,7 @@ class InstallmentRequestController extends GeneralController
     {
 
         if ($installmentRequest->status == IRStatusEnum::PENDING->value) {
-            $installmentRequest->update(['status' => IRStatusEnum::REJECTED->value]);
+        $installmentRequest->update(['status' => IRStatusEnum::REJECTED->value]);
         }
 
         if ($request->add_to_black_list) {
