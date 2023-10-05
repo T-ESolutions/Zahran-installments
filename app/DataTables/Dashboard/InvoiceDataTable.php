@@ -20,6 +20,9 @@ class InvoiceDataTable extends DataTable
             ->eloquent($query)
              ->addIndexColumn()
             ->addColumn('action', 'Dashboard.Invoice.parts.action')
+            ->editColumn('customer_name', function ($model) {
+                return $model->customer->name ?? '';
+            })
             ->rawColumns(['action']);
     }
 
@@ -31,7 +34,7 @@ class InvoiceDataTable extends DataTable
      */
     public function query(Invoice $model)
     {
-        return $model->newQuery()->with([]);
+        return $model->newQuery()->with(['customer']);
     }
 
     /**
@@ -80,6 +83,13 @@ class InvoiceDataTable extends DataTable
                 'footer' => '',
             ],
             Column::make('id')->hidden(),
+            Column::make('transaction_number')->title(trans('lang.transaction_number')),
+            Column::make('customer_name')->name('customer.name')->title(trans('lang.customer_name')),
+
+            Column::make('pay_day')->title(trans('lang.pay_day')),
+            Column::make('total_price')->title(trans('lang.total_price')),
+            Column::make('deposit')->title(trans('lang.deposit')),
+            Column::make('deposit')->title(trans('lang.deposit')),
             Column::make('action')->title(trans('lang.action')),
         ];
     }
