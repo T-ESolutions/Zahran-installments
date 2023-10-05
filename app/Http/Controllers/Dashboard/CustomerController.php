@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\BlockEnum;
 use App\Http\Requests\Dashboard\CustomerCreateRequest;
 use App\DataTables\Dashboard\CustomerDataTable;
-use Illuminate\Support\Facades\Request;
-use App\Http\Controllers\GeneralController;
+ use App\Http\Controllers\GeneralController;
 use App\Models\Customer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
@@ -25,6 +26,17 @@ class CustomerController extends GeneralController
         $this->middleware('permission:delete-customer', ['only' => ['delete']]);
     }
 
+
+    public function blackList(Request $request,CustomerDataTable $dataTable)
+    {
+        $request->merge(['blocked'=>BlockEnum::BLOCKED->value]);
+        return $dataTable->render('Dashboard.Customer.blackList');
+    }
+    public function lateList(Request $request,CustomerDataTable $dataTable)
+    {
+        $request->merge(['late'=>BlockEnum::BLOCKED->value]);
+        return $dataTable->render('Dashboard.Customer.lateList');
+    }
     public function index(CustomerDataTable $dataTable)
     {
         return $dataTable->render('Dashboard.Customer.index');
@@ -79,7 +91,7 @@ class CustomerController extends GeneralController
             }
             $customer->update($data);
             DB::commit();
-            return redirect()->route($this->route)->with('success', trans('lang.updated'));
+            return redirect()->back()->with('success', trans('lang.updated'));
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));

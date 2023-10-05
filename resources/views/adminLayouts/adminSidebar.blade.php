@@ -15,11 +15,29 @@
                 </a>
             </li>
             @can('read-customer')
-                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'customers') menu-item-open @endif "
+                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'customers' &&  (request()->segment(4) !='black-list' ||  request()->segment(4) !='late-list')) menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('customers.index')}}" class="menu-link menu-toggle">
                         <i class="menu-icon  flaticon-users-1"></i>
                         <span class="menu-text">{{__('lang.customers')}}</span>
+                    </a>
+                </li>
+            @endcan
+            @can('read-customer')
+                <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'black-list' ) menu-item-open @endif "
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('customers.black-list')}}" class="menu-link menu-toggle">
+                        <i class="menu-icon  flaticon-users-1"></i>
+                        <span class="menu-text">{{__('lang.black_list_customers')}}</span>
+                    </a>
+                </li>
+            @endcan
+            @can('read-customer')
+                <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'late-list' ) menu-item-open @endif "
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('customers.late-list')}}" class="menu-link menu-toggle">
+                        <i class="menu-icon  flaticon-users-1"></i>
+                        <span class="menu-text">{{__('lang.late_list_customers')}}</span>
                     </a>
                 </li>
             @endcan

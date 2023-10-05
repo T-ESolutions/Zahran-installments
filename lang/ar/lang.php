@@ -132,7 +132,8 @@ return [
     'created_by' => 'انشء  بواسطه',
     'late_installment' => 'اقساط متاخره',
     'late_installments' => 'اقساط متاخره',
-
+'black_list_customers' => 'قائمه العملاء السوداء',
+    'late_list_customers' => 'قائمه العملاء المتاخرين',
     'late_installment_date' => 'تاريخ اقساط متاخره',
     'late_installments_date' => 'تاريخ اقساط متاخره',
     'late_installment_percent' => 'نسبه اقساط متاخره',

@@ -2,7 +2,9 @@
 
 namespace App\DataTables\Dashboard;
 
+use App\Enums\BlockEnum;
 use App\Models\Customer;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
@@ -18,10 +20,10 @@ class CustomerDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-             ->addIndexColumn()
+            ->addIndexColumn()
             ->addColumn('action', 'Dashboard.Customer.parts.action')
             ->addColumn('activation', 'Dashboard.Customer.parts.activation')
-            ->rawColumns(['action','activation']);
+            ->rawColumns(['action', 'activation']);
     }
 
     /**
@@ -30,9 +32,17 @@ class CustomerDataTable extends DataTable
      * @param \App\Models\Customer $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Customer $model)
+    public function query(Customer $model, Request $request)
     {
-        return $model->newQuery()->with([]);
+        $q = $model->newQuery()->with([]);
+
+        if ($request->blocked) {
+            $q->where('is_blocked', BlockEnum::BLOCKED->value);
+        }
+        if ($request->late) {
+            $q->where('is_late', BlockEnum::BLOCKED->value);
+        }
+        return $q;
     }
 
     /**
@@ -46,16 +56,15 @@ class CustomerDataTable extends DataTable
             ->setTableId('Customer-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-               ->orderBy(1)
+            ->orderBy(1)
             ->lengthMenu(
                 [
                     [10, 25, 50, -1],
-                    [trans('lang.10row'), trans('lang.25row'),trans('lang.50row'), trans('lang.allRows')] ])
-
+                    [trans('lang.10row'), trans('lang.25row'), trans('lang.50row'), trans('lang.allRows')]])
             ->parameters([
                 'language' => [app()->getLocale() == 'en' ?: 'url' => '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Arabic.json'],
-                 'responsive' => true,
-                 'scrollX' => true
+                'responsive' => true,
+                'scrollX' => true
 
             ]);
     }

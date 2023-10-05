@@ -40,6 +40,8 @@ Route::group(
         Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
         Route::post('customers.change.is-late/{customer}', [CustomerController::class, 'addToLateCustomersList'])->name('customers.addToLateCustomersList');
 
+        Route::get('customers/black-list', [CustomerController::class,'blackList'])->name('customers.black-list');
+        Route::get('customers/late-list', [CustomerController::class,'lateList'])->name('customers.late-list');
         Route::resource('customers', CustomerController::class);
 
         //installment_requests
