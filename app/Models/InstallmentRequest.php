@@ -76,6 +76,9 @@ class InstallmentRequest extends Model
         return $this->belongsTo(Customer::class,'customer_id');
     }
 
-
+  public function admin()
+  {
+        return $this->belongsTo(Admin::class , 'admin_id');
+  }
 
 }

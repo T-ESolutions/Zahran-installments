@@ -23,6 +23,9 @@ class CustomerDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', 'Dashboard.Customer.parts.action')
             ->addColumn('activation', 'Dashboard.Customer.parts.activation')
+            ->addColumn('created_by', function ($query) {
+                return $query->admin->name;
+            })
             ->rawColumns(['action', 'activation']);
     }
 
@@ -34,7 +37,7 @@ class CustomerDataTable extends DataTable
      */
     public function query(Customer $model, Request $request)
     {
-        $q = $model->newQuery()->with([]);
+        $q = $model->newQuery()->with(['admin']);
 
         if ($request->blocked) {
             $q->where('is_blocked', BlockEnum::BLOCKED->value);
@@ -93,6 +96,7 @@ class CustomerDataTable extends DataTable
             Column::make('name')->title(trans('lang.name')),
             Column::make('phone')->title(trans('lang.phone')),
             Column::make('activation')->title(trans('lang.black_list'))->visible(auth()->user()->can('change-activation-customers')),
+            Column::make('created_by')->title(trans('lang.created_by')),
             Column::make('action')->title(trans('lang.action')),
         ];
     }

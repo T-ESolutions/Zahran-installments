@@ -23,7 +23,15 @@ class SettingSeeder extends Seeder
             'copyright' => 'جميع الحقوق محفوظة منصة Zahran، تنفيذ و تطوير بواسطة',
             'images_size' => '1000',
             'monthly_profit_percent' => 30,
-         ];
+
+
+            'check_amount' => 5000,
+            'first_name' => 'Zahran',
+            'second_name' => 'Zahran',
+            'third_name' => 'Zahran',
+            'fourth_name' => 'Zahran',
+
+        ];
 
         Cache::forget('settings');
         Setting::setMany($data);

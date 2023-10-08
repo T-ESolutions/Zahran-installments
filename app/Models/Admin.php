@@ -22,7 +22,10 @@ class Admin extends Authenticatable
             $this->attributes['password'] = bcrypt($password);
         }
     }
-
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class , 'admin_id');
+    }
 
 
 }

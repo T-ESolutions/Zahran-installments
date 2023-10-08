@@ -22,6 +22,8 @@ class InvoiceDataTable extends DataTable
             ->addColumn('action', 'Dashboard.Invoice.parts.action')
             ->editColumn('customer_name', function ($model) {
                 return $model->customer->name ?? '';
+            })   ->editColumn('created_by', function ($model) {
+                return $model->admin->name ?? '';
             })
             ->rawColumns(['action']);
     }
@@ -34,7 +36,7 @@ class InvoiceDataTable extends DataTable
      */
     public function query(Invoice $model)
     {
-        return $model->newQuery()->with(['customer']);
+        return $model->newQuery()->with(['customer','admin']);
     }
 
     /**
@@ -90,6 +92,7 @@ class InvoiceDataTable extends DataTable
             Column::make('total_price')->title(trans('lang.total_price')),
             Column::make('deposit')->title(trans('lang.deposit')),
             Column::make('deposit')->title(trans('lang.deposit')),
+            Column::make('created_by')->title(trans('lang.created_by')),
             Column::make('action')->title(trans('lang.action')),
         ];
     }

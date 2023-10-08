@@ -31,6 +31,9 @@ class InstallmentRequestDataTable extends DataTable
             ->editColumn('remaining_price', function (InstallmentRequest $model) {
                 return $model->remaining_price;
             })
+            ->addColumn('created_by',  function ($model) {
+                return $model->admin->name ?? '';
+            })
             ->addColumn('action', 'Dashboard.InstallmentRequest.parts.action')
             ->addColumn('id_received', 'Dashboard.InstallmentRequest.parts.id_received')
             ->addColumn('status', 'Dashboard.InstallmentRequest.parts.status')
@@ -45,7 +48,7 @@ class InstallmentRequestDataTable extends DataTable
      */
     public function query(InstallmentRequest $model)
     {
-        return $model->newQuery()->with(['customer']);
+        return $model->newQuery()->with(['customer','admin']);
     }
 
     /**
@@ -101,6 +104,7 @@ class InstallmentRequestDataTable extends DataTable
             Column::make('created_at')->title(trans('lang.created_at')),
             Column::make('id_received')->title(trans('lang.id_received'))->orderable(false),
             Column::make('status')->title(trans('lang.status'))->width(150)->orderable(false),
+            Column::make('created_by')->title(trans('lang.created_by'))->orderable(false),
             Column::make('action')->title(trans('lang.action'))->orderable(false),
         ];
     }

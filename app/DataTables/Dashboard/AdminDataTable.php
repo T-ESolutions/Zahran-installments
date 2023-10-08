@@ -16,12 +16,15 @@ class AdminDataTable extends DataTable
 
             ->addColumn('action', 'Dashboard.admin.parts.action')
             ->addColumn('activation', 'Dashboard.admin.parts.activation')
+            ->editColumn('created_by', function ($model) {
+                return $model->admin->name ?? '';
+            })
             ->rawColumns(['action','activation','id']);
     }
 
     public function query(Admin $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->with(['admin']);
     }
 
     public function html()
@@ -48,6 +51,7 @@ class AdminDataTable extends DataTable
             Column::make('id')->title(trans('lang.id')),
             Column::make('name')->title(trans('lang.name')),
             Column::make('email')->title(trans('lang.email')),
+            Column::make('created_by')->title(trans('lang.created_by')),
             Column::make('activation')->title(trans('lang.activation'))->visible(auth()->user()->can('change-activation-admins')),
             Column::make('action')->title(trans('lang.action'))->visible(auth()->user()->can('delete-admins') || auth()->user()->can('update-admins') ),
         ];

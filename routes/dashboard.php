@@ -51,6 +51,7 @@ Route::group(
         Route::resource('installment_requests', InstallmentRequestController::class);
 
         //invoices
+        Route::get('invoices/print/{customer}', [InvoiceController::class, 'print'])->name('invoice.print');
         Route::get('invoices/customer', [InvoiceController::class, 'getInvoice'])->name('invoice.getInvoice');
         Route::get('invoices/installments/{id}', [InvoiceController::class, 'indexInstallments'])->name('invoices.installments');
         Route::post('invoices/chane/installment/date', [InvoiceController::class, 'changeInstallmentDate'])->name('invoices.installments.change.date');

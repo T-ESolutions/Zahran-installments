@@ -122,6 +122,12 @@
                                 <span class="font-weight-bold ">{{$invoice->profit}}</span>
                             </div>
 
+                            <div class="d-flex align-items-center justify-content-between mb-2 text-danger">
+                                <span class="font-weight-bold mr-2">@lang('lang.remaining_price') </span>
+                                <span class="font-weight-bold "
+                                      id="sum_remaining_amount">{{$sum_remaining_amount}}</span>
+                            </div>
+
                         </div>
                     </div>
 
@@ -190,6 +196,52 @@
                             </div>
 
 
+                            @if($invoice->invoice_type ==\App\Enums\InvoiceTypeEnum::INSURANCE->value)
+                                <div class="d-flex align-items-center justify-content-between mb-2  ">
+
+                                        <span class="font-weight-bold mr-2">@lang('lang.customer') </span>
+                                        <span class="font-weight-bold ">{{$invoice->customer->name}}</span>
+                                        <a class="font-weight-bold text-info "
+                                         target="_blank"  href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')</a>
+
+                                </div>
+                                @foreach($invoice->guarantors as $guarantor)
+                                    <div class="d-flex align-items-center justify-content-between mb-2  ">
+                                        <span class="font-weight-bold mr-2">@lang('lang.guarantor') </span>
+                                        <span class="font-weight-bold ">{{$guarantor->name}}</span>
+                                        <a class="font-weight-bold text-info "
+                                         target="_blank"  href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')</a>
+                                    </div>
+                                @endforeach
+                            @endif
+
+
+                            @if($invoice->invoice_type ==\App\Enums\InvoiceTypeEnum::INVOICE->value)
+                                <div class="d-flex align-items-center justify-content-between mb-2  ">
+
+                                        <span class="font-weight-bold mr-2">@lang('lang.customer') </span>
+                                        <span class="font-weight-bold ">{{$invoice->customer->name}}</span>
+                                        <a class="font-weight-bold text-info "
+                                         target="_blank"  href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')</a>
+
+                                </div>
+                                @foreach($invoice->invoice->guarantors as $guarantor)
+                                    <div class="d-flex align-items-center justify-content-between mb-2  ">
+                                        <span class="font-weight-bold mr-2">@lang('lang.guarantor') </span>
+                                        <span class="font-weight-bold ">{{$guarantor->name}}</span>
+                                        <a class="font-weight-bold text-info "
+                                         target="_blank"  href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')</a>
+                                    </div>
+                                @endforeach
+                            @endif
+
+                                @if($invoice->invoice_type ==\App\Enums\InvoiceTypeEnum::ATTORNEY->value)
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="font-weight-bold mr-2">@lang('lang.invoice_type') </span>
+                                        <span class="font-weight-bold ">@lang('lang.attorney')</span>
+                                    </div>
+                                @endif
+
                         </div>
                     </div>
 
@@ -214,8 +266,8 @@
                 let id = $(this).attr('data-id');
                 let data = new FormData();
 
-                 data.append('amount', amount);
-                 data.append('invoice_id', id);
+                data.append('amount', amount);
+                data.append('invoice_id', id);
 
                 Swal.fire({
                     icon: 'warning',
@@ -249,6 +301,8 @@
                                     showCancelButton: false,
                                     confirmButtonText: 'تم'
                                 })
+
+                                $('#sum_remaining_amount').text(response.new_amount);
                                 $('.errors').empty();
 
                                 //close model

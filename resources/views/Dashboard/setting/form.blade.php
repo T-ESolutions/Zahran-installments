@@ -39,6 +39,60 @@
                    placeholder=""/>
         </div>
     </div>
+
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="site_name_en">{{trans('lang.first_name')}}<span
+                    class="text-danger">*</span></label>
+            <input type="text" name="first_name" id="first_name"
+                   value="{{ old('first_name', $data->where('key', 'first_name')->first()->val) }}"
+                   class="form-control {{ $errors->has('first_name') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="site_name_en">{{trans('lang.second_name')}}<span
+                    class="text-danger">*</span></label>
+            <input type="text" name="second_name" id="second_name"
+                   value="{{ old('second_name', $data->where('key', 'second_name')->first()->val) }}"
+                   class="form-control {{ $errors->has('second_name') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="site_name_en">{{trans('lang.third_name')}}<span
+                    class="text-danger">*</span></label>
+            <input type="text" name="third_name" id="third_name"
+                   value="{{ old('third_name', $data->where('key', 'third_name')->first()->val) }}"
+                   class="form-control {{ $errors->has('third_name') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="site_name_en">{{trans('lang.fourth_name')}}<span
+                    class="text-danger">*</span></label>
+            <input type="text" name="fourth_name" id="fourth_name"
+                   value="{{ old('fourth_name', $data->where('key', 'fourth_name')->first()->val) }}"
+                   class="form-control {{ $errors->has('fourth_name') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="site_name_en">{{trans('lang.check_amount')}}<span
+                    class="text-danger">*</span></label>
+            <input type="text" name="check_amount" id="check_amount"
+                   value="{{ old('check_amount', $data->where('key', 'check_amount')->first()->val) }}"
+                   class="form-control {{ $errors->has('check_amount') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
+
 </div>
 
 

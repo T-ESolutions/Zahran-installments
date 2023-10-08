@@ -153,4 +153,10 @@ return [
     'add_to_late_customers_list' => 'اضافه الي قائمه العملاء المتاخرين',
     'pay_installment' => 'دفع القسط',
     'paid_amount' => 'المبلغ المدفوع',
+    'first_name' => 'الاسم الاول',
+    'second_name' => 'الاسم الثاني',
+    'third_name' => 'الاسم الثالث',
+    'fourth_name' => 'الاسم الرابع',
+    'check_amount' => 'مبلغ الشيك',
+    'print' => 'طباعه',
 ];

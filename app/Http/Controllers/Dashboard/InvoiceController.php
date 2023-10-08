@@ -102,8 +102,12 @@ class InvoiceController extends GeneralController
 
     public function indexInstallments(Request $request, InvoiceInstallmentsDataTable $dataTable, $id)
     {
-        $invoice = Invoice::with('customer')->find($id);
-        return $dataTable->with(['id' => $id])->render('Dashboard.Invoice.indexInstallments', compact('invoice'));
+        $invoice = Invoice::with('customer', 'guarantors','invoice.guarantors')->find($id);
+        $installments = $invoice->installments();
+        $sum_monthly_installment = $installments->sum('monthly_installment');
+        $sum_paid_amount = $installments->sum('paid_amount');
+        $sum_remaining_amount = $sum_monthly_installment - $sum_paid_amount;
+        return $dataTable->with(['id' => $id])->render('Dashboard.Invoice.indexInstallments', compact('invoice', 'sum_remaining_amount'));
     }
 
     public function changeInstallmentDate(Request $request)
@@ -238,10 +242,17 @@ class InvoiceController extends GeneralController
                 break;
             }
         }
+        $sum_remaining_amount = $sum_remaining_amount - $request->amount;
+        $sum_remaining_amount = number_format((float)$sum_remaining_amount, 2, '.', '');
+        return response()->json(['new_amount' => $sum_remaining_amount], 200);
 
-        return response()->json([], 200);
 
+    }
 
+    public function print(Customer $customer)
+    {
+
+        return view('Dashboard.Invoice.print', compact('customer'));
     }
 
 }

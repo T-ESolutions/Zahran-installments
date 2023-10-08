@@ -83,4 +83,9 @@ class Customer extends Authenticatable
        return $this->hasMany(Invoice::class , 'customer_id');
    }
 
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class , 'admin_id');
+    }
+
 }

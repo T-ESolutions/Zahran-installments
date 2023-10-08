@@ -37,7 +37,7 @@
 @push('scripts')
     <script !src="">
         var avatar1 = new KTImageInput('kt_image_1');
-        var avatar1 = new KTImageInput('kt_image_2');
+        var avatar1 = new KTImageInput('kt_image_3');
     </script>
 @endpush
 

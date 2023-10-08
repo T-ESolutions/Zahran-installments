@@ -69,11 +69,16 @@ class Invoice extends Model
     {
         return $this->belongsTo(Admin::class, 'admin_id');
     }
+    public function invoice()
+    {
+        return $this->belongsTo(self::class, 'invoice_id');
+    }
 
     public function installments()
     {
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id');
     }
+
 
     public function unInstallments()
     {
