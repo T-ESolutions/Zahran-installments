@@ -30,6 +30,7 @@ class SettingSeeder extends Seeder
             'second_name' => 'Zahran',
             'third_name' => 'Zahran',
             'fourth_name' => 'Zahran',
+            'discount_percentage' => 10,
 
         ];
 

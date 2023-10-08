@@ -36,7 +36,7 @@ class SettingRequest extends FormRequest
             'third_name' => 'required|string|max:191',
             'fourth_name' => 'required|string|max:191',
             'check_amount' => 'required|numeric|min:1|max:1000000000',
-
+            'discount_percentage' => 'required|numeric|min:1|max:100',
         ];
     }
 }

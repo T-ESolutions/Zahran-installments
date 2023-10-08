@@ -159,4 +159,5 @@ return [
     'fourth_name' => 'الاسم الرابع',
     'check_amount' => 'مبلغ الشيك',
     'print' => 'طباعه',
+    'discount_percentage' => 'نسبه الخصم',
 ];

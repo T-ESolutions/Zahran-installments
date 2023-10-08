@@ -93,6 +93,17 @@
         </div>
     </div>
 
+    <div class="col-sm-6">
+        <div class="form-group ">
+            <label for="site_name_en">{{trans('lang.discount_percentage')}}<span
+                    class="text-danger">*</span></label>
+            <input type="text" name="discount_percentage" id="discount_percentage"
+                   value="{{ old('discount_percentage', $data->where('key', 'discount_percentage')->first()->val) }}"
+                   class="form-control {{ $errors->has('discount_percentage') ? 'border-danger' : '' }}"
+                   placeholder=""/>
+        </div>
+    </div>
+
 </div>
 
 
