@@ -220,6 +220,35 @@ class PermissionsSeeder extends Seeder
                 'display_name' => 'create invoice',
             ],
 
+
+            // lawsuit permissions
+
+            [
+                'path' => 'lawsuit',
+                'name' => 'read-lawsuit',
+                'display_name' => 'read lawsuit',
+            ],
+      /*      [
+                'path' => 'lawsuit',
+                'name' => 'update-lawsuit',
+                'display_name' => 'update lawsuit',
+            ],*/
+            [
+                'path' => 'lawsuit',
+                'name' => 'create-lawsuit',
+                'display_name' => 'create lawsuit',
+            ],
+            [
+                'path' => 'lawsuit',
+                'name' => 'delete-lawsuit',
+                'display_name' => 'delete lawsuit',
+            ],
+            [
+                'path' => 'lawsuit',
+                'name' => 'change-activation-lawsuit',
+                'display_name' => 'delete lawsuit',
+            ],
+
         ];
         Schema::disableForeignKeyConstraints();
         DB::table('permissions')->truncate();

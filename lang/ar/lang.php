@@ -160,4 +160,12 @@ return [
     'check_amount' => 'مبلغ الشيك',
     'print' => 'طباعه',
     'discount_percentage' => 'نسبه الخصم',
+    'amount' => 'المبلغ',
+    'lawsuits'=> 'الدعاوي',
+    'lawsuit'=> 'دعوي',
+    'read-lawsuit'=> 'مراجعه الدعاوي',
+    'create-lawsuit'=> 'اضافه دعوي',
+    'edit-lawsuit'=>  'تعديل دعوي',
+    'update-lawsuit'=> 'تحديث دعوي',
+    'delete-lawsuit'=> 'حذف دعوي',
 ];

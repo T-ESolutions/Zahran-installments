@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\InstallmentRequestController;
 use App\Http\Controllers\Dashboard\InvoiceController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SettingController;
+use App\Http\Controllers\LawsuitController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -35,6 +36,11 @@ Route::group(
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
+
+        //lawsuits
+        Route::resource('lawsuits', LawsuitController::class);
+
+
 
         //customers
         Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');

@@ -23,6 +23,15 @@
                     </a>
                 </li>
             @endcan
+            @can('read-lawsuit')
+                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'lawsuits' &&  (request()->segment(4) !='black-list' ||  request()->segment(4) !='late-list')) menu-item-open @endif "
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('lawsuits.index')}}" class="menu-link menu-toggle">
+                        <i class="menu-icon  flaticon-users-1"></i>
+                        <span class="menu-text">{{__('lang.lawsuits')}}</span>
+                    </a>
+                </li>
+            @endcan
             @can('read-customer')
                 <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'black-list' ) menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
