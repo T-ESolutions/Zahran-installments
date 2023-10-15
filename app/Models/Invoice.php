@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\InvoiceInstallmentsStatusEnum;
+use App\Enums\LawsuitStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
@@ -85,6 +86,13 @@ class Invoice extends Model
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id')
             ->where('pay_date','<=' , now() )
             ->where('status',InvoiceInstallmentsStatusEnum::UNPAID->value ) ;
+    }
+
+    public function unPaidLawSuit()
+    {
+        return $this->hasMany(Lawsuit::class, 'invoice_id')
+
+            ->where('status',LawsuitStatusEnum::UNPAID->value ) ;
     }
 
 

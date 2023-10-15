@@ -102,7 +102,7 @@ class InvoiceController extends GeneralController
 
     public function indexInstallments(Request $request, InvoiceInstallmentsDataTable $dataTable, $id)
     {
-        $invoice = Invoice::with('customer', 'guarantors','invoice.guarantors')->find($id);
+        $invoice = Invoice::with('customer', 'guarantors', 'invoice.guarantors', 'unPaidLawSuit')->find($id);
         $installments = $invoice->installments();
         $sum_monthly_installment = $installments->sum('monthly_installment');
         $sum_paid_amount = $installments->sum('paid_amount');
@@ -192,58 +192,99 @@ class InvoiceController extends GeneralController
             'amount' => 'required|numeric|gt:' . '0' . '|lte:' . $sum_remaining_amount,
         ]);
 
-        $amount = $request->amount;
+        $amount = (float)$request->amount;
 
-        $remain_installments = $installments->where('status', InvoiceInstallmentsStatusEnum::UNPAID->value)->get();
+        $invoice_law_suits = $invoice->unPaidLawSuit;
 
-        $daily_history = '';
-
-        foreach ($remain_installments as $installment) {
-
-            $pay_amount = $installment->monthly_installment - $installment->paid_amount;
+        foreach ($invoice_law_suits as $invoice_law_suit) {
+            $pay_amount = $invoice_law_suit->amount - $invoice_law_suit->paid_amount;
 
             if ($amount >= $pay_amount) {
-                $installment->paid_amount += $pay_amount;
+                $added_amount = $invoice_law_suit->paid_amount += $pay_amount;
+                $amount = $amount - $pay_amount;
+                $invoice_law_suit->status = InvoiceInstallmentsStatusEnum::PAID->value;
+                $invoice_law_suit->save();
+
             } else {
-                $installment->paid_amount += $amount;
+                $added_amount = $invoice_law_suit->paid_amount += $amount;
+
+                $invoice_law_suit->save();
                 $amount = 0;
             }
 
+            $invoice_law_suit->fresh();
 
-            $installment->save();
-            $installment->fresh();
-            if ($pay_amount == $installment->paid_amount || $installment->monthly_installment == $installment->paid_amount) {
-                $installment->status = InvoiceInstallmentsStatusEnum::PAID->value;
-            }
-
-            $installment->save();
-            $installment->fresh();
-
-            $history = $installment->history()->create([
-                'description' => '  دفع مبلغ ' . $installment->paid_amount . ' من القسط رقم ' . $installment->id . 'من اصل ' . $installment->monthly_installment . ' , ',
-                'invoice_id' => $installment->invoice_id,
+            $invoice_law_suit->histories()->create([
+                'description' => '  دفع مبلغ ' . $invoice_law_suit->paid_amount . ' من القسط رقم ' . $invoice_law_suit->id . 'من اصل ' . $pay_amount . ' , ',
                 'admin_id' => auth()->user()->id,
             ]);
 
-
-            $amount = $amount - $installment->monthly_installment;
-
-            $daily_history = $daily_history . $history->description . ' رقم ' . $installment->id;
+            DailyHistory::create([
+                'description' => 'تم دفع من حساب قضيه رقم ' . $invoice_law_suit->id . ' مبلغ ' . $added_amount . ' من اصل ' . $pay_amount . ' , ',
+                'admin_id' => auth()->user()->id,
+            ]);
 
             if ($amount <= 0) {
-                $daily_history = $daily_history . ' وتم الدفع بنجاح' . ' , ';
-
-                $daily_history = $daily_history . 'الخاص بمنتج ' . $invoice->product;
-
-                DailyHistory::create([
-                    'description' => $daily_history,
-                    'admin_id' => auth()->user()->id,
-                ]);
                 break;
             }
+
         }
-        $sum_remaining_amount = $sum_remaining_amount - $request->amount;
-        $sum_remaining_amount = number_format((float)$sum_remaining_amount, 2, '.', '');
+
+
+        if ($amount > 0) {
+
+
+            $remain_installments = $installments->where('status', InvoiceInstallmentsStatusEnum::UNPAID->value)->get();
+
+            $daily_history = '';
+
+            foreach ($remain_installments as $installment) {
+
+                $pay_amount = $installment->monthly_installment - $installment->paid_amount;
+
+                if ($amount >= $pay_amount) {
+                    $installment->paid_amount += $pay_amount;
+                } else {
+                    $installment->paid_amount += $amount;
+                    $amount = 0;
+                }
+
+
+                $installment->save();
+                $installment->fresh();
+                if ($pay_amount == $installment->paid_amount || $installment->monthly_installment == $installment->paid_amount) {
+                    $installment->status = InvoiceInstallmentsStatusEnum::PAID->value;
+                }
+
+                $installment->save();
+                $installment->fresh();
+
+                $history = $installment->history()->create([
+                    'description' => '  دفع مبلغ ' . $installment->paid_amount . ' من القسط رقم ' . $installment->id . 'من اصل ' . $installment->monthly_installment . ' , ',
+                    'invoice_id' => $installment->invoice_id,
+                    'admin_id' => auth()->user()->id,
+                ]);
+
+
+                $amount = $amount - $installment->monthly_installment;
+
+                $daily_history = $daily_history . $history->description . ' رقم ' . $installment->id;
+
+                if ($amount <= 0) {
+                    $daily_history = $daily_history . ' وتم الدفع بنجاح' . ' , ';
+
+                    $daily_history = $daily_history . 'الخاص بمنتج ' . $invoice->product;
+
+                    DailyHistory::create([
+                        'description' => $daily_history,
+                        'admin_id' => auth()->user()->id,
+                    ]);
+                    break;
+                }
+            }
+            $sum_remaining_amount = $sum_remaining_amount - $request->amount;
+            $sum_remaining_amount = number_format((float)$sum_remaining_amount, 2, '.', '');
+        }
         return response()->json(['new_amount' => $sum_remaining_amount], 200);
 
 
