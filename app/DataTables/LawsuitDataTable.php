@@ -20,13 +20,13 @@ class LawsuitDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', '.Lawsuit.parts.action')
-            ->editColumn('customer_name', function ($model) {
-                return $model->customer->name ?? '';
+            ->addColumn('customer_name', function ($model) {
+                return $model->invoice->customer->name ?? '';
             })
             ->editColumn('created_by', function ($model) {
                 return $model->admin->name ?? '';
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action','customer_name']);
     }
 
     /**
@@ -84,8 +84,8 @@ class LawsuitDataTable extends DataTable
                 'printable' => true,
                 'footer' => '',
             ],
-            Column::make('id')->hidden(),
-            Column::make('customer_name')->name('customer.name')->title(trans('lang.customer_name')),
+            Column::make('id')->title('رقم القضية'),
+            Column::make('customer_name')->title(trans('lang.customer_name')),
             Column::make('created_by')->title(trans('lang.created_by')),
             Column::make('amount')->title(trans('lang.amount')),
             Column::make('paid_amount')->title(trans('lang.paid_amount')),

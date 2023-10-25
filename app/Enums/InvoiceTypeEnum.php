@@ -12,9 +12,9 @@ enum InvoiceTypeEnum: int
     public static  function getActiveText($status) :string
     {
         return match ($status) {
-            self::INSURANCE->value => 'insurance',
-            self::ATTORNEY->value => 'attorney',
-            self::INVOICE->value => 'invoice',
+            self::INSURANCE->value => 'insurance', // وصل امانة
+            self::ATTORNEY->value => 'attorney', //توكيل
+            self::INVOICE->value => 'invoice', // فاتورة
          };
     }
 

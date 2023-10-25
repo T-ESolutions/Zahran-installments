@@ -2,7 +2,6 @@
 
 use App\Models\Admin;
 use App\Models\Customer;
-use App\Models\Invoice;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,8 +24,6 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->foreignIdFor(Admin::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Invoice::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->tinyInteger('invoice_type');
             $table->text('product')->nullable();
             $table->double('total_price', 8, 2);
             $table->double('deposit', 8, 2);

@@ -43,8 +43,8 @@ Route::group(
 
 
         //customers
-        Route::post('customers.change.activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
-        Route::post('customers.change.is-late/{customer}', [CustomerController::class, 'addToLateCustomersList'])->name('customers.addToLateCustomersList');
+        Route::post('customers/change/activation/{customer}', [CustomerController::class, 'changeActivation'])->name('customers.change.activation');
+        Route::get('customers/change/is/late/{customer}', [CustomerController::class, 'addToLateCustomersList'])->name('customers.addToLateCustomersList');
 
         Route::get('customers/black-list', [CustomerController::class,'blackList'])->name('customers.black-list');
         Route::get('customers/late-list', [CustomerController::class,'lateList'])->name('customers.late-list');
@@ -57,7 +57,7 @@ Route::group(
         Route::resource('installment_requests', InstallmentRequestController::class);
 
         //invoices
-        Route::get('invoices/print/{customer}', [InvoiceController::class, 'print'])->name('invoice.print');
+        Route::get('invoices/print/{customer}', [InvoiceController::class, 'print_insurance_paper'])->name('invoice.print');
         Route::get('invoices/customer', [InvoiceController::class, 'getInvoice'])->name('invoice.getInvoice');
         Route::get('invoices/installments/{id}', [InvoiceController::class, 'indexInstallments'])->name('invoices.installments');
         Route::post('invoices/chane/installment/date', [InvoiceController::class, 'changeInstallmentDate'])->name('invoices.installments.change.date');

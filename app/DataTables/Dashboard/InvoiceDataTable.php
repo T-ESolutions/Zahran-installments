@@ -72,19 +72,7 @@ class InvoiceDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            [
-                'defaultContent' => '',
-                'data' => 'DT_RowIndex',
-                'name' => 'DT_RowIndex',
-                'title' => '#',
-                'render' => null,
-                'orderable' => false,
-                'searchable' => false,
-                'exportable' => false,
-                'printable' => true,
-                'footer' => '',
-            ],
-            Column::make('id')->hidden(),
+            Column::make('id')->title('رقم الفاتورة'),
             Column::make('transaction_number')->title(trans('lang.transaction_number')),
             Column::make('customer_name')->name('customer.name')->title(trans('lang.customer_name')),
 
@@ -92,7 +80,7 @@ class InvoiceDataTable extends DataTable
             Column::make('total_price')->title(trans('lang.total_price')),
             Column::make('deposit')->title(trans('lang.deposit')),
             Column::make('deposit')->title(trans('lang.deposit')),
-            Column::make('created_by')->title(trans('lang.created_by')),
+            Column::make('created_by')->searchable(false)->title(trans('lang.created_by')),
             Column::make('action')->title(trans('lang.action')),
         ];
     }

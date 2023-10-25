@@ -7,7 +7,9 @@
     <meta name="description" content="Page with empty content" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="canonical" href="https://keenthemes.com/metronic" />
-
+    <!--begin::Fonts-->
+{{--    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />--}}
+    <!--end::Fonts-->
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.{{getFolder()}}" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
@@ -57,7 +59,7 @@
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body style="font-family: 'Tajawal', sans-serif; !important " class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+<body style="font-family: 'cairo', sans-serif; !important " class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
 <!--begin::Main-->
 <!--begin::Header Mobile-->
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">

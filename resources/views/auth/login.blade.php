@@ -45,7 +45,9 @@
                     <!--begin::Form-->
                     <form method="POST" action="{{ route('login') }}">
                     @csrf
-
+                        <div class="pb-13 pt-lg-0 pt-5">
+                            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">اهلا بك في لوحة تحكم معرض الزهران</h3>
+                           </div>
                     <!--begin::Title-->
                         <!--begin::Form group-->
                         <div class="form-group">
@@ -81,6 +83,7 @@
                 <!--end::Signin-->
             </div>
             <!--end::Wrapper-->
+
         </div>
         <!--begin::Content-->
         <!--begin::Aside-->
@@ -93,8 +96,10 @@
                 </h3>--}}
                 <!--end::Aside title-->
             </div>
+
         </div>
         <!--end::Aside-->
+
     </div>
     <!--end::Login-->
 </div>

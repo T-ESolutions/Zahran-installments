@@ -22,10 +22,8 @@ class InvoiceInstallmentsDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('changeDate', 'Dashboard.Invoice.installmentsParts.changeDate')
-            ->addColumn('postingInstallment', 'Dashboard.Invoice.installmentsParts.postingInstallment')
-            ->addColumn('monthPostingInstallment', 'Dashboard.Invoice.installmentsParts.monthPostingInstallment')
-            ->addColumn('history', 'Dashboard.Invoice.installmentsParts.history')
-            ->rawColumns(['changeDate', 'postingInstallment','monthPostingInstallment','history']);
+            ->editColumn('status', 'Dashboard.Invoice.installmentsParts.status')
+            ->rawColumns(['changeDate','status']);
     }
 
     /**
@@ -72,28 +70,17 @@ class InvoiceInstallmentsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            [
-                'defaultContent' => '',
-                'data' => 'DT_RowIndex',
-                'name' => 'DT_RowIndex',
-                'title' => '#',
-                'render' => null,
-                'orderable' => false,
-                'searchable' => false,
-                'exportable' => false,
-                'printable' => true,
-                'footer' => '',
-            ],
-            Column::make('id')->hidden(),
-            Column::make('status')->title(trans('lang.status'))->orderable(false),
-            Column::make('late_days')->title(trans('lang.late_days'))->orderable(false),
+
+            Column::make('id')->title('رقم القسط'),
+            Column::make('pay_date')->title('يوم السداد'),
             Column::make('monthly_installment')->title(trans('lang.monthly_installment')),
             Column::make('paid_amount')->title(trans('lang.paid_amount')),
-            Column::make('pay_date')->title(trans('lang.pay_date')),
-            Column::make('changeDate')->title(trans('lang.change_date')),
-            Column::make('postingInstallment')->title(trans('lang.posting_installment')),
-            Column::make('monthPostingInstallment')->title(trans('lang.month_posting_installment'))->orderable(false),
-            Column::make('history')->title(trans('lang.history'))->orderable(false),
+            Column::make('status')->title(trans('lang.status'))->orderable(false),
+            Column::make('late_days')->title(trans('lang.late_days'))->orderable(false),
+            Column::make('notes')->title(trans('lang.notes')),
+            Column::make('changeDate')->title('الاجراءات'),
+
+
         ];
     }
 

@@ -45,6 +45,12 @@ class InvoiceController extends GeneralController
         return view('Dashboard.Invoice.create', compact('monthly_profit_percent', 'customers'));
     }
 
+    public function print_insurance_paper(Customer $customer)
+    {
+
+        return view('Dashboard.Invoice.print', compact('customer'));
+    }
+
     public function store(InvoiceCreateRequest $request)
     {
         try {
@@ -132,11 +138,16 @@ class InvoiceController extends GeneralController
     public function postingInstallment(Request $request)
     {
         $installment = InvoiceInstallments::find($request->id);
+
+        if ($installment->status == InvoiceInstallmentsStatusEnum::PAID->value) {
+            return response()->json(['status' => false, 'msg' => 'لا يمكن تأجيل قسط مدفوع بالفعل'], 200);
+        }
+
         $available_days = 20;
         $validation_dys = $available_days - $installment->moved_days;
         if ($installment->moved_days == $available_days) {
             throw ValidationException::withMessages([
-                'days_count' => 'لا يمكن الترحيل اكثر من 20 يوما',
+                'days_count' => 'لا يمكن التأجيل اكثر من 20 يوما للقسط الواحد',
             ]);
         }
 
@@ -148,35 +159,61 @@ class InvoiceController extends GeneralController
         $new_date = Carbon::parse($installment->pay_date)->addDays($request->days_count)->format('Y-m-d');
 
         $installment->history()->create([
-            'description' => '  ترحيل القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
+            'description' => '  تأجيل القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
             'invoice_id' => $installment->invoice_id,
             'admin_id' => auth()->user()->id,
         ]);
 
         $installment->pay_date = $new_date;
         $installment->moved_days += $request->days_count;
+        $installment->status = InvoiceInstallmentsStatusEnum::delayed->value;
         $installment->save();
-        return response()->json([], 200);
+        return response()->json(['status' => true, 'msg' => 'تم التأجيل بنجاح '], 200);
     }
 
     public function monthPostingInstallment(Request $request)
     {
-        $request->validate([
-            'id' => 'required|exists:invoice_installments,id',
-        ]);
-        $installment = InvoiceInstallments::find($request->id);
-        $new_date = Carbon::parse($installment->pay_date)->addMonth(1)->format('Y-m-d');
+        try {
+            $request->validate([
+                'id' => 'required|exists:invoice_installments,id',
+            ]);
+            $installment = InvoiceInstallments::find($request->id);
+            $next_bill_id = $request->id + 1;
+            $next_bill = InvoiceInstallments::where('id', $next_bill_id)->where('invoice_id', $installment->invoice_id)->first();
+            if (!$next_bill) {
+                return response()->json(['status' => false, 'msg' => 'لا يوجد قسط قادم للترحيله اليه القسط الحالي'], 200);
+            }
 
-        $installment->history()->create([
-            'description' => '  ترحيل القسط شهر من يوم ' . $installment->pay_date . ' الى يوم ' . $new_date . '',
-            'invoice_id' => $installment->invoice_id,
-            'admin_id' => auth()->user()->id,
-        ]);
+//        $new_date = Carbon::parse($installment->pay_date)->addMonth(1)->format('Y-m-d');
 
-        $installment->pay_date = $new_date;
+            $installment->history()->create([
+                'description' => ' تم ترحيل القسط ودمجه مع القسط القادم ',
+                'invoice_id' => $installment->invoice_id,
+                'admin_id' => auth()->user()->id,
+            ]);
 
-        $installment->save();
-        return response()->json([], 200);
+            $next_bill->paid_amount = $next_bill->paid_amount + $installment->paid_amount;
+            $next_bill->monthly_installment = $next_bill->monthly_installment + $installment->monthly_installment;
+            $next_bill->save();
+
+            $installment->monthly_installment = 0;
+            $installment->paid_amount = 0;
+            $installment->status = InvoiceInstallmentsStatusEnum::deported->value;
+            $installment->save();
+
+
+
+         $next_bill->history()->create([
+             'description' => 'تم دمج القسط السابق مع القسط المحدد ',
+             'invoice_id' => $next_bill->invoice_id,
+             'admin_id' => auth()->user()->id,
+         ]);
+
+        return response()->json(['status' => true, 'msg' => 'تم الترحيل'], 200);
+        } catch (\Exception $ex) {
+            return response()->json(['status' => false, 'msg' =>$ex], 200);
+
+        }
 
     }
 
@@ -196,90 +233,72 @@ class InvoiceController extends GeneralController
 
         $invoice_law_suits = $invoice->unPaidLawSuit;
 
-        foreach ($invoice_law_suits as $invoice_law_suit) {
-            $pay_amount = $invoice_law_suit->amount - $invoice_law_suit->paid_amount;
-
-            if ($amount >= $pay_amount) {
-                $added_amount = $invoice_law_suit->paid_amount += $pay_amount;
-                $amount = $amount - $pay_amount;
-                $invoice_law_suit->status = InvoiceInstallmentsStatusEnum::PAID->value;
-                $invoice_law_suit->save();
-
-            } else {
-                $added_amount = $invoice_law_suit->paid_amount += $amount;
-
-                $invoice_law_suit->save();
-                $amount = 0;
-            }
-
-            $invoice_law_suit->fresh();
-
-            $invoice_law_suit->histories()->create([
-                'description' => '  دفع مبلغ ' . $invoice_law_suit->paid_amount . ' من القسط رقم ' . $invoice_law_suit->id . 'من اصل ' . $pay_amount . ' , ',
-                'admin_id' => auth()->user()->id,
-            ]);
-
-            DailyHistory::create([
-                'description' => 'تم دفع من حساب قضيه رقم ' . $invoice_law_suit->id . ' مبلغ ' . $added_amount . ' من اصل ' . $pay_amount . ' , ',
-                'admin_id' => auth()->user()->id,
-            ]);
-
-            if ($amount <= 0) {
-                break;
-            }
-
-        }
-
-
-        if ($amount > 0) {
-
-
-            $remain_installments = $installments->where('status', InvoiceInstallmentsStatusEnum::UNPAID->value)->get();
-
-            $daily_history = '';
-
-            foreach ($remain_installments as $installment) {
-
-                $pay_amount = $installment->monthly_installment - $installment->paid_amount;
-
+        if (count($invoice_law_suits) > 0) {
+            foreach ($invoice_law_suits as $invoice_law_suit) {
+                $pay_amount = $invoice_law_suit->amount - $invoice_law_suit->paid_amount;
                 if ($amount >= $pay_amount) {
-                    $installment->paid_amount += $pay_amount;
+                    $added_amount = $invoice_law_suit->paid_amount += $pay_amount;
+                    $amount = $amount - $pay_amount;
+                    $invoice_law_suit->status = InvoiceInstallmentsStatusEnum::PAID->value;
+                    $invoice_law_suit->save();
                 } else {
-                    $installment->paid_amount += $amount;
+                    $added_amount = $invoice_law_suit->paid_amount += $amount;
+                    $invoice_law_suit->save();
                     $amount = 0;
                 }
 
-
-                $installment->save();
-                $installment->fresh();
-                if ($pay_amount == $installment->paid_amount || $installment->monthly_installment == $installment->paid_amount) {
-                    $installment->status = InvoiceInstallmentsStatusEnum::PAID->value;
-                }
-
-                $installment->save();
-                $installment->fresh();
-
-                $history = $installment->history()->create([
-                    'description' => '  دفع مبلغ ' . $installment->paid_amount . ' من القسط رقم ' . $installment->id . 'من اصل ' . $installment->monthly_installment . ' , ',
-                    'invoice_id' => $installment->invoice_id,
+                $invoice_law_suit->fresh();
+                $invoice_law_suit->histories()->create([
+                    'description' => '  دفع مبلغ ' . $invoice_law_suit->paid_amount . ' من القسط رقم ' . $invoice_law_suit->id . 'من اصل ' . $pay_amount . ' , ',
                     'admin_id' => auth()->user()->id,
                 ]);
 
-
-                $amount = $amount - $installment->monthly_installment;
-
-                $daily_history = $daily_history . $history->description . ' رقم ' . $installment->id;
+                DailyHistory::create([
+                    'description' => 'تم دفع من حساب قضيه رقم ' . $invoice_law_suit->id . ' مبلغ ' . $added_amount . ' من اصل ' . $pay_amount . ' , ',
+                    'admin_id' => auth()->user()->id,
+                ]);
 
                 if ($amount <= 0) {
-                    $daily_history = $daily_history . ' وتم الدفع بنجاح' . ' , ';
+                    break;
+                }
+            }
+        }
+        if ($amount > 0) {
+            $remain_installments = $installments->where('status', InvoiceInstallmentsStatusEnum::UNPAID->value)->get();
+            $daily_history = '';
+            if (count($remain_installments) > 0) {
+                foreach ($remain_installments as $installment) {
+                    $pay_amount = $installment->monthly_installment - $installment->paid_amount;
+                    if ($amount >= $pay_amount) {
+                        $installment->paid_amount += $pay_amount;
+                    } else {
+                        $installment->paid_amount += $amount;
+                        $amount = 0;
+                    }
+                    $installment->save();
+                    $installment->fresh();
+                    if ($pay_amount == $installment->paid_amount || $installment->monthly_installment == $installment->paid_amount) {
+                        $installment->status = InvoiceInstallmentsStatusEnum::PAID->value;
+                    }
+                    $installment->save();
+                    $installment->fresh();
 
-                    $daily_history = $daily_history . 'الخاص بمنتج ' . $invoice->product;
-
-                    DailyHistory::create([
-                        'description' => $daily_history,
+                    $history = $installment->history()->create([
+                        'description' => '  دفع مبلغ ' . $installment->paid_amount . ' من القسط رقم ' . $installment->id . 'من اصل ' . $installment->monthly_installment . ' , ',
+                        'invoice_id' => $installment->invoice_id,
                         'admin_id' => auth()->user()->id,
                     ]);
-                    break;
+                    $amount = $amount - $installment->monthly_installment;
+                    $daily_history = $daily_history . $history->description . ' رقم ' . $installment->id;
+                    if ($amount <= 0) {
+                        $daily_history = $daily_history . ' وتم الدفع بنجاح' . ' , ';
+                        $daily_history = $daily_history . 'الخاص بمنتج ' . $invoice->product;
+                        DailyHistory::create([
+                            'description' => $daily_history,
+                            'admin_id' => auth()->user()->id,
+                        ]);
+                        break;
+                    }
                 }
             }
             $sum_remaining_amount = $sum_remaining_amount - $request->amount;
@@ -290,10 +309,5 @@ class InvoiceController extends GeneralController
 
     }
 
-    public function print(Customer $customer)
-    {
-
-        return view('Dashboard.Invoice.print', compact('customer'));
-    }
 
 }

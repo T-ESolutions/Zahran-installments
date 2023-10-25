@@ -125,7 +125,7 @@ class CustomerController extends GeneralController
         return response()->json(['success' => trans('lang.updated')]);
 
     }
-    public function addToLateCustomersList(Request $request,Customer $customer)
+    public function addToLateCustomersList(Customer $customer)
     {
         $customer->is_late = !$customer->is_late;
         $customer->save();

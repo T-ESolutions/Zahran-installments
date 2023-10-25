@@ -10,45 +10,50 @@
     <meta name="description" content="Trust Receipt">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;800&display=swap" rel="stylesheet">
     <title>Trust Receipt</title>
+    <style>
+        body {
+            font-size: 15px !important;
+        }
+    </style>
 </head>
 
-<body style="direction: rtl; font-family: 'Cairo', sans-serif; padding: 0; margin: 0;">
+<body style="direction: rtl; font-family: 'Cairo', sans-serif;  padding: 0; margin: 0;">
 <!-- start home -->
 <section class="home" style="padding: 20px; ">
     <div class="content" style="padding: 30px 20px; border: 1px solid #000;">
         <div>
             <header>
-                <h1 style="text-align: center; font-size: 30px; font-weight: bold; ">إيصال أمانة</h1>
+                <h1 style="text-align: center;  font-weight: bold; ">إيصال أمانة</h1>
             </header>
             <article style="padding: 0 30px;">
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;">استلمت انا الموقع ادناه / <span> {{$customer->name}}</span>
+                    <p style=" margin: 0;">استلمت انا الموقع ادناه / <span> {{$customer->name}}</span>
                     </p>
-                    <p style="font-size: 22px; margin: 0;"> بطاقة رقم / <span> {{$customer->id_number}} </span></p>
+                    <p style=" margin: 0;"> بطاقة رقم / <span> {{$customer->id_number}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-evenly; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> المقيم / <span> {{$customer->address_id}} </span></p>
-                    <p style="font-size: 22px; margin: 0;"> مركز / <span> {{$customer->center}}  </span></p>
-                    <p style="font-size: 22px; margin: 0;"> محافظة / <span> {{$customer->governorate}} </span></p>
+                    <p style=" margin: 0;"> المقيم / <span> {{$customer->address_id}} </span></p>
+                    <p style=" margin: 0;"> مركز / <span> {{$customer->center}}  </span></p>
+                    <p style=" margin: 0;"> محافظة / <span> {{$customer->governorate}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> من السيد / <span> {{settings('first_name')}} </span></p>
+                    <p style=" margin: 0;"> من السيد / <span> {{settings('first_name')}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> مبلغ وقدره / <span> {{settings('check_amount')}} جنيها مصريا فقط لا غير </span>
+                    <p style=" margin: 0;"> مبلغ وقدره / <span> {{settings('check_amount')}} جنيها مصريا فقط لا غير </span>
                     </p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;">  وذلك على سبيل الأمانة لتوصيله للسيد / <span> {{settings('first_name')}} </span></p>
+                    <p style=" margin: 0;">  وذلك على سبيل الأمانة لتوصيله للسيد / <span> {{settings('third_name')}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> وإذا لم اقم بتوصيل هذا المبلغ أكون خائنا للأمانة ومبددا
+                    <p style=" margin: 0;"> وإذا لم اقم بتوصيل هذا المبلغ أكون خائنا للأمانة ومبددا
                         لهذا المبلغ واكون مسؤولا عن ذلك مسئوليه مدنيه وجنائية. </p>
                 </div>
                 <div class="row"
@@ -57,11 +62,11 @@
                         <h3 style="text-align: center; font-weight: 600;">المستلم</h3>
                         <ul style="list-style-type: none;">
                             <li>
-                                <p style="font-size: 22px; margin: 0;"> الاسم / <span> .............................
+                                <p style=" margin: 0;"> الاسم / <span> .............................
                                         </span></p>
                             </li>
                             <li>
-                                <p style="font-size: 22px; margin: 0;"> التوقيع / <span>
+                                <p style=" margin: 0;"> التوقيع / <span>
                                             ............................. </span></p>
                             </li>
                         </ul>
@@ -77,37 +82,37 @@
         </div>
         <div>
             <header>
-                <h1 style="text-align: center; font-size: 30px; font-weight: bold; ">إيصال أمانة</h1>
+                <h1 style="text-align: center;  font-weight: bold; ">إيصال أمانة</h1>
             </header>
             <article style="padding: 0 30px;">
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;">استلمت انا الموقع ادناه / <span> {{$customer->name}}</span>
+                    <p style=" margin: 0;">استلمت انا الموقع ادناه / <span> {{$customer->name}}</span>
                     </p>
-                    <p style="font-size: 22px; margin: 0;"> بطاقة رقم / <span> {{$customer->id_number}} </span></p>
+                    <p style=" margin: 0;"> بطاقة رقم / <span> {{$customer->id_number}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-evenly; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> المقيم / <span> {{$customer->address_id}} </span></p>
-                    <p style="font-size: 22px; margin: 0;"> مركز / <span> {{$customer->center}} </span></p>
-                    <p style="font-size: 22px; margin: 0;"> محافظة / <span> {{$customer->governorate}} </span></p>
+                    <p style=" margin: 0;"> المقيم / <span> {{$customer->address_id}} </span></p>
+                    <p style=" margin: 0;"> مركز / <span> {{$customer->center}} </span></p>
+                    <p style=" margin: 0;"> محافظة / <span> {{$customer->governorate}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> من السيد / <span> {{settings('second_name')}} </span></p>
+                    <p style=" margin: 0;"> من السيد / <span> {{settings('second_name')}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> مبلغ وقدره / <span> {{settings('check_amount')}} جنيها مصريا فقط لا غير </span>
+                    <p style=" margin: 0;"> مبلغ وقدره / <span> {{settings('check_amount')}} جنيها مصريا فقط لا غير </span>
                     </p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> وذلك على سبيل الأمانة لتوصيله للسيد / <span>{{settings('second_name')}} </span></p>
+                    <p style=" margin: 0;"> وذلك على سبيل الأمانة لتوصيله للسيد / <span>{{settings('fourth_name')}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style="font-size: 22px; margin: 0;"> وإذا لم اقم بتوصيل هذا المبلغ أكون خائنا للأمانة ومبددا
+                    <p style=" margin: 0;"> وإذا لم اقم بتوصيل هذا المبلغ أكون خائنا للأمانة ومبددا
                         لهذا المبلغ واكون مسؤولا عن ذلك مسئوليه مدنيه وجنائية. </p>
                 </div>
                 <div class="row"
@@ -116,11 +121,11 @@
                         <h3 style="text-align: center; font-weight: 600;">المستلم</h3>
                         <ul style="list-style-type: none;">
                             <li>
-                                <p style="font-size: 22px; margin: 0;"> الاسم / <span> .............................
+                                <p style=" margin: 0;"> الاسم / <span> .............................
                                         </span></p>
                             </li>
                             <li>
-                                <p style="font-size: 22px; margin: 0;"> التوقيع / <span>
+                                <p style=" margin: 0;"> التوقيع / <span>
                                             ............................. </span></p>
                             </li>
                         </ul>
