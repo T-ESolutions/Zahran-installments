@@ -25,8 +25,8 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required',  'email', 'max:255', Rule::unique('customers','email')->ignore($this->id)],
+            'name' => ['required', 'string', 'max:191'],
+            'email' => ['required',  'email', 'max:191', Rule::unique('customers','email')->ignore($this->id)],
             'phone' => ['required', 'nullable','numeric','digits_between:8,14', Rule::unique('customers','phone')->ignore($this->id)],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['required', 'same:password'],

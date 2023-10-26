@@ -57,13 +57,15 @@ Route::group(
         Route::resource('installment_requests', InstallmentRequestController::class);
 
         //invoices
-        Route::get('invoices/print/{customer}', [InvoiceController::class, 'print_insurance_paper'])->name('invoice.print');
+        Route::get('invoices/print/{paper}', [InvoiceController::class, 'print_insurance_paper'])->name('invoice.print');
         Route::get('invoices/customer', [InvoiceController::class, 'getInvoice'])->name('invoice.getInvoice');
         Route::get('invoices/installments/{id}', [InvoiceController::class, 'indexInstallments'])->name('invoices.installments');
         Route::post('invoices/chane/installment/date', [InvoiceController::class, 'changeInstallmentDate'])->name('invoices.installments.change.date');
+        Route::post('invoices/chane/installment/add_notes', [InvoiceController::class, 'add_notes'])->name('invoices.installments.add.notes');
         Route::post('invoices/posting/installment', [InvoiceController::class, 'postingInstallment'])->name('invoices.posting.installments');
         Route::post('invoices/month/posting/installment', [InvoiceController::class, 'monthPostingInstallment'])->name('invoices.month.posting.installments');
         Route::post('invoices/installment/pay', [InvoiceController::class, 'pay'])->name('invoices.installments.pay');
+        Route::post('invoices/finish', [InvoiceController::class, 'finish'])->name('invoices.finish');
 
         Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
 

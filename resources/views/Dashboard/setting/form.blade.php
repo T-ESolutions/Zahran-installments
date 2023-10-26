@@ -1,7 +1,8 @@
-<div class="row text-capitalize">
-    <div class="col-sm-6">
+<div class=" text-capitalize">
+    <div class="row">
+    <div class="col-sm-12">
         <div class="form-group ">
-            <label for="site_name_ar">{{trans('lang.website_name_ar')}}<span
+            <label for="site_name_ar">اسم الموقع<span
                     class="text-danger">*</span></label>
             <input type="text" name="site_name_ar" id="site_name_ar"
                    value="{{ old('site_name_ar', $data->where('key', 'site_name_ar')->first()->val) }}"
@@ -11,84 +12,10 @@
     </div>
     <div class="col-sm-6">
         <div class="form-group ">
-            <label for="site_name_en">{{trans('lang.website_name_en')}}<span
-                    class="text-danger">*</span></label>
-            <input type="text" name="site_name_en" id="site_name_en"
-                   value="{{ old('site_name_en', $data->where('key', 'site_name_en')->first()->val) }}"
-                   class="form-control {{ $errors->has('site_name_en') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <div class="form-group ">
-            <label for="copyright">{{trans('lang.copyrights')}}<span class="text-danger">*</span></label>
-            <input type="text" name="copyright" id="location"
-                   value="{{ old('copyright', $data->where('key', 'copyright')->first()->val) }}"
-                   class="form-control {{ $errors->has('copyright') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <div class="form-group ">
             <label for="copyright">{{trans('lang.monthly_profit_percent')}}<span class="text-danger">*</span></label>
             <input type="number" name="monthly_profit_percent" id="location"
                    value="{{ old('monthly_profit_percent', $data->where('key', 'monthly_profit_percent')->first()->val) }}"
                    class="form-control {{ $errors->has('monthly_profit_percent') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <div class="form-group ">
-            <label for="site_name_en">{{trans('lang.first_name')}}<span
-                    class="text-danger">*</span></label>
-            <input type="text" name="first_name" id="first_name"
-                   value="{{ old('first_name', $data->where('key', 'first_name')->first()->val) }}"
-                   class="form-control {{ $errors->has('first_name') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-group ">
-            <label for="site_name_en">{{trans('lang.second_name')}}<span
-                    class="text-danger">*</span></label>
-            <input type="text" name="second_name" id="second_name"
-                   value="{{ old('second_name', $data->where('key', 'second_name')->first()->val) }}"
-                   class="form-control {{ $errors->has('second_name') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-group ">
-            <label for="site_name_en">{{trans('lang.third_name')}}<span
-                    class="text-danger">*</span></label>
-            <input type="text" name="third_name" id="third_name"
-                   value="{{ old('third_name', $data->where('key', 'third_name')->first()->val) }}"
-                   class="form-control {{ $errors->has('third_name') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <div class="form-group ">
-            <label for="site_name_en">{{trans('lang.fourth_name')}}<span
-                    class="text-danger">*</span></label>
-            <input type="text" name="fourth_name" id="fourth_name"
-                   value="{{ old('fourth_name', $data->where('key', 'fourth_name')->first()->val) }}"
-                   class="form-control {{ $errors->has('fourth_name') ? 'border-danger' : '' }}"
-                   placeholder=""/>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <div class="form-group ">
-            <label for="site_name_en">{{trans('lang.check_amount')}}<span
-                    class="text-danger">*</span></label>
-            <input type="text" name="check_amount" id="check_amount"
-                   value="{{ old('check_amount', $data->where('key', 'check_amount')->first()->val) }}"
-                   class="form-control {{ $errors->has('check_amount') ? 'border-danger' : '' }}"
                    placeholder=""/>
         </div>
     </div>
@@ -103,9 +30,54 @@
                    placeholder=""/>
         </div>
     </div>
+    </div>
+    <h3 class="text-primary">اعدادات وصل الامانة</h3>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group ">
+                <label for="site_name_en">{{trans('lang.first_name')}}<span
+                        class="text-danger">*</span></label>
+                <input type="text" name="first_name" id="first_name"
+                       value="{{ old('first_name', $data->where('key', 'first_name')->first()->val) }}"
+                       class="form-control {{ $errors->has('first_name') ? 'border-danger' : '' }}"
+                       placeholder=""/>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group ">
+                <label for="site_name_en">{{trans('lang.second_name')}}<span
+                        class="text-danger">*</span></label>
+                <input type="text" name="second_name" id="second_name"
+                       value="{{ old('second_name', $data->where('key', 'second_name')->first()->val) }}"
+                       class="form-control {{ $errors->has('second_name') ? 'border-danger' : '' }}"
+                       placeholder=""/>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group ">
+                <label for="site_name_en">{{trans('lang.third_name')}}<span
+                        class="text-danger">*</span></label>
+                <input type="text" name="third_name" id="third_name"
+                       value="{{ old('third_name', $data->where('key', 'third_name')->first()->val) }}"
+                       class="form-control {{ $errors->has('third_name') ? 'border-danger' : '' }}"
+                       placeholder=""/>
+            </div>
+        </div>
 
+        <div class="col-sm-6">
+            <div class="form-group ">
+                <label for="site_name_en">{{trans('lang.fourth_name')}}<span
+                        class="text-danger">*</span></label>
+                <input type="text" name="fourth_name" id="fourth_name"
+                       value="{{ old('fourth_name', $data->where('key', 'fourth_name')->first()->val) }}"
+                       class="form-control {{ $errors->has('fourth_name') ? 'border-danger' : '' }}"
+                       placeholder=""/>
+            </div>
+        </div>
+    </div>
 </div>
 
+<h3 class="text-primary">اعدادات الشعار</h3>
 
 <div class="row text-capitalize">
     <div class="col-3">

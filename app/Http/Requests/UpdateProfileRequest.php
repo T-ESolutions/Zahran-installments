@@ -16,8 +16,8 @@ class UpdateProfileRequest extends FormRequest
     {
 
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required',  'email', 'max:255', Rule::unique('admins','email')->ignore($this->id)],
+            'name' => ['required', 'string', 'max:191'],
+            'email' => ['required',  'email', 'max:191', Rule::unique('admins','email')->ignore($this->id)],
             'phone' => ['required', 'numeric','digits_between:8,14', Rule::unique('admins','phone')->ignore($this->id)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['nullable' ,'same:password'],

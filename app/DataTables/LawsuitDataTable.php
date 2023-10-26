@@ -23,10 +23,16 @@ class LawsuitDataTable extends DataTable
             ->addColumn('customer_name', function ($model) {
                 return $model->invoice->customer->name ?? '';
             })
+            ->addColumn('invoice_number', function ($model) {
+                return $model->invoice->invoice_number ?? '';
+            })
             ->editColumn('created_by', function ($model) {
                 return $model->admin->name ?? '';
             })
-            ->rawColumns(['action','customer_name']);
+            ->editColumn('type', function ($model) {
+                return ($model->type == 1)? 'انذار' : 'قضية';
+            })
+            ->rawColumns(['action','customer_name','type','invoice_number']);
     }
 
     /**
@@ -37,7 +43,7 @@ class LawsuitDataTable extends DataTable
      */
     public function query(Lawsuit $model)
     {
-        return $model->newQuery()->with(['customer', 'admin']);
+        return $model->orderBy('id','desc')->newQuery()->with(['customer', 'admin']);
     }
 
     /**
@@ -72,21 +78,14 @@ class LawsuitDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            [
-                'defaultContent' => '',
-                'data' => 'DT_RowIndex',
-                'name' => 'DT_RowIndex',
-                'title' => '#',
-                'render' => null,
-                'orderable' => false,
-                'searchable' => false,
-                'exportable' => false,
-                'printable' => true,
-                'footer' => '',
-            ],
+
             Column::make('id')->title('رقم القضية'),
+            Column::make('title')->title('الاسم'),
+            Column::make('type')->title('النوع'),
             Column::make('customer_name')->title(trans('lang.customer_name')),
-            Column::make('created_by')->title(trans('lang.created_by')),
+            Column::make('invoice_id')->title('رقم الفاتورة'),
+            Column::make('invoice_number')->title('رقم فاتورة الشراء'),
+            Column::make('created_by')->searchable(false)->title(trans('lang.created_by')),
             Column::make('amount')->title(trans('lang.amount')),
             Column::make('paid_amount')->title(trans('lang.paid_amount')),
             Column::make('status')->title(trans('lang.status')),

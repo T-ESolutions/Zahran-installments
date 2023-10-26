@@ -56,9 +56,10 @@ class CustomerController extends GeneralController
             if ($request->hasFile('id_image')) {
                 $data['id_image'] = $this->uploadImage($request->file('id_image'), $this->path, null, settings('images_size'));
             }
-
             $customer = Customer::create($data);
-            $customer->relatives()->createMany($data['relatives']);
+            if(isset($data['relatives'])){
+                $customer->relatives()->createMany($data['relatives']);
+            }
             DB::commit();
             return redirect()->route($this->route)->with('success', trans('lang.created'));
         } catch (\Exception $e) {
@@ -90,8 +91,13 @@ class CustomerController extends GeneralController
                 $data['id_image'] = $this->uploadImage($request->file('id_image'), $this->path, $data['id_image'], settings('images_size'));
             }
             $customer->update($data);
+
+            if(isset($data['relatives'])){
+                $customer->relatives()->delete();
+                $customer->relatives()->createMany($data['relatives']);
+            }
             DB::commit();
-            return redirect()->back()->with('success', trans('lang.updated'));
+            return redirect()->route($this->route)->with('success', trans('lang.updated'));
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));

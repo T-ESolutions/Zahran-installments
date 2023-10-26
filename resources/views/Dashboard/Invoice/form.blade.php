@@ -1,227 +1,249 @@
-<div class="card-body row">
+<div class="card-body ">
 
 
-    <div class="form-group  col-lg-4 col-sm-4 ">
-        <label>{{trans('lang.the_customer')}}</label>
-        <div class="  {{ $errors->has('customer_id') ? ' border  border-danger rounded' : '' }}">
-            <select name="customer_id"
-                    class="form-control select2"
-                    id="customer_select">
-                <option selected disabled></option>
-                @foreach($customers as $row)
-                    <option
-                        @if(Request::segment(3)== 'invoices' && Request::segment(5)== 'edit')
-                        {{ $row->id == old('customer_id',  $data->customer_id)  ? 'selected' : '' }}
-                        @else
-                        {{ $row->id == old('customer_id') ? 'selected' : '' }}
-                        @endif
-                        value="{{ $row->id }}">{{ $row->name }}</option>
-                @endforeach
-            </select>
+    <h3 class="text-primary">بيانات العميل والضامنين</h3>
+    <div class="row">
+        <div class="form-group  col-lg-4 col-sm-4 ">
+            <label>{{trans('lang.the_customer')}}</label>
+            <div class="  {{ $errors->has('customer_id') ? ' border  border-danger rounded' : '' }}">
+                <select name="customer_id"
+                        class="form-control select2"
+                        id="customer_select">
+                    <option selected disabled></option>
+                    @foreach($customers as $row)
+                        <option
+                            @if(Request::segment(3)== 'invoices' && Request::segment(5)== 'edit')
+                            {{ $row->id == old('customer_id',  $data->customer_id)  ? 'selected' : '' }}
+                            @else
+                            {{ $row->id == old('customer_id') ? 'selected' : '' }}
+                            @endif
+                            value="{{ $row->id }}">{{ $row->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <span class="text-danger errors form_error_customer_id" role="alert"></span>
         </div>
-        <span class="text-danger errors form_error_customer_id" role="alert"></span>
-    </div>
-    <div class="form-group  col-lg-4 col-sm-4 ">
-        <label>{{trans('lang.guarantor_type')}}</label>
-        <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
-            <select name="invoice_type"
-                    class="form-control select2"
-                    id="invoice_type">
-                <option selected disabled></option>
-                <option value="{{ \App\Enums\InvoiceTypeEnum::INVOICE }}">{{trans('lang.invoice')}} </option>
-                <option value="{{ \App\Enums\InvoiceTypeEnum::ATTORNEY }}">{{trans('lang.attorney')}} </option>
-                <option value="{{ \App\Enums\InvoiceTypeEnum::INSURANCE }}">{{trans('lang.insurance')}} </option>
+        <div class="form-group  col-lg-4 col-sm-4 ">
+            <label>{{trans('lang.guarantors')}}</label>
+            <div class="  {{ $errors->has('guarantors_id') ? ' border  border-danger rounded' : '' }}">
+                <select name="guarantors_id[]"
+                        class="form-control select2"
+                        id="guarantors_select" multiple>
 
-            </select>
+                    @foreach($customers as $row)
+                        <option value="{{ $row->id }}">{{ $row->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <span class="text-danger errors form_error_guarantors_id" role="alert"></span>
+        </div>
+    </div>
+    <h3 class="text-primary">الضمان</h3>
+    <div class="row">
+        <div class="form-group  col-lg-4 col-sm-4 ">
+            <label>{{trans('lang.guarantor_type')}}</label>
+            <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
+                <select name="invoice_type"
+                        class="form-control select2"
+                        id="invoice_type">
+                    <option selected disabled></option>
+                    <option value="{{ \App\Enums\InvoiceTypeEnum::ATTORNEY }}">{{trans('lang.attorney')}} </option>
+                    <option value="{{ \App\Enums\InvoiceTypeEnum::INSURANCE }}">{{trans('lang.insurance')}} </option>
+                    <option value="{{ \App\Enums\InvoiceTypeEnum::INVOICE }}">وصل امانة من فاتورة قديمة</option>
+
+                </select>
+            </div>
+
+            <span class="text-danger errors form_error_invoice_type" role="alert"></span>
+        </div>
+        <div id="customer_invoices_group" class="form-group  col-lg-4 col-sm-4 d-none">
+            <label>{{trans('lang.old_invoice')}}</label>
+            <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
+                <select name="invoice_id"
+                        class="form-control select2"
+                        id="customer_invoices">
+                    <option selected disabled></option>
+
+                </select>
+            </div>
+            <span class="text-danger errors form_error_invoice_id" role="alert"></span>
+
+        </div>
+        <div id="paper_amount_container" class="form-group  col-lg-4 col-sm-4" style="display: none;">
+            <label>قيمة وصل الامانة<span class="text-danger">*</span></label>
+            <div class="  {{ $errors->has('paper_amount') ? ' border  border-danger rounded' : '' }}">
+                <input name="paper_amount" id="paper_amount"
+                       value="{{ old('paper_amount', $data->paper_amount ?? '') }}" step="any"
+                       class="form-control  {{ $errors->has('paper_amount') ? 'border-danger' : '' }}" type="number"
+                       min="0"/>
+            </div>
+            <span class="text-danger errors form_error_paper_amount" role="alert"></span>
+
+        </div>
+    </div>
+    <h3 class="text-primary">بيانات الفاتورة</h3>
+    <div class="row">
+        <div class="form-group  col-4">
+            <label>رقم فاتورة الشراء</label>
+            <input name="invoice_number" placeholder="{{trans('lang.invoice_number')}}"
+                   value="{{ old('invoice_number', $data->invoice_number ?? '') }}"
+                   class="form-control  {{ $errors->has('invoice_number') ? 'border-danger' : '' }}" type="text"
+                   maxlength="255"/>
+
+            <span class="text-danger errors form_error_invoice_number" role="alert"></span>
         </div>
 
-        <span class="text-danger errors form_error_invoice_type" role="alert"></span>
-    </div>
-    <div id="customer_invoices_group" class="form-group  col-lg-4 col-sm-4 d-none">
-        <label>{{trans('lang.old_invoice')}}</label>
-        <div class="  {{ $errors->has('invoice_type') ? ' border  border-danger rounded' : '' }}">
-            <select name="invoice_id"
-                    class="form-control select2"
-                    id="customer_invoices">
-                <option selected disabled></option>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.pay_day')}}<span
+                    class="text-danger">*</span></label>
+            <input name="pay_day" id="pay_day" placeholder="{{trans('lang.pay_day')}}"
+                   value="{{ old('pay_day', $data->pay_day ?? '') }}"
+                   class="form-control  {{ $errors->has('pay_day') ? 'border-danger' : '' }}" type="number"
+                   />
 
-            </select>
+            <span class="text-danger errors form_error_pay_day" role="alert"></span>
         </div>
-        <span class="text-danger errors form_error_invoice_id" role="alert"></span>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.transaction_number')}}</label>
+            <input name="transaction_number" id="transaction_number" disabled
+                   placeholder="{{trans('lang.transaction_number')}}"
+                   value="{{ old('transaction_number', $data->transaction_number ?? '') }}"
+                   class="form-control  {{ $errors->has('transaction_number') ? 'border-danger' : '' }}" type="text"
+                   maxlength="255"/>
 
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.invoice_number')}}</label>
-        <input name="invoice_number" placeholder="{{trans('lang.invoice_number')}}"
-               value="{{ old('invoice_number', $data->invoice_number ?? '') }}"
-               class="form-control  {{ $errors->has('invoice_number') ? 'border-danger' : '' }}" type="text"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_invoice_number" role="alert"></span>
-    </div>
-
-    <div class="form-group  col-4">
-        <label>{{trans('lang.pay_day')}}<span
-                class="text-danger">*</span></label>
-        <input name="pay_day" id="pay_day" placeholder="{{trans('lang.pay_day')}}"
-               value="{{ old('pay_day', $data->pay_day ?? '') }}"
-               class="form-control  {{ $errors->has('pay_day') ? 'border-danger' : '' }}" type="number"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_pay_day" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.transaction_number')}}</label>
-        <input name="transaction_number" id="transaction_number" disabled
-               placeholder="{{trans('lang.transaction_number')}}"
-               value="{{ old('transaction_number', $data->transaction_number ?? '') }}"
-               class="form-control  {{ $errors->has('transaction_number') ? 'border-danger' : '' }}" type="text"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_transaction_number" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.invoice_date')}}<span
-                class="text-danger">*</span></label>
-        <input name="invoice_date" placeholder="{{trans('lang.invoice_date')}}"
-               value="{{ old('invoice_date', $data->invoice_date ?? '') }}"
-               class="form-control  {{ $errors->has('invoice_date') ? 'border-danger' : '' }}" type="date"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_invoice_date" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.product')}}</label>
-        <textarea name="product" placeholder="{{trans('lang.product')}}"
-                  class="form-control  {{ $errors->has('product') ? 'border-danger' : '' }}" type="text"
-                  maxlength="255">{{ old('product', $data->product ?? '') }}</textarea>
-
-        <span class="text-danger errors form_error_product" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.note')}}</label>
-        <textarea name="note" placeholder="{{trans('lang.note')}}"
-                  class="form-control  {{ $errors->has('note') ? 'border-danger' : '' }}" type="text"
-                  maxlength="255">{{ old('note', $data->note ?? '') }}</textarea>
-
-        <span class="text-danger errors form_error_note" role="alert"></span>
-    </div>
-    <div class="form-group  col-lg-4 col-sm-4 ">
-        <label>{{trans('lang.guarantors')}}</label>
-        <div class="  {{ $errors->has('guarantors_id') ? ' border  border-danger rounded' : '' }}">
-            <select name="guarantors_id[]"
-                    class="form-control select2"
-                    id="guarantors_select" multiple>
-
-                @foreach($customers as $row)
-                    <option value="{{ $row->id }}">{{ $row->name }}</option>
-                @endforeach
-            </select>
+            <span class="text-danger errors form_error_transaction_number" role="alert"></span>
         </div>
-        <span class="text-danger errors form_error_guarantors_id" role="alert"></span>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.invoice_date')}}<span
+                    class="text-danger">*</span></label>
+            <input name="invoice_date" placeholder="{{trans('lang.invoice_date')}}"
+                   value="{{ old('invoice_date', $data->invoice_date ?? '') }}"
+                   class="form-control  {{ $errors->has('invoice_date') ? 'border-danger' : '' }}" type="date"
+                   maxlength="255"/>
+
+            <span class="text-danger errors form_error_invoice_date" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.product')}}<span
+                    class="text-danger">*</span></label>
+            <textarea name="product" placeholder="{{trans('lang.product')}}"
+                      class="form-control  {{ $errors->has('product') ? 'border-danger' : '' }}" type="text" required
+                      maxlength="255">{{ old('product', $data->product ?? '') }}</textarea>
+
+            <span class="text-danger errors form_error_product" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.note')}}</label>
+            <textarea name="note" placeholder="{{trans('lang.note')}}"
+                      class="form-control  {{ $errors->has('note') ? 'border-danger' : '' }}" type="text"
+                      maxlength="255">{{ old('note', $data->note ?? '') }}</textarea>
+
+            <span class="text-danger errors form_error_note" role="alert"></span>
+        </div>
+
+        <div class="form-group  col-4">
+            <label>{{trans('lang.total_price')}}<span
+                    class="text-danger">*</span></label>
+            <input name="total_price" id="total_price" placeholder="{{trans('lang.total_price')}}"
+                   value="{{ old('total_price', $data->total_price ?? '') }}"
+                   class="form-control  {{ $errors->has('total_price') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <span class="text-danger errors form_error_total_price" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.deposit')}}<span
+                    class="text-danger">*</span></label>
+            <input name="deposit" id="deposit" placeholder="{{trans('lang.deposit')}}"
+                   value="{{ old('deposit', $data->deposit ?? '') }}"
+                   class="form-control  {{ $errors->has('deposit') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <span class="text-danger errors form_error_deposit" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.remaining_price')}}<span
+                    class="text-danger">*</span></label>
+            <input disabled id="remaining_price_view" placeholder="{{trans('lang.remaining_price')}}"
+                   value="{{ old('remaining_price', $data->remaining_price ?? '') }}"
+                   class="form-control  {{ $errors->has('remaining_price') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+            <input name="remaining_price" hidden="" id="remaining_price" placeholder="{{trans('lang.remaining_price')}}"
+                   value="{{ old('remaining_price', $data->remaining_price ?? '') }}"
+                   class="form-control  {{ $errors->has('remaining_price') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <span class="text-danger errors form_error_remaining_price" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.monthly_profit_percent')}}<span
+                    class="text-danger">*</span></label>
+            <input name="monthly_profit_percent" id="monthly_profit_percent"
+                   placeholder="{{trans('lang.monthly_profit_percent')}}"
+                   value="{{ old('monthly_profit_percent', $data->monthly_profit_percent ?? $monthly_profit_percent ??   '' ) }}"
+                   class="form-control  {{ $errors->has('monthly_profit_percent') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+
+            <span class="text-danger errors form_error_monthly_profit_percent" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.months_count')}}<span
+                    class="text-danger">*</span></label>
+            <input name="months_count" id="months_count" placeholder="{{trans('lang.months_count')}}"
+                   value="{{ old('months_count', $data->months_count ?? '') }}"
+                   class="form-control  {{ $errors->has('months_count') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <span class="text-danger errors form_error_months_count" role="alert"></span>
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.monthly_installment')}}<span
+                    class="text-danger">*</span></label>
+            <input name="monthly_installment" id="monthly_installment"
+                   placeholder="{{trans('lang.monthly_installment')}}"
+                   value="{{ old('monthly_installment', $data->monthly_installment ?? '') }}"
+                   class="form-control  {{ $errors->has('monthly_installment') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <span class="text-danger errors form_error_monthly_installment" role="alert"></span>
+
+        </div>
+        <div class="form-group  col-4">
+            <label>{{trans('lang.profit')}}<span
+                    class="text-danger">*</span></label>
+
+            <input id="profit_view" disabled readonly placeholder="{{trans('lang.profit')}}"
+                   value="{{ old('profit', $data->profit ?? '') }}"
+                   class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <input name="profit" hidden="" id="profit" placeholder="{{trans('lang.profit')}}"
+                   value="{{ old('profit', $data->profit ?? '') }}"
+                   class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
+                   type="number"
+                   step="0.01"
+                   />
+
+            <span class="text-danger errors form_error_profit" role="alert"></span>
+        </div>
     </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.total_price')}}<span
-                class="text-danger">*</span></label>
-        <input name="total_price" id="total_price" placeholder="{{trans('lang.total_price')}}"
-               value="{{ old('total_price', $data->total_price ?? '') }}"
-               class="form-control  {{ $errors->has('total_price') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_total_price" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.deposit')}}<span
-                class="text-danger">*</span></label>
-        <input name="deposit" id="deposit" placeholder="{{trans('lang.deposit')}}"
-               value="{{ old('deposit', $data->deposit ?? '') }}"
-               class="form-control  {{ $errors->has('deposit') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_deposit" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.remaining_price')}}<span
-                class="text-danger">*</span></label>
-        <input disabled id="remaining_price_view" placeholder="{{trans('lang.remaining_price')}}"
-               value="{{ old('remaining_price', $data->remaining_price ?? '') }}"
-               class="form-control  {{ $errors->has('remaining_price') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-        <input name="remaining_price" hidden="" id="remaining_price" placeholder="{{trans('lang.remaining_price')}}"
-               value="{{ old('remaining_price', $data->remaining_price ?? '') }}"
-               class="form-control  {{ $errors->has('remaining_price') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_remaining_price" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.monthly_profit_percent')}}<span
-                class="text-danger">*</span></label>
-        <input name="monthly_profit_percent" id="monthly_profit_percent"
-               placeholder="{{trans('lang.monthly_profit_percent')}}"
-               value="{{ old('monthly_profit_percent', $data->monthly_profit_percent ?? $monthly_profit_percent ??   '' ) }}"
-               class="form-control  {{ $errors->has('monthly_profit_percent') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-
-        <span class="text-danger errors form_error_monthly_profit_percent" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.months_count')}}<span
-                class="text-danger">*</span></label>
-        <input name="months_count" id="months_count" placeholder="{{trans('lang.months_count')}}"
-               value="{{ old('months_count', $data->months_count ?? '') }}"
-               class="form-control  {{ $errors->has('months_count') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_months_count" role="alert"></span>
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.monthly_installment')}}<span
-                class="text-danger">*</span></label>
-        <input name="monthly_installment" id="monthly_installment" placeholder="{{trans('lang.monthly_installment')}}"
-               value="{{ old('monthly_installment', $data->monthly_installment ?? '') }}"
-               class="form-control  {{ $errors->has('monthly_installment') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_monthly_installment" role="alert"></span>
-
-    </div>
-    <div class="form-group  col-4">
-        <label>{{trans('lang.profit')}}<span
-                class="text-danger">*</span></label>
-
-        <input id="profit_view" disabled readonly placeholder="{{trans('lang.profit')}}"
-               value="{{ old('profit', $data->profit ?? '') }}"
-               class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <input name="profit" hidden="" id="profit" placeholder="{{trans('lang.profit')}}"
-               value="{{ old('profit', $data->profit ?? '') }}"
-               class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
-               type="number"
-               step="0.01"
-               maxlength="255"/>
-
-        <span class="text-danger errors form_error_profit" role="alert"></span>
-    </div>
-
 </div>
 <div class="card-footer text-left">
     <button id="InvoiceSubmit" class="btn btn-primary btn-default ">{{trans('lang.save')}}</button>
@@ -314,6 +336,17 @@
 
         $("#invoice_type").on("change", function (e) {
             invoice_type = e.target.value
+
+            if (invoice_type == 1) {
+                $("#paper_amount_container").show();
+                document.getElementById('paper_amount').setAttribute('required', 'true');
+
+            } else {
+                $("#paper_amount_container").hide();
+                document.getElementById('paper_amount').setAttribute('required', 'false');
+
+
+            }
             monthlyInstallment()
             getInvoices()
 

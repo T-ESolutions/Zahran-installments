@@ -28,15 +28,15 @@
             <article style="padding: 0 30px;">
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;">استلمت انا الموقع ادناه / <span> {{$customer->name}}</span>
+                    <p style=" margin: 0;">استلمت انا الموقع ادناه / <span> {{$paper->customer->name}}</span>
                     </p>
-                    <p style=" margin: 0;"> بطاقة رقم / <span> {{$customer->id_number}} </span></p>
+                    <p style=" margin: 0;"> بطاقة رقم / <span> {{$paper->customer->id_number}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-evenly; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;"> المقيم / <span> {{$customer->address_id}} </span></p>
-                    <p style=" margin: 0;"> مركز / <span> {{$customer->center}}  </span></p>
-                    <p style=" margin: 0;"> محافظة / <span> {{$customer->governorate}} </span></p>
+                    <p style=" margin: 0;"> المقيم / <span> {{$paper->customer->address_id}} </span></p>
+                    <p style=" margin: 0;"> مركز / <span> {{$paper->customer->center}}  </span></p>
+                    <p style=" margin: 0;"> محافظة / <span> {{$paper->customer->governorate}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;"> مبلغ وقدره / <span> {{settings('check_amount')}} جنيها مصريا فقط لا غير </span>
+                    <p style=" margin: 0;"> مبلغ وقدره / <span> {{$paper->paper_amount}}  ( {{$paper->paper_amount_txt}} )  </span>
                     </p>
                 </div>
                 <div class="row"
@@ -87,15 +87,15 @@
             <article style="padding: 0 30px;">
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;">استلمت انا الموقع ادناه / <span> {{$customer->name}}</span>
+                    <p style=" margin: 0;">استلمت انا الموقع ادناه / <span> {{$paper->customer->name}}</span>
                     </p>
-                    <p style=" margin: 0;"> بطاقة رقم / <span> {{$customer->id_number}} </span></p>
+                    <p style=" margin: 0;"> بطاقة رقم / <span> {{$paper->customer->id_number}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-evenly; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;"> المقيم / <span> {{$customer->address_id}} </span></p>
-                    <p style=" margin: 0;"> مركز / <span> {{$customer->center}} </span></p>
-                    <p style=" margin: 0;"> محافظة / <span> {{$customer->governorate}} </span></p>
+                    <p style=" margin: 0;"> المقيم / <span> {{$paper->customer->address_id}} </span></p>
+                    <p style=" margin: 0;"> مركز / <span> {{$paper->customer->center}} </span></p>
+                    <p style=" margin: 0;"> محافظة / <span> {{$paper->customer->governorate}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
@@ -103,7 +103,7 @@
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;"> مبلغ وقدره / <span> {{settings('check_amount')}} جنيها مصريا فقط لا غير </span>
+                    <p style=" margin: 0;"> مبلغ وقدره / <span> {{$paper->paper_amount}}( {{$paper->paper_amount_txt}})    </span>
                     </p>
                 </div>
                 <div class="row"

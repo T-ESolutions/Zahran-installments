@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lawsuit extends Model
 {
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
 
+    const TYPE = [1, 2];
+    const  Warning = 1;
+    const  Issue = 2;
 
     public function getRelations()
     {
@@ -21,10 +24,6 @@ class Lawsuit extends Model
      */
 
 
-
-
-
-
     /**
      * ***************************************************************************************
      */
@@ -32,15 +31,15 @@ class Lawsuit extends Model
      * START MUTATOR
      */
 
-        public function getStatusAttribute($value)
-        {
-           if ($value == LawsuitStatusEnum::UNPAID->value)
+    public function getStatusAttribute($value)
+    {
+        if ($value == LawsuitStatusEnum::UNPAID->value)
            {
-                return __('lang.unpaid');
+               return __('lang.unpaid');
            }
               elseif ($value == LawsuitStatusEnum::PAID->value)
               {
-                 return __('lang.paid');
+                  return __('lang.paid');
               }
         }
 
@@ -55,18 +54,12 @@ class Lawsuit extends Model
      */
 
 
-
-
-
-
     /**
      * ***************************************************************************************
      */
     /**
      * START METHODS
      */
-
-
 
 
     /**
@@ -94,7 +87,6 @@ class Lawsuit extends Model
     {
         return $this->hasMany(LawsuitHistory::class, 'lawsuit_id');
     }
-
 
 
 }

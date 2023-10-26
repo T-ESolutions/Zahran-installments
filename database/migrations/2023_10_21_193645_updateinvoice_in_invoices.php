@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::table('invoices', function (Blueprint $table) {
             $table->foreignIdFor(Invoice::class)->nullable()->constrained()->cascadeOnDelete();
             $table->tinyInteger('invoice_type')->default(1);
+            $table->double('paper_amount')->default(0);
         });
     }
 

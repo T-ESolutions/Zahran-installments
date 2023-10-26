@@ -17,21 +17,21 @@ class CustomerCreateRequest extends FormRequest
    public function rules()
    {
        $validation = [
-           'name' => ['required','string', 'max:255'],
+           'name' => ['required','string', 'max:191'],
            'id_number' => ['required','numeric', 'digits:14' ],
-           'address_id' => ['required','string', 'max:255'],
-           'address' => ['nullable','string', 'max:255'],
+           'address_id' => ['required','string', 'max:191'],
+           'address' => ['nullable','string', 'max:191'],
            'phone' => ['required','numeric'],
            'phone2' => ['nullable','numeric'],
            'phone3' => ['nullable','numeric'],
-           'governorate' => ['required','string', 'max:255'],
-           'center' => ['required','string', 'max:255'],
-           'note' => ['required','string', 'max:500'],
+           'governorate' => ['required','string', 'max:191'],
+           'center' => ['required','string', 'max:191'],
+           'note' => ['nullable','string', 'max:500'],
            'id_image'=>['nullable','image','mimes:jpeg,png,jpg'],
-           'relatives'=>['required','array'],
-           'relatives.*.name'=>['required','string', 'max:255', ],
-           'relatives.*.phone'=>['required','string','max:255', ],
-           'relatives.*.note'=>['required','string','max:255'],
+           'relatives'=>['nullable','array'],
+           'relatives.*.name'=>['nullable','string', 'max:191', ],
+           'relatives.*.phone'=>['nullable','string','max:191', ],
+           'relatives.*.note'=>['nullable','string','max:191'],
        ];
        return $validation;
    }

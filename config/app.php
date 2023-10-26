@@ -201,6 +201,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         Brian2694\Toastr\ToastrServiceProvider::class,
+        Alkoumi\LaravelArabicNumbers\LaravelArabicNumbersServiceProvider::class,
 
     ],
 

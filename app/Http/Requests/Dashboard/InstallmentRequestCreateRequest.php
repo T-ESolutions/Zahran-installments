@@ -20,7 +20,7 @@ class InstallmentRequestCreateRequest extends FormRequest
            'customer_id' => 'required|exists:customers,id',
            'deposit' => 'required|gt:0',
            'price' => 'required|gt:deposit',
-           'product' => 'required|max:255',
+           'product' => 'required|max:191',
        ];
 
        return $validation;

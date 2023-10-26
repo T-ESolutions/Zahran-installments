@@ -23,20 +23,12 @@
                     </a>
                 </li>
             @endcan
-            @can('read-lawsuit')
-                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'lawsuits' &&  (request()->segment(4) !='black-list' ||  request()->segment(4) !='late-list')) menu-item-open @endif "
-                    aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="{{route('lawsuits.index')}}" class="menu-link menu-toggle">
-                        <i class="menu-icon  flaticon-users-1"></i>
-                        <span class="menu-text">{{__('lang.lawsuits')}}</span>
-                    </a>
-                </li>
-            @endcan
+
             @can('read-customer')
                 <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'black-list' ) menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('customers.black-list')}}" class="menu-link menu-toggle">
-                        <i class="menu-icon  flaticon-users-1"></i>
+                        <i class="menu-icon  flaticon2-cancel"></i>
                         <span class="menu-text">{{__('lang.black_list_customers')}}</span>
                     </a>
                 </li>
@@ -45,7 +37,7 @@
                 <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'late-list' ) menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('customers.late-list')}}" class="menu-link menu-toggle">
-                        <i class="menu-icon  flaticon-users-1"></i>
+                        <i class="menu-icon  flaticon2-warning"></i>
                         <span class="menu-text">{{__('lang.late_list_customers')}}</span>
                     </a>
                 </li>
@@ -54,7 +46,7 @@
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'installment_requests') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('installment_requests.index')}}" class="menu-link menu-toggle">
-                        <i class="menu-icon  flaticon-users-1"></i>
+                        <i class="menu-icon  flaticon2-sheet"></i>
                         <span class="menu-text">{{__('lang.installment_requests')}}</span>
                     </a>
                 </li>
@@ -63,8 +55,17 @@
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'invoices') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('invoices.index')}}" class="menu-link menu-toggle">
-                        <i class="menu-icon  flaticon-users-1"></i>
+                        <i class="menu-icon flaticon2-files-and-folders"></i>
                         <span class="menu-text">{{__('lang.invoices')}}</span>
+                    </a>
+                </li>
+            @endcan
+            @can('read-lawsuit')
+                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'lawsuits' &&  (request()->segment(4) !='black-list' ||  request()->segment(4) !='late-list')) menu-item-open @endif "
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('lawsuits.index')}}" class="menu-link menu-toggle">
+                        <i class="menu-icon flaticon-bell"></i>
+                        <span class="menu-text">{{__('lang.lawsuits')}}</span>
                     </a>
                 </li>
             @endcan
@@ -72,7 +73,7 @@
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'admins') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('admins')}}" class="menu-link menu-toggle">
-                        <i class="menu-icon  flaticon-users-1"></i>
+                        <i class="menu-icon  flaticon2-user-1"></i>
                         <span class="menu-text">{{__('lang.admins')}}</span>
                     </a>
                 </li>

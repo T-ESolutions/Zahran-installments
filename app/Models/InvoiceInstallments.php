@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceInstallments extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = [''];
 
     public function getRelations()
     {
@@ -51,12 +51,22 @@ class InvoiceInstallments extends Model
     public function getLateDaysAttribute()
     {
         $diff = 0;
+        $model = InvoiceInstallments::where('id', $this->attributes['id'])->first();
+if($model->status != 1 || $model->status != 7){
+    if ($this->attributes['pay_date'] < now()->format('Y-m-d')) {
 
-        if ($this->attributes['pay_date'] < now()->format('Y-m-d')) {
+        $diff = now()->diffInDays($this->attributes['pay_date']);
 
-            $diff = now()->diffInDays($this->attributes['pay_date']);
-            return $diff;
+        if ($model){
+            $model->status = 3;
+            $model->late_days = $diff;
+            $model->save();
         }
+
+        return $diff;
+    }
+}
+
 
         return $diff;
     }

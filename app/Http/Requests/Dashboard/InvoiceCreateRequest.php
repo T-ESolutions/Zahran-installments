@@ -4,6 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use App\Enums\BlockEnum;
 use App\Enums\InvoiceTypeEnum;
+use App\Models\Invoice;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,17 +23,20 @@ class InvoiceCreateRequest extends FormRequest
             'invoice_number' => 'nullable',
             'pay_day'=>['required', 'integer','min:1' ,'max:30'],
             'invoice_date'=>['required', 'date'],
-            'customer_id'=>['required',Rule::exists('customers','id')->where('is_blocked',BlockEnum::UNBLOCKED->value)],
+            'customer_id'=>['required',Rule::exists('customers','id')->where('is_blocked',0)],
             'guarantors_id' => 'nullable|array',
-            'guarantors_id.*' => ['nullable',Rule::exists('customers','id')->where('is_blocked',BlockEnum::UNBLOCKED->value)],
-            'product'=>['nullable','string','max:255'],
-            'note'=>['nullable','string','max:255'],
+            'guarantors_id.*' => ['nullable',Rule::exists('customers','id')->where('is_blocked',0)],
+            'product'=>['required','string','max:191'],
+            'note'=>['nullable','string','max:191'],
             'total_price'=>['required'],
             'deposit'=>['required'],
-            'invoice_type'=>['required'],
-            'invoice_id'=>['nullable','string','max:255',Rule::requiredIf(function () {
-                return $this->invoice_type ==  InvoiceTypeEnum::INVOICE->value;
+
+            'invoice_type'=>['required',Rule::in(Invoice::INVOICE_TYPE)],
+            'invoice_id'=>['nullable',Rule::requiredIf(function () {
+                return $this->invoice_type ==  3;
             }),Rule::exists('invoices','id')],
+             'paper_amount'=>['nullable','numeric','min:0',Rule::requiredIf($this->invoice_type ==  1)],
+
             'monthly_profit_percent'=>['required'],
             'months_count'=>['required'],
             'monthly_installment'=>['required'],

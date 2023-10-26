@@ -55,7 +55,7 @@
                         <!--begin::Pic-->
                         <div class="flex-shrink-0 mr-7">
                             <div class="symbol symbol-50 symbol-lg-120 symbol-light-danger center">
-                                <span class="font-size-h3 symbol-label font-weight-boldest">
+                                <span class="font-size-h3 symbol-label font-weight-boldest" title="رقم الفاتورة">
                                 {{$invoice->id}}
                                 </span>
 
@@ -75,7 +75,7 @@
                                             {{$invoice->customer->name}}</a>
                                         <!--end::Name-->
                                         <span
-                                            class="label label-light-success label-inline font-weight-bolder mr-1">{{$invoice->transaction_number}}</span>
+                                            class="label label-light-success label-xl label-inline font-weight-bolder mr-1">{{$invoice->transaction_number}}</span>
                                     </div>
                                     <!--begin::Contacts-->
                                     <div class="d-flex flex-wrap my-2">
@@ -98,60 +98,107 @@
 																	</g>
 																</svg>
                                                                 <!--end::Svg Icon-->
-															</span>القسط الشهري : {{$invoice->monthly_installment}}</a>
+															</span>القسط الشهري :
+                                            <span class="text-primary">{{$invoice->monthly_installment}}</span>
+                                            </a>
+
+                                        <a href="javascript:void(0);"
+                                           class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+																<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
+																<svg xmlns="http://www.w3.org/2000/svg"
+                                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="24px" height="24px" viewBox="0 0 24 24"
+                                                                     version="1.1">
+																	<g stroke="none" stroke-width="1" fill="none"
+                                                                       fill-rule="evenodd">
+																		<rect x="0" y="0" width="24" height="24"/>
+																		<path
+                                                                            d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z"
+                                                                            fill="#000000"/>
+																		<circle fill="#000000" opacity="0.3" cx="19.5"
+                                                                                cy="17.5" r="2.5"/>
+																	</g>
+																</svg>
+                                                                <!--end::Svg Icon-->
+															</span>حالة الفاتورة : <span class="text-primary">{{trans('lang.invoice_status_'.$invoice->status)}}</span></a>
 
 
+                                    </div>
+                                    <div class="d-flex flex-wrap my-2">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#pay_installment">
+                                            <i class="flaticon-coins"></i>
+
+                                            @lang('lang.pay_installment')
+                                        </button>
+                                        <div class="modal fade" id="pay_installment" data-backdrop="static"
+                                             tabindex="-1"
+                                             role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="exampleModalLabel">@lang('lang.pay_installment')</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <i aria-hidden="true" class="ki ki-close"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body row">
+                                                        <div class="form-group  col-12">
+                                                            <label>{{trans('lang.pay_installment')}}<span
+                                                                    class="text-danger">*</span></label>
+
+                                                            <input name="amount"
+                                                                   placeholder="{{trans('lang.pay_installment')}}"
+                                                                   class="form-control" type="number"
+                                                                   maxlength="255"/>
+
+                                                            <span class="text-danger errors form_error_amount"
+                                                                  role="alert"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-light-primary font-weight-bold "
+                                                                data-dismiss="modal">@lang('lang.cancel')</button>
+                                                        <button type="button" data-id="{{$invoice->id}}"
+                                                                class="btn btn-primary font-weight-bold pay_installment">@lang('lang.save')</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--end::Contacts-->
                                 </div>
                                 <!--begin::User-->
                                 <!--begin::Actions-->
-                                <div class="mb-10">
+                                <div class="mb-10" style="text-align: center;">
                                     {{--                                    <a href="javascript:void(0);"--}}
                                     {{--                                       class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">contact</a>--}}
 
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#pay_installment">
-                                        @lang('lang.pay_installment')
-                                    </button>
-                                    <div class="modal fade" id="pay_installment" data-backdrop="static" tabindex="-1"
-                                         role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="exampleModalLabel">@lang('lang.pay_installment')</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <i aria-hidden="true" class="ki ki-close"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body row">
-                                                    <div class="form-group  col-12">
-                                                        <label>{{trans('lang.pay_installment')}}<span
-                                                                class="text-danger">*</span></label>
-
-                                                        <input name="amount"
-                                                               placeholder="{{trans('lang.pay_installment')}}"
-                                                               class="form-control" type="number"
-                                                               maxlength="255"/>
-
-                                                        <span class="text-danger errors form_error_amount"
-                                                              role="alert"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-light-primary font-weight-bold "
-                                                            data-dismiss="modal">@lang('lang.cancel')</button>
-                                                    <button type="button" data-id="{{$invoice->id}}"
-                                                            class="btn btn-primary font-weight-bold pay_installment">@lang('lang.save')</button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    @if(!$invoice->customer->is_late)
+                                        @can('update-customer')
+                                            <a href="{{route('customers.addToLateCustomersList',$invoice->customer->id)}}"
+                                               type="submit"
+                                               class="btn btn-sm btn-light-danger font-weight-bolder text-uppercase mr-2">
+                                                <i class="flaticon2-plus"></i>
+                                                @lang('lang.add_to_late_customers_list')
+                                            </a>
+                                        @endcan
+                                    @else
+                                        <h6 class="font-weight-bolder text-dark mb-0">العميل مضاف لقائمة
+                                            المتأخرين</h6>
+                                        &nbsp;
+                                        &nbsp;
+                                        <a
+                                            href="{{route('customers.addToLateCustomersList',$invoice->customer->id)}}"
+                                            class="btn btn-light-danger"
+                                            title="الحذف من قائمة المتأخرين"><i
+                                                class="fa fa-trash"></i></a>
+                                    @endif
 
                                 </div>
                                 <!--end::Actions-->
@@ -165,25 +212,7 @@
                                 <!--end::Description-->
                                 <!--begin::Progress-->
                                 <div class="d-flex mt-4 mt-sm-0">
-                                    @if(!$invoice->customer->is_late)
-                                        @can('update-customer')
-                                            <a href="{{route('customers.addToLateCustomersList',$invoice->customer->id)}}"
-                                               type="submit"
-                                               class="btn btn-sm btn-light-danger font-weight-bolder text-uppercase mr-2">
-                                                @lang('lang.add_to_late_customers_list')
-                                            </a>
-                                        @endcan
-                                    @else
-                                        <h2 class="font-weight-bolder text-dark font-size-h3 mb-0">العميل مضاف لقائمة
-                                            المتأخرين</h2>
-                                        &nbsp;
-                                        &nbsp;
-                                        <a
-                                            href="{{route('customers.addToLateCustomersList',$invoice->customer->id)}}"
-                                            class="btn btn-light-danger"
-                                            title="الحذف من قائمة المتأخرين"><i
-                                                class="fa fa-trash"></i></a>
-                                    @endif
+
                                     {{--                                    <span class="font-weight-bold mr-4">احصائيات دفع الاقساط </span>--}}
                                     {{--                                    <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">--}}
                                     {{--                                        <div class="progress-bar bg-success" role="progressbar" style="width: 63%;"--}}
@@ -295,192 +324,18 @@
                         <!--end::Tab Content-->
                         <!--begin::Tab Content-->
                         <div class="tab-pane" id="invoice_details_tab" role="tabpanel">
-                            <div class="row text-center">
-                                <div class="col-md-6">
-                                    <div>
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">رقم الفاتورة</span>
-                                            <span class="font-weight-bold ">{{$invoice->id}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">رقم فاتورة الشراء</span>
-                                            <span class="font-weight-bold ">{{$invoice->invoice_number}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.transaction_number') </span>
-                                            <span class="font-weight-bold ">{{$invoice->transaction_number}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.product') </span>
-                                            <span class="font-weight-bold ">{{$invoice->product}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.total_price') </span>
-                                            <span class="font-weight-bold ">{{$invoice->total_price}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.deposit') </span>
-                                            <span class="font-weight-bold ">{{$invoice->deposit}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.remaining_price') </span>
-                                            <span class="font-weight-bold ">{{$invoice->remaining_price}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span
-                                                class="font-weight-bold mr-2">@lang('lang.monthly_installment') </span>
-                                            <span class="font-weight-bold ">{{$invoice->monthly_installment}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span
-                                                class="font-weight-bold mr-2">@lang('lang.monthly_profit_percent') </span>
-                                            <span
-                                                class="font-weight-bold ">{{$invoice->monthly_profit_percent}} %</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.profit') </span>
-                                            <span class="font-weight-bold ">{{$invoice->profit}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2 text-danger">
-                                            <span class="font-weight-bold mr-2">@lang('lang.remaining_price') </span>
-                                            <span class="font-weight-bold "
-                                                  id="sum_remaining_amount">{{$sum_remaining_amount}}</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.customer_name') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->name}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.phone') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->phone}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.phone2') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->phone2}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.phone3') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->phone3}}</span>
-                                        </div>
-
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.id_number') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->id_number}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.address_id') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->address_id}}</span>
-                                        </div>
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.governorate') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->governorate}}</span>
-                                        </div>
-
-
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span class="font-weight-bold mr-2">@lang('lang.center') </span>
-                                            <span class="font-weight-bold ">{{$invoice->customer->center}}</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
+                            @include('Dashboard.Invoice.parts.show_invoice_data')
                         </div>
                         <!--end::Tab Content-->
                         <!--begin::Tab Content-->
                         <div class="tab-pane" id="kt_apps_contacts_view_tab_4" role="tabpanel">
-                            @foreach($invoice->guarantors as $guarantor)
-                                <div class="d-flex align-items-center justify-content-between mb-2  ">
-                                    <span class="font-weight-bold ">{{$guarantor->name}}</span>
-                                    {{--                                    <a class="btn btn-info font-weight-bold"--}}
-                                    {{--                                       target="_blank"--}}
-                                    {{--                                       href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')--}}
-                                    {{--                                        <i class="fas fa-print"></i></a>--}}
-                                </div>
-                            @endforeach
+                            @include('Dashboard.Invoice.parts.show_guarantors')
+
                         </div>
                         <!--end::Tab Content-->
                         <!--begin::Tab Content-->
                         <div class="tab-pane" id="kt_apps_contacts_view_tab_1" role="tabpanel">
-                            @if($invoice->invoice_type ==\App\Enums\InvoiceTypeEnum::INSURANCE->value)
-                                <h3>وصلات الامانة</h3>
-                                <div class="d-flex align-items-center justify-content-between mb-2  ">
-
-                                    <span class="font-weight-bold mr-2">العميل </span>
-                                    <span class="font-weight-bold ">{{$invoice->customer->name}}</span>
-                                    <a class=" btn btn-info font-weight-bold"
-                                       target="_blank"
-                                       href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')
-                                        <i class="fas fa-print"></i></a>
-
-                                </div>
-                                @foreach($invoice->guarantors as $guarantor)
-                                    <div class="d-flex align-items-center justify-content-between mb-2  ">
-                                        <span class="font-weight-bold mr-2">@lang('lang.guarantor') </span>
-                                        <span class="font-weight-bold ">{{$guarantor->name}}</span>
-                                        <a class="btn btn-info font-weight-bold"
-                                           target="_blank"
-                                           href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')
-                                            <i class="fas fa-print"></i></a>
-                                    </div>
-                                @endforeach
-                            @endif
-
-
-                            @if($invoice->invoice_type ==\App\Enums\InvoiceTypeEnum::INVOICE->value)
-                                <h3>وصلات الامانة من فاتورة اخرى رقم : </h3>
-                                <div class="d-flex align-items-center justify-content-between mb-2  ">
-
-                                    <span class="font-weight-bold mr-2">العميل </span>
-                                    <span class="font-weight-bold ">{{$invoice->customer->name}}</span>
-                                    <a class="btn btn-info font-weight-bold"
-                                       target="_blank"
-                                       href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')
-                                        <i class="fas fa-print"></i></a>
-                                </div>
-                                @foreach($invoice->invoice->guarantors as $guarantor)
-                                    <div class="d-flex align-items-center justify-content-between mb-2  ">
-                                        <span class="font-weight-bold mr-2">@lang('lang.guarantor') </span>
-                                        <span class="font-weight-bold ">{{$guarantor->name}}</span>
-                                        <a class="btn btn-info font-weight-bold"
-                                           target="_blank"
-                                           href="{{route('invoice.print',$invoice->customer->id)}}">@lang('lang.print')
-                                            <i class="fas fa-print"></i></a>
-                                    </div>
-                                @endforeach
-                            @endif
-
-                            @if($invoice->invoice_type ==\App\Enums\InvoiceTypeEnum::ATTORNEY->value)
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="font-weight-bold mr-2">@lang('lang.invoice_type') </span>
-                                    <span class="font-weight-bold ">@lang('lang.attorney')</span>
-                                </div>
-                            @endif
+                            @include('Dashboard.Invoice.parts.show_papers')
                         </div>
                         <!--end::Tab Content-->
                     </div>
@@ -488,7 +343,7 @@
                 <!--end::Body-->
             </div>
 
-            <div class="card card-custom">
+            <div class="card card-custom gutter-b">
                 <div class="card-header card-header-tabs-line">
                     <div class="card-title">الاقساط</div>
                 </div>
@@ -497,6 +352,17 @@
                     {!! $dataTable->table() !!}
                 </div>
             </div>
+            <div class="card card-custom">
+                <div class="card-body">
+                    <button type="button" class="btn btn-success finish_invoice " data-toggle="modal" data-invoice_id="{{$invoice->id}}"
+                            >
+                        <i class="flaticon2-check-mark"></i>
+
+                        انهاء الفاتورة
+                    </button>
+                </div>
+            </div>
+
             <!--end::Card-->
         </div>
         <!--end::Container-->
@@ -594,6 +460,65 @@
 
         });
         $(document).ready(function () {
+            $('body').on('click', '.add_notes_btn', function (event) {
+                event.preventDefault();
+                let id = $(this).attr('data-id');
+                let notes = $(this).parent().parent().parent().find('.notes_txt').val();
+                let data = new FormData();
+                data.append('id', id);
+                data.append('notes', notes);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: `{{route('invoices.installments.add.notes')}}`,
+                    method: 'post',
+                    data: data,
+                    dataType: 'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#InvoiceInstallments-table').DataTable().ajax.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.success,
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'تم'
+                        })
+                        $('.errors').empty();
+
+                        //close model
+                        $('#notes_model' + id).modal('hide');
+                    },
+                    error: function (data) {
+                        if (data.status === 422) {
+                            $('.errors').empty();
+                            $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                if (!key.search("dates")) {
+                                    var arr = key.split(".");
+                                    $('.errors').show();
+                                    $('.error_dates' + arr[1] + arr[2]).show();
+                                    $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                    console.log(JSON.parse(data.responseText).errors[key]);
+                                } else {
+                                    $('.errors').show();
+                                    $('.form_error_' + key).show();
+                                    $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                }
+                            });
+                        }
+                    }
+                });
+            })
+
+        });
+
+        $(document).ready(function () {
             $('body').on('click', '.changeDateInstallment', function (event) {
                 event.preventDefault();
                 let id = $(this).attr('data-id');
@@ -639,6 +564,86 @@
 
                                 //close model
                                 $('#changeDateModal' + id).modal('hide');
+                            },
+                            error: function (data) {
+                                if (data.status === 422) {
+                                    $('.errors').empty();
+                                    $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                        if (!key.search("dates")) {
+                                            var arr = key.split(".");
+                                            $('.errors').show();
+                                            $('.error_dates' + arr[1] + arr[2]).show();
+                                            $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                            console.log(JSON.parse(data.responseText).errors[key]);
+                                        } else {
+                                            $('.errors').show();
+                                            $('.form_error_' + key).show();
+                                            $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+
+            })
+
+        });
+
+ $(document).ready(function () {
+            $('body').on('click', '.finish_invoice', function (event) {
+                event.preventDefault();
+                let id = $(this).data('invoice_id');
+                let data = new FormData();
+                data.append('id', id);
+                Swal.fire({
+                    icon: 'warning',
+                    title: ' هل تريد انهاء الفاتورة ؟ ',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url: `{{route('invoices.finish')}}`,
+                            method: 'post',
+                            data: data,
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                if(response.status ==  true){
+                                    $('#InvoiceInstallments-table').DataTable().ajax.reload();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: response.success,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                    $('.errors').empty();
+
+                                    //close model
+                                    $('#changeDateModal' + id).modal('hide');
+                                }else{
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: response.msg,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                }
+
                             },
                             error: function (data) {
                                 if (data.status === 422) {

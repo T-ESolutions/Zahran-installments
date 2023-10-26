@@ -10,6 +10,7 @@ class Invoice extends Model
 {
     protected $guarded = ['id'];
 
+    const INVOICE_TYPE = [1, 2, 3];
 
 
     public function getRelations()
@@ -28,8 +29,6 @@ class Invoice extends Model
     /**
      * START MUTATOR
      */
-
-
 
 
     /**
@@ -70,6 +69,7 @@ class Invoice extends Model
     {
         return $this->belongsTo(Admin::class, 'admin_id');
     }
+
     public function invoice()
     {
         return $this->belongsTo(self::class, 'invoice_id');
@@ -84,17 +84,20 @@ class Invoice extends Model
     public function unInstallments()
     {
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id')
-            ->where('pay_date','<=' , now() )
-            ->where('status',InvoiceInstallmentsStatusEnum::UNPAID->value ) ;
+            ->where('pay_date', '<=', now())
+            ->where('status', InvoiceInstallmentsStatusEnum::UNPAID->value ) ;
     }
 
     public function unPaidLawSuit()
     {
         return $this->hasMany(Lawsuit::class, 'invoice_id')
-
-            ->where('status',LawsuitStatusEnum::UNPAID->value ) ;
+            ->where('status', LawsuitStatusEnum::UNPAID->value ) ;
     }
 
+    public function papers()
+    {
+        return $this->hasMany(Paper::class, 'invoice_id');
+    }
 
 
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Lawsuit;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LawsuitCreateRequest extends FormRequest
 {
@@ -12,15 +14,18 @@ class LawsuitCreateRequest extends FormRequest
         return true;
     }
 
-   public function rules()
-   {
-       $validation = [
-              'amount' => 'required|numeric',
-              'invoice_id' => 'required|exists:invoices,id',
-              'customer_id' => 'required|exists:customers,id',
-       ];
+    public function rules()
+    {
+        $validation = [
+            'type' => ['required', Rule::in(Lawsuit::TYPE)],
+            'title' => 'required|string',
+            'description' => 'nullable|string|max:6000',
+            'amount' => 'required|numeric|min:0',
+            'invoice_id' => 'required|exists:invoices,id',
+            'customer_id' => 'required|exists:customers,id',
+        ];
 
-       return $validation;
-   }
+        return $validation;
+    }
 
 }

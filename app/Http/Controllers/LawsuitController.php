@@ -36,7 +36,7 @@ class LawsuitController extends GeneralController
 
    public function create()
     {
-        $customers = Customer::get(['id', 'name']);
+        $customers = Customer::orderBy('id', 'desc')->get(['id', 'name']);
         return view('.Lawsuit.create', compact('customers'));
     }
 
