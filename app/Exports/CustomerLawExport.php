@@ -31,9 +31,7 @@ class CustomerLawExport implements FromCollection ,WithHeadings , WithStrictNull
 
     public function collection()
     {
-        $data = Customer::whereHas('invoices', function ($q){
-            $q->whereHas('lawSuit');
-        })->orderBy('created_at','asc')->get();
+        $data = Customer::whereHas('laws')->orderBy('created_at','asc')->get();
         return CustomerLawResources::collection($data);
     }
 }

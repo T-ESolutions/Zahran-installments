@@ -40,9 +40,7 @@ class CustomerDataTable extends DataTable
         $q = $model->newQuery()->with(['admin']);
 
         if ($request->law) {
-            $q->whereHas('invoices', function ($q){
-                $q->whereHas('lawSuit');
-            });
+            $q->whereHas('laws');
         }
 
         if ($request->blocked) {
