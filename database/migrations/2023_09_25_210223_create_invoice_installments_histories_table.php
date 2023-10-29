@@ -18,9 +18,11 @@ return new class extends Migration
     {
         Schema::create('invoice_installments_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(InvoiceInstallments::class);
-            $table->foreignIdFor(Invoice::class);
-            $table->foreignIdFor(Admin::class)->nullable();
+
+
+            $table->foreignId('invoice_installments_id')->nullable()->constrained('invoice_installments')->restrictOnDelete();
+            $table->foreignId('invoice_id')->constrained('invoices')->restrictOnDelete();
+            $table->foreignId('admin_id')->constrained('admins')->restrictOnDelete();
             $table->text('description')->nullable();
             $table->timestamps();
         });

@@ -227,9 +227,9 @@
             <label>{{trans('lang.profit')}}<span
                     class="text-danger">*</span></label>
 
-            <input id="profit_view" disabled readonly placeholder="{{trans('lang.profit')}}"
+            <input id="profit_view" disabled placeholder="{{trans('lang.profit')}}"
                    value="{{ old('profit', $data->profit ?? '') }}"
-                   class="form-control  {{ $errors->has('profit') ? 'border-danger' : '' }}"
+                   class="form-control   {{ $errors->has('profit') ? 'border-danger' : '' }}"
                    type="number"
                    step="0.01"
                    />

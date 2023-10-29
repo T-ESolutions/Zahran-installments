@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\BlockEnum;
+use App\Exports\CustomerLawExport;
 use App\Http\Requests\Dashboard\CustomerCreateRequest;
 use App\DataTables\Dashboard\CustomerDataTable;
- use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\GeneralController;
+use App\Http\Requests\Dashboard\CustomerImportRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CustomerImport;
 
 class CustomerController extends GeneralController
 {
@@ -20,27 +23,56 @@ class CustomerController extends GeneralController
     public function __construct(Customer $model)
     {
         parent::__construct($model);
-        $this->middleware('permission:read-customer', ['only' => ['index','show']]);
+        $this->middleware('permission:read-customer', ['only' => ['index', 'show']]);
         $this->middleware('permission:create-customer', ['only' => ['create', 'store']]);
         $this->middleware('permission:update-customer', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-customer', ['only' => ['delete']]);
     }
 
 
-    public function blackList(Request $request,CustomerDataTable $dataTable)
+    public function import(CustomerImportRequest $request)
     {
-        $request->merge(['blocked'=>BlockEnum::BLOCKED->value]);
+        $data = $request->validated();
+        if (is_file($data['file_excel'])) {
+            $file_name = 'excel_' . time() . rand(0000, 9999) . '.' . $data['file_excel']->getClientOriginalExtension();
+            $data['file_excel']->move(public_path('/uploads/excel/'), $file_name);
+        }
+//        '/uploads/excel/'.$file_name
+        Excel::import(new CustomerImport(), 'uploads/excel/'.$file_name);
+
+//        (new CustomerImport())->import('customers.xlsx', null, \Maatwebsite\Excel\Excel::XLSX);
+        return redirect()->back()->with('success', 'تم الاستيراد بنجاح');
+    }
+
+    public function blackList(Request $request, CustomerDataTable $dataTable)
+    {
+        $request->merge(['blocked' => BlockEnum::BLOCKED->value]);
         return $dataTable->render('Dashboard.Customer.blackList');
     }
-    public function lateList(Request $request,CustomerDataTable $dataTable)
+
+    public function lateList(Request $request, CustomerDataTable $dataTable)
     {
-        $request->merge(['late'=>BlockEnum::BLOCKED->value]);
+        $request->merge(['late' => BlockEnum::BLOCKED->value]);
         return $dataTable->render('Dashboard.Customer.lateList');
     }
+
     public function index(CustomerDataTable $dataTable)
     {
         return $dataTable->render('Dashboard.Customer.index');
     }
+
+    public function lawsCustomers(Request $request, CustomerDataTable $dataTable)
+    {
+        $request->merge(['law' => 1]);
+        return $dataTable->render('Dashboard.Customer.laws');
+    }
+
+
+
+    public function exportCustomersLaw(){
+        return Excel::download(new CustomerLawExport(), 'العملاء المرفوع عليهم قواضي.xlsx');
+    }
+
 
     public function create()
     {
@@ -57,7 +89,7 @@ class CustomerController extends GeneralController
                 $data['id_image'] = $this->uploadImage($request->file('id_image'), $this->path, null, settings('images_size'));
             }
             $customer = Customer::create($data);
-            if(isset($data['relatives'])){
+            if (isset($data['relatives'])) {
                 $customer->relatives()->createMany($data['relatives']);
             }
             DB::commit();
@@ -76,7 +108,7 @@ class CustomerController extends GeneralController
 
     public function show(Customer $customer)
     {
-        $data=$customer->load('relatives','invoices.unInstallments');
+        $data = $customer->load('relatives', 'invoices.unInstallments');
 
         return view('Dashboard.Customer.show', compact('data'));
     }
@@ -92,7 +124,7 @@ class CustomerController extends GeneralController
             }
             $customer->update($data);
 
-            if(isset($data['relatives'])){
+            if (isset($data['relatives'])) {
                 $customer->relatives()->delete();
                 $customer->relatives()->createMany($data['relatives']);
             }
@@ -124,13 +156,15 @@ class CustomerController extends GeneralController
             return response()->json(['error' => trans('lang.wrong')]);
         }
     }
-    public function changeActivation(Request $request,Customer $customer)
+
+    public function changeActivation(Request $request, Customer $customer)
     {
         $customer->is_blocked = !$customer->is_blocked;
         $customer->save();
         return response()->json(['success' => trans('lang.updated')]);
 
     }
+
     public function addToLateCustomersList(Customer $customer)
     {
         $customer->is_late = !$customer->is_late;

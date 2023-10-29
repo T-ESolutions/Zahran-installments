@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Dashboard;
 
- use App\DataTables\Dashboard\AdminDataTable;
- use App\Http\Controllers\GeneralController;
- use App\Http\Requests\Dashboard\AdminRequest;
- use App\Models\Admin;
- use Illuminate\Support\Facades\DB;
- use Spatie\Permission\Models\Role;
+use App\DataTables\Dashboard\AdminDataTable;
+use App\Http\Controllers\GeneralController;
+use App\Http\Requests\Dashboard\AdminRequest;
+use App\Models\Admin;
+use App\Models\Customer;
+use App\Models\InvoiceInstallments;
+use App\Models\InvoiceInstallmentsHistory;
+use App\Models\LawSuitHistory;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
- class AdminController extends GeneralController
+class AdminController extends GeneralController
 {
     protected $viewPath = 'admin.';
     protected $path = 'admins';
@@ -24,6 +29,15 @@ namespace App\Http\Controllers\Dashboard;
     public function index(AdminDataTable $dataTable)
     {
         return $dataTable->render('Dashboard.admin.index');
+    }
+
+    public function history($id)
+    {
+        $installments = InvoiceInstallmentsHistory::where('admin_id', $id)->orderBy('created_at', 'asc')->paginate(10);
+        $customers = Customer::where('admin_id', $id)->orderBy('created_at', 'asc')->paginate(10);
+        $law = LawSuitHistory::where('admin_id', $id)->orderBy('created_at', 'asc')->paginate(10);
+        return view($this->viewPath($this->viewPath . 'history'), compact('installments', 'law', 'customers'));
+
     }
 
 
@@ -87,14 +101,14 @@ namespace App\Http\Controllers\Dashboard;
 
 
         if ($request->hasFile('image')) {
-            $inputs['image'] = $this->uploadImage($request->file('image'), $this->path, $data->image, settings('images_size') );
+            $inputs['image'] = $this->uploadImage($request->file('image'), $this->path, $data->image, settings('images_size'));
         }
 
         $data->update($inputs);
         // Assign Roles
         DB::table('model_has_roles')->where('model_id', $id)->update(['role_id' => $request['role_id']]);
         DB::commit();
-        return redirect()->route($this->route)->with('success',trans('lang.updated'));
+        return redirect()->route($this->route)->with('success', trans('lang.updated'));
 
     }
 
@@ -111,7 +125,7 @@ namespace App\Http\Controllers\Dashboard;
         DB::table('model_has_roles')->where('model_id', $id)->delete();
         // Delete Data from DB
         $data->delete();
-        return redirect()->route($this->route)->with('success',trans('lang.deleted'));
+        return redirect()->route($this->route)->with('success', trans('lang.deleted'));
 
     }
 
@@ -119,8 +133,8 @@ namespace App\Http\Controllers\Dashboard;
     {
         try {
             DB::beginTransaction();
-            if(!$admin->id == 1){
-                $admin->update(['is_active'=>!$admin->is_active]);
+            if (!$admin->id == 1) {
+                $admin->update(['is_active' => !$admin->is_active]);
             }
             DB::commit();
             return response()->json(['success' => trans('lang.updated')]);
@@ -130,7 +144,6 @@ namespace App\Http\Controllers\Dashboard;
             return response()->json(['error' => trans('lang.wrong')]);
         }
     }
-
 
 
 }

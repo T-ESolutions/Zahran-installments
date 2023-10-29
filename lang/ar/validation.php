@@ -285,5 +285,6 @@ return [
         'read-installment_request'=>'مراجعة طلبات تقسيط',
         'today'=>'اليوم',
         'days_count' => 'عدد الايام',
+        'file_excel' => 'ملف الاكسيل',
     ],
 ];

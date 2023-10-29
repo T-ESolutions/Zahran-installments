@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\InvoiceInstallments;
 use App\Models\Setting;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
@@ -39,7 +40,6 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
 
-
         $globalSetting = Cache::get('settings');
         if (!$globalSetting) {
             $this->app->singleton('settings', function ($app) {
@@ -53,6 +53,20 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) use ($globalSetting) {
             $view->with('globalSetting', $globalSetting);
         });
+
+        if (Schema::hasTable('invoices')) {
+            $installments = InvoiceInstallments::whereNotIn('status', [1, 7])->get();
+            foreach ($installments as $row) {
+                if ($row->pay_date < now()->format('Y-m-d')) {
+                    $diff = now()->diffInDays($row->pay_date);
+                    $row->status = 3;
+                    $row->late_days = $diff;
+                    $row->save();
+                }
+
+            }
+
+        }
 
     }
 }

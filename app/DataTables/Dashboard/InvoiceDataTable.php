@@ -25,7 +25,9 @@ class InvoiceDataTable extends DataTable
             })   ->editColumn('created_by', function ($model) {
                 return $model->admin->name ?? '';
             })
-            ->rawColumns(['action']);
+            ->editColumn('status', 'Dashboard.Invoice.parts.status')
+
+            ->rawColumns(['action','status']);
     }
 
     /**
@@ -36,7 +38,7 @@ class InvoiceDataTable extends DataTable
      */
     public function query(Invoice $model)
     {
-        return $model->newQuery()->with(['customer','admin']);
+        return $model->orderBy('id','desc')->newQuery()->with(['customer','admin']);
     }
 
     /**
@@ -80,6 +82,7 @@ class InvoiceDataTable extends DataTable
             Column::make('total_price')->title(trans('lang.total_price')),
             Column::make('deposit')->title(trans('lang.deposit')),
             Column::make('deposit')->title(trans('lang.deposit')),
+            Column::make('status')->title(trans('lang.status'))->orderable(false),
             Column::make('created_by')->searchable(false)->title(trans('lang.created_by')),
             Column::make('action')->title(trans('lang.action')),
         ];

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\MonthInstallmentsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\DailyHistory;
 use App\Models\InstallmentRequest;
 use App\Models\Invoice;
+use App\Models\InvoiceInstallments;
 use Carbon\Carbon;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -21,6 +23,13 @@ class HomeController extends Controller
         $data['installment_requests'] = InstallmentRequest::count();
 
         $daily_history = DailyHistory::whereDate('created_at', Carbon::now())->orderBy('created_at','desc')->get();
-        return view('Dashboard.home', compact('data', 'daily_history'));
+        $late_installments = InvoiceInstallments::where('status',3)->orderBy('created_at','asc')->get();
+        $today_installments = InvoiceInstallments::where('pay_date',Carbon::now()->format('Y-m-d'))->orderBy('created_at','asc')->get();
+        $month_installments = InvoiceInstallments::whereMonth('pay_date',Carbon::now()->month)->orderBy('created_at','asc')->get();
+        return view('Dashboard.home', compact('data', 'daily_history','late_installments','today_installments','month_installments'));
+    }
+
+    public function exportMonthInstallments(){
+        return Excel::download(new MonthInstallmentsExport(), 'month_installments.xlsx');
     }
 }

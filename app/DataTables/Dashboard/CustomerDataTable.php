@@ -39,6 +39,12 @@ class CustomerDataTable extends DataTable
     {
         $q = $model->newQuery()->with(['admin']);
 
+        if ($request->law) {
+            $q->whereHas('invoices', function ($q){
+                $q->whereHas('lawSuit');
+            });
+        }
+
         if ($request->blocked) {
             $q->where('is_blocked', BlockEnum::BLOCKED->value);
         }

@@ -49,6 +49,9 @@ Route::group(
         Route::get('customers/black-list', [CustomerController::class,'blackList'])->name('customers.black-list');
         Route::get('customers/late-list', [CustomerController::class,'lateList'])->name('customers.late-list');
         Route::resource('customers', CustomerController::class);
+        Route::post('customers/import', [CustomerController::class,'import'])->name('customers.import');
+        Route::get('customers/filter/laws', [CustomerController::class,'lawsCustomers'])->name('customers.laws');
+        Route::get('customers/export/law', [CustomerController::class,'exportCustomersLaw'])->name('customers.export.law');
 
         //installment_requests
         Route::post('installment_requests.change.id_received/{installmentRequest}', [InstallmentRequestController::class, 'changeIdReceived'])->name('installment_requests.change.id_received');
@@ -73,6 +76,7 @@ Route::group(
 
 
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+        Route::get('/export/monthInstallments', [HomeController::class, 'exportMonthInstallments'])->name('home.export.monthInstallments');
         Route::get('/update_profile', [AuthController::class, 'index'])->name('update_profile');
         Route::post('/update_profile', [AuthController::class, 'update'])->name('update_profile_post');
 
@@ -83,6 +87,7 @@ Route::group(
             $controller = AdminController::class;
 
             Route::get('/', [$controller, 'index'])->name($permission)->middleware('permission:read-' . $permission);
+            Route::get('/history/{id}', [$controller, 'history'])->name($permission.'.history');
             Route::get('create', [$controller, 'create'])->name($permission . '.create')->middleware('permission:create-' . $permission);
             Route::post('store', [$controller, 'store'])->name($permission . '.store')->middleware('permission:create-' . $permission);
             Route::get('edit/{id}', [$controller, 'edit'])->name($permission . '.edit')->middleware('permission:update-' . $permission);

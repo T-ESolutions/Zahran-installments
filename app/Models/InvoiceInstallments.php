@@ -48,29 +48,6 @@ class InvoiceInstallments extends Model
 
 
 
-    public function getLateDaysAttribute()
-    {
-        $diff = 0;
-        $model = InvoiceInstallments::where('id', $this->attributes['id'])->first();
-if($model->status != 1 || $model->status != 7){
-    if ($this->attributes['pay_date'] < now()->format('Y-m-d')) {
-
-        $diff = now()->diffInDays($this->attributes['pay_date']);
-
-        if ($model){
-            $model->status = 3;
-            $model->late_days = $diff;
-            $model->save();
-        }
-
-        return $diff;
-    }
-}
-
-
-        return $diff;
-    }
-
 
 
     /**
@@ -87,7 +64,10 @@ if($model->status != 1 || $model->status != 7){
     /**
      * START METHODS
      */
-
+    public function getCreatedAtAttribute()
+    {
+        return date('Y-m-d h:m A', strtotime($this->attributes['created_at']));
+    }
 
     /**
      * ***************************************************************************************
@@ -96,6 +76,10 @@ if($model->status != 1 || $model->status != 7){
      * START RELATIONS
      */
 
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'invoice_id');
+    }
 
     public function history()
     {

@@ -31,7 +31,10 @@ class LawSuitHistory extends Model
      */
 
 
-
+    public function getCreatedAtAttribute()
+    {
+        return date('Y-m-d h:m A', strtotime($this->attributes['created_at']));
+    }
 
 
 

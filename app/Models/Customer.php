@@ -16,7 +16,6 @@ class Customer extends Authenticatable
     protected $guarded = ['id'];
 
 
-
     protected $hidden = ['password'];
 
     public function getRelations()
@@ -28,10 +27,6 @@ class Customer extends Authenticatable
      */
 
 
-
-
-
-
     /**
      * ***************************************************************************************
      */
@@ -39,7 +34,10 @@ class Customer extends Authenticatable
      * START MUTATOR
      */
 
-
+    public function getCreatedAtAttribute()
+    {
+        return date('Y-m-d h:m A', strtotime($this->attributes['created_at']));
+    }
 
 
     /**
@@ -49,10 +47,10 @@ class Customer extends Authenticatable
      * START SCOPES
      */
 
-        public function scopeWhiteList($query)
-        {
+    public function scopeWhiteList($query)
+    {
 
-            return $query->where('is_blocked', BlockEnum::UNBLOCKED->value);
+        return $query->where('is_blocked', BlockEnum::UNBLOCKED->value);
         }
 
 
@@ -66,26 +64,30 @@ class Customer extends Authenticatable
      */
 
 
-
-
     /**
      * ***************************************************************************************
      */
     /**
      * START RELATIONS
      */
-   public function relatives()
-   {
-       return $this->hasMany(CustomerRelatives::class , 'customer_id');
-   }
-   public function invoices()
-   {
-       return $this->hasMany(Invoice::class , 'customer_id');
-   }
+    public function relatives()
+    {
+        return $this->hasMany(CustomerRelatives::class, 'customer_id');
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'customer_id');
+    }
 
     public function admin()
     {
-        return $this->belongsTo(Admin::class , 'admin_id');
+        return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    public function laws()
+    {
+        return $this->hasManyThrough(Lawsuit::class, Invoice::class);
     }
 
 }

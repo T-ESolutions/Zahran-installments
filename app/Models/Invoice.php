@@ -12,6 +12,9 @@ class Invoice extends Model
 
     const INVOICE_TYPE = [1, 2, 3];
 
+    const FINISHED = 3;
+
+    protected $appends = ['remain_installments_price'];
 
     public function getRelations()
     {
@@ -46,6 +49,12 @@ class Invoice extends Model
      * START METHODS
      */
 
+    public function getRemainInstallmentsPriceAttribute()
+    {
+        $total_paid_amount = $this->installments->sum('paid_amount');
+        $total_monthly_installment = $this->installments->sum('monthly_installment');
+        return $total_monthly_installment - $total_paid_amount;
+    }
 
     /**
      * ***************************************************************************************
@@ -80,6 +89,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id');
     }
 
+    public function remain_installments()
+    {
+        return $this->hasMany(InvoiceInstallments::class, 'invoice_id')->whereIn('status', [2, 3, 4, 5, 6]);
+    }
+
 
     public function unInstallments()
     {
@@ -92,6 +106,11 @@ class Invoice extends Model
     {
         return $this->hasMany(Lawsuit::class, 'invoice_id')
             ->where('status', LawsuitStatusEnum::UNPAID->value ) ;
+    }
+
+    public function lawSuit()
+    {
+        return $this->hasMany(Lawsuit::class, 'invoice_id');
     }
 
     public function papers()

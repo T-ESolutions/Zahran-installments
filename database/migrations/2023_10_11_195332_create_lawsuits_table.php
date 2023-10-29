@@ -19,8 +19,8 @@ return new class extends Migration
     {
         Schema::create('lawsuits', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Admin::class);
-            $table->foreignIdFor(Invoice::class);
+            $table->foreignId('invoice_id')->constrained('invoices')->restrictOnDelete();
+            $table->foreignId('admin_id')->constrained('admins')->restrictOnDelete();
             $table->decimal('amount');
             $table->decimal('paid_amount')->nullable();
             $table->tinyInteger('status')->default(LawsuitStatusEnum::UNPAID->value);

@@ -1,4 +1,4 @@
-@php($title=trans('lang.customers'))
+@php($title='المرفوع عليهم قواضي')
 @extends('adminLayouts.app')
 @section('title')
     {{$title}}
@@ -27,56 +27,13 @@
 
         <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
-                <ul class="nav nav-pills nav-pills-sm nav-dark-75">
-                    <li class="nav-item">
-                        <a data-toggle="modal" data-target="#importModal" class="btn btn-light-primary py-2 px-4"
-                           href="javascript:void(0)"> <i class="flaticon-users-1"></i>استيراد بيانات عملاء جديده  </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class=" btn btn-light-success  py-2 px-4"
-                           href="{{url('/').'/template/customers_template.xlsx'}}" download="نموذج بيانات العملاء"> <i
-                                class="fa fa-download"> </i> تحميل النموذج</a>
-                    </li>
-
-                </ul>
+                المرفوع عليهم قواضي
             </h3>
             <div class="card-toolbar">
-                @can('create-customer')
-                    <a href="{{route('customers.create')}}"
+                    <a href="{{route('customers.export.law')}}"
                        class="btn btn-sm btn-light-primary font-weight-bolder mr-2">
-                        <i class="fa fa-plus"></i>{{trans('lang.create')}}</a>
-                @endcan
+                        <i class="fa fa-file-excel"></i>تصدير الى ملف اكسل</a>
 
-                    <div class="dropdown dropdown-inline mr-2">
-                        <button type="button" class="btn btn-light-info font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Text\Filter.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect x="0" y="0" width="24" height="24"/>
-        <path d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z" fill="#000000"/>
-    </g>
-</svg><!--end::Svg Icon--></span>
-                  فلتر
-
-                        </button>
-                        <!--begin::Dropdown Menu-->
-                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right" style="">
-                            <!--begin::Navigation-->
-                            <ul class="navi flex-column navi-hover py-2">
-                                <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">اختر :</li>
-                                <li class="navi-item">
-                                    <a href="{{route('customers.laws')}}" class="navi-link">
-																<span class="navi-icon">
-																	<i class="la la-user"></i>
-																</span>
-                                        <span class="navi-text">المرفوع عليهم قواضي </span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <!--end::Navigation-->
-                        </div>
-                        <!--end::Dropdown Menu-->
-                    </div>
             </div>
         </div>
         {{--            <div class="card-header">--}}

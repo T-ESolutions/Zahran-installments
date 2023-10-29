@@ -202,6 +202,7 @@ return [
         App\Providers\RepositoryServiceProvider::class,
         Brian2694\Toastr\ToastrServiceProvider::class,
         Alkoumi\LaravelArabicNumbers\LaravelArabicNumbersServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -222,7 +223,7 @@ return [
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Carbon' => Illuminate\Support\Carbon::class,
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ])->toArray(),
 

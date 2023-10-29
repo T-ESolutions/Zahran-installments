@@ -2,7 +2,7 @@
 
     <div class="alert alert-custom alert-outline-success text-center fade show mb-5 bg-white" role="alert">
         <div class="alert-icon">
-            <i class="flaticon-warning"></i>
+            <i class="flaticon2-checkmark"></i>
         </div>
         <div class="alert-text h6">  {{ Session('success') }}</div>
         <div class="alert-close">
