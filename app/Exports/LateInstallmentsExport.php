@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class MonthInstallmentsExport implements FromCollection ,WithHeadings , WithStrictNullComparison
+class LateInstallmentsExport implements FromCollection ,WithHeadings , WithStrictNullComparison
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -36,6 +36,6 @@ class MonthInstallmentsExport implements FromCollection ,WithHeadings , WithStri
 
     public function collection()
     {
-        return InstallmentsResources::collection(InvoiceInstallments::whereMonth('pay_date',Carbon::now()->month)->orderBy('pay_date','asc')->get());
+        return InstallmentsResources::collection( InvoiceInstallments::where('status',3)->orderBy('pay_date','asc')->get());
     }
 }

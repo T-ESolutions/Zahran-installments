@@ -33,7 +33,7 @@
             <div class="alert-icon">
                 <i class="flaticon-warning"></i>
             </div>
-            <div class="alert-text h1"> يوجد قضيه علي هذه الفاتوره بقيمه {{ $amount }} </div>
+            <div class="alert-text h1"> يوجد مصاريف قضائية علي هذه الفاتوره بقيمه {{ $amount }} </div>
             <div class="alert-close">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">
@@ -99,9 +99,9 @@
 																</svg>
                                                                 <!--end::Svg Icon-->
 															</span>القسط الشهري :
-                                            <span class="text-primary">{{$invoice->monthly_installment}}</span>
+                                            <span class="text-primary"
+                                                  style="font-weight: 900;">{{$invoice->monthly_installment}}</span>
                                         </a>
-
                                         <a href="javascript:void(0);"
                                            class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
 															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
@@ -122,7 +122,8 @@
 																</svg>
                                                                 <!--end::Svg Icon-->
 															</span>قيمة الاقساط المتبقية : <span
-                                                class="text-primary">{{$invoice->remain_installments_price}}</span></a>
+                                                class="text-primary"
+                                                style="font-weight: 900;">{{$invoice->remain_installments_price}}</span></a>
 
                                         <a href="javascript:void(0);"
                                            class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
@@ -143,18 +144,28 @@
 																	</g>
 																</svg>
                                                                 <!--end::Svg Icon-->
-															</span>حالة الفاتورة : <span
-                                                class="text-primary">{{trans('lang.invoice_status_'.$invoice->status)}}</span></a>
+															</span>حالة الفاتورة :
+                                            @if($invoice->status == 3)
+                                                <span
+                                                    class="text-success"
+                                                    style="font-weight: 900;"> {{trans('lang.invoice_status_'.$invoice->status)}}</span>
+                                            @else
+                                                <span
+                                                    class="text-primary">   {{trans('lang.invoice_status_'.$invoice->status)}}</span>
+                                            @endif
+                                        </a>
 
 
                                     </div>
                                     <div class="d-flex flex-wrap my-2">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#pay_installment">
-                                            <i class="flaticon-coins"></i>
+                                        @if($invoice->status != 3)
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#pay_installment">
+                                                <i class="flaticon-coins"></i>
 
-                                            @lang('lang.pay_installment')
-                                        </button>
+                                                @lang('lang.pay_installment')
+                                            </button>
+                                        @endif
                                         <div class="modal fade" id="pay_installment" data-backdrop="static"
                                              tabindex="-1"
                                              role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -336,6 +347,31 @@
                                     <span class="nav-text font-weight-bold">وصلات الامانة</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#law_tab">
+														<span class="nav-icon mr-2">
+															<span class="svg-icon mr-3">
+																<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
+																<svg xmlns="http://www.w3.org/2000/svg"
+                                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                     width="24px" height="24px" viewBox="0 0 24 24"
+                                                                     version="1.1">
+																	<g stroke="none" stroke-width="1" fill="none"
+                                                                       fill-rule="evenodd">
+																		<rect x="0" y="0" width="24" height="24"/>
+																		<path
+                                                                            d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z"
+                                                                            fill="#000000"/>
+																		<circle fill="#000000" opacity="0.3" cx="18.5"
+                                                                                cy="5.5" r="2.5"/>
+																	</g>
+																</svg>
+                                                                <!--end::Svg Icon-->
+															</span>
+														</span>
+                                    <span class="nav-text font-weight-bold">المصاريف القضائية</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -360,6 +396,10 @@
                         <div class="tab-pane" id="kt_apps_contacts_view_tab_1" role="tabpanel">
                             @include('Dashboard.Invoice.parts.show_papers')
                         </div>
+
+                        <div class="tab-pane" id="law_tab" role="tabpanel">
+                            @include('Dashboard.Invoice.parts.show_law_tab')
+                        </div>
                         <!--end::Tab Content-->
                     </div>
                 </div>
@@ -375,24 +415,37 @@
                     {!! $dataTable->table() !!}
                 </div>
             </div>
-            <div class="card card-custom">
-                <div class="card-body">
-                    <button type="button" class="btn btn-success finish_invoice " data-toggle="modal"
-                            data-invoice_id="{{$invoice->id}}"
-                    >
-                        <i class="flaticon2-check-mark"></i>
+            @if($invoice->status != 3 || $invoice->status != 4 )
+                <div class="card card-custom">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-success finish_invoice "
+                                data-invoice_id="{{$invoice->id}}"
+                        >
+                            <i class="flaticon2-check-mark"></i>
+                            انهاء الفاتورة
+                        </button>
 
-                        انهاء الفاتورة
-                    </button>
+                        <a type="button" class="btn btn-info finish_invoice_cash " data-toggle="modal"
+                           data-target="#finish_invoice_cash_model"
+                           href="javascript:void(0);">
+                            <i class="flaticon2-check-mark"></i>
+                            انهاء الفاتورة كاش
+                        </a>
+
+                        <a type="button" class="btn btn-danger finish_invoice_execution "  data-invoice_id="{{$invoice->id}}"
+                           href="javascript:void(0);">
+                            <i class="flaticon2-delete"></i>
+                            اعدام الفاتورة
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <!--end::Card-->
+        @endif
+        <!--end::Card-->
         </div>
         <!--end::Container-->
     </div>
 
-
+    @include('Dashboard.Invoice.parts.finish_invoice_cash_model')
 @endsection
 @push('scripts')
 
@@ -457,6 +510,7 @@
 
                                 //close model
                                 $('#pay_installment').modal('hide');
+                                location.reload();
                             },
                             error: function (data) {
                                 if (data.status === 422) {
@@ -576,6 +630,17 @@
                             cache: false,
                             processData: false,
                             success: function (response) {
+                                if (response.status == false) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: response.msg,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                }
+
+
                                 $('#InvoiceInstallments-table').DataTable().ajax.reload();
                                 Swal.fire({
                                     icon: 'success',
@@ -654,9 +719,6 @@
                                         confirmButtonText: 'تم'
                                     })
                                     location.reload();
-
-                                    //close model
-                                    $('#changeDateModal' + id).modal('hide');
                                 } else {
                                     Swal.fire({
                                         icon: 'warning',
@@ -691,6 +753,81 @@
                 });
 
             })
+ $('body').on('click', '.finish_invoice_execution', function (event) {
+                event.preventDefault();
+                let id = $(this).data('invoice_id');
+                let data = new FormData();
+                data.append('id', id);
+                Swal.fire({
+                    icon: 'warning',
+                    title: ' هل تريد اعدام الفاتورة ؟ ',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url: `{{route('invoices.execution')}}`,
+                            method: 'post',
+                            data: data,
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.status == true) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: response.msg,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+
+                                    var url = "{{ route('invoices.index') }}";
+                                    window.location.href = url;
+                                } else {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: response.msg,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                }
+
+                            },
+                            error: function (data) {
+                                if (data.status === 422) {
+                                    $('.errors').empty();
+                                    $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                        if (!key.search("dates")) {
+                                            var arr = key.split(".");
+                                            $('.errors').show();
+                                            $('.error_dates' + arr[1] + arr[2]).show();
+                                            $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                            console.log(JSON.parse(data.responseText).errors[key]);
+                                        } else {
+                                            $('.errors').show();
+                                            $('.form_error_' + key).show();
+                                            $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+
+            })
+
 
         });
 
@@ -825,6 +962,82 @@
                                     })
                                     //close model
                                     $('#postingInstallment' + id).modal('hide');
+                                } else {
+                                    $('#InvoiceInstallments-table').DataTable().ajax.reload();
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: response.success,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                    $('.errors').empty();
+                                }
+                            },
+                            error: function (data) {
+                                if (data.status === 422) {
+                                    $('.errors').empty();
+                                    $.each(JSON.parse(data.responseText).errors, function (key, value) {
+                                        if (!key.search("dates")) {
+                                            var arr = key.split(".");
+                                            $('.errors').show();
+                                            $('.error_dates' + arr[1] + arr[2]).show();
+                                            $(document).find('.error_dates' + arr[1] + arr[2]).html(JSON.parse(data.responseText).errors[key]);
+                                            console.log(JSON.parse(data.responseText).errors[key]);
+                                        } else {
+                                            $('.errors').show();
+                                            $('.form_error_' + key).show();
+                                            $(document).find('.form_error_' + key).html(JSON.parse(data.responseText).errors[key]);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+
+            })
+
+            $('body').on('click', '.monthExcuseButton', function (event) {
+                event.preventDefault();
+                let id = $(this).attr('data-id');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'هل انت موافق على اضافة شهر اضافي سماحيه بدلا من الشهر المختار ؟',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا, الغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        let data = new FormData();
+                        data.append('id', id);
+
+                        $.ajax({
+                            url: `{{route('invoices.month.excuse')}}`,
+                            method: 'post',
+                            data: data,
+                            dataType: 'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.status == false) {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: response.msg,
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        confirmButtonText: 'تم'
+                                    })
+                                    //close model
+                                    // $('#postingInstallment' + id).modal('hide');
                                 } else {
                                     $('#InvoiceInstallments-table').DataTable().ajax.reload();
 

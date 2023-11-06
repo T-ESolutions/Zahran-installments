@@ -5,14 +5,18 @@
     </button>
     <div class="dropdown-menu">
         @can('read-invoice')
-            <a class="dropdown-item" data-toggle="modal" data-target="#changeDateModal{{$id}}"
-               href="javascript:void(0);">@lang('lang.change_date')</a>
-            <a class="dropdown-item monthPostingInstallmentButton " data-id="{{$id}}"
-               href="javascript:void(0);">@lang('lang.month_posting_installment')</a>
-            <a class="dropdown-item" data-toggle="modal" data-target="#postingInstallment{{$id}}"
-               href="javascript:void(0);">@lang('lang.posting_installment')</a>
+{{--            @if($invoice->status != 3)--}}
+                <a class="dropdown-item" data-toggle="modal" data-target="#changeDateModal{{$id}}"
+                   href="javascript:void(0);">@lang('lang.change_date')</a>
+                <a class="dropdown-item monthPostingInstallmentButton " data-id="{{$id}}"
+                   href="javascript:void(0);">@lang('lang.month_posting_installment')</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#postingInstallment{{$id}}"
+                   href="javascript:void(0);">@lang('lang.posting_installment')</a>
+{{--            @endif--}}
             <a class="dropdown-item" data-toggle="modal" data-target="#notes_model{{$id}}"
                href="javascript:void(0);">اضافة ملاحظات</a>
+            <a class="dropdown-item monthExcuseButton" data-id="{{$id}}"
+               href="javascript:void(0);">سماحية للتأجيل نهائيا</a>
             <a class="dropdown-item" data-toggle="modal" data-target="#IIHistory{{$id}}"
                href="javascript:void(0);">@lang('lang.history')</a>
         @endcan

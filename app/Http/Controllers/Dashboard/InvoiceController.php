@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\DataTables\Dashboard\InvoiceInstallmentsDataTable;
 use App\Enums\InvoiceInstallmentsStatusEnum;
+use App\Http\Requests\Dashboard\FinishCashRequest;
 use App\Http\Requests\Dashboard\InvoiceCreateRequest;
 use App\DataTables\Dashboard\InvoiceDataTable;
 use App\Models\Customer;
@@ -40,6 +41,12 @@ class InvoiceController extends GeneralController
         return $dataTable->render('Dashboard.Invoice.index');
     }
 
+    public function getMonthDivision($month_count, $installment_amount)
+    {
+
+        return view('Dashboard.Invoice.parts.month_division', compact('month_count', 'installment_amount'));
+    }
+
     public function create()
     {
         $monthly_profit_percent = settings('monthly_profit_percent');
@@ -53,10 +60,16 @@ class InvoiceController extends GeneralController
             DB::beginTransaction();
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
-            $data['transaction_number'] = $request->pay_day . '.' . $request->customer_id;
+//            $data['transaction_number'] = $request->pay_day . '.' . $request->customer_id;
 
             if ($data['paper_amount'] == "") {
                 $data['paper_amount'] = 0;
+            }
+            if ($data['division_type'] == 'manual') {
+                if ($request->total_sum_division_prices != $data['installment_price']) {
+                    return response()->json(['status' => false, 'msg' => 'يجب ان يكون مجموع الاقساط المدخله يدويا يساوي اجمالي سعر القسط'], 200);
+
+                }
             }
             $invoice = Invoice::create($data);
             if ($data['invoice_type'] == 1) {
@@ -81,7 +94,12 @@ class InvoiceController extends GeneralController
             if ($request->guarantors_id) {
                 $invoice->guarantors()->attach($request->guarantors_id);
             }
-            $this->createInstallments($invoice, $data);
+            if ($data['division_type'] == 'dynamic') {
+                $this->createInstallments($invoice, $data);
+
+            } else {
+                $this->createInstallmentsManual($invoice, $data);
+            }
             DB::commit();
             Session::flash('success', trans('lang.created'));
 //            return response()->json([], 200);
@@ -103,11 +121,11 @@ class InvoiceController extends GeneralController
     private function createInstallments($invoice, $data)
     {
         $months_count = $data['months_count'];
-        $pay_day = $data['pay_day'];
         $monthly_installment = $data['monthly_installment'];
+        $pay_day = $data['pay_day'];
         $invoice_date = $data['invoice_date'];
         $invoice_date = Carbon::parse($invoice_date);
-        for ($i = 1; $i <= $months_count; ++$i) {
+        for ($i = 0; $i < $months_count; $i++) {
             $pay_date = $invoice_date->addMonth(1)->day($pay_day);
             $installment = $invoice->installments()->create([
                 'pay_date' => $pay_date,
@@ -118,6 +136,27 @@ class InvoiceController extends GeneralController
                 'invoice_id' => $invoice->id,
                 'admin_id' => auth()->user()->id,
             ]);
+        }
+    }
+
+    private function createInstallmentsManual($invoice, $data)
+    {
+        $months_count = $data['months_count'];
+        $started_pay = $data['pay_year'] . '-' . $data['pay_month'] . '-' . $data['pay_day'];
+        $started_pay = strtotime($started_pay);
+        $started_pay = date("Y-m-d", $started_pay);
+        $pay_date = Carbon::parse($started_pay);
+        for ($i = 0; $i < $months_count; ++$i) {
+            $installment = $invoice->installments()->create([
+                'pay_date' => $pay_date,
+                'monthly_installment' => $data['installment_price_divided'][$i],
+            ]);
+            $installment->history()->create([
+                'description' => '  انشاء قسط بمبلغ ' . $data['installment_price_divided'][$i] . ' وتاريخ الدفع ' . $pay_date->format('Y-m-d') . '',
+                'invoice_id' => $invoice->id,
+                'admin_id' => auth()->user()->id,
+            ]);
+            $pay_date = $pay_date->addMonth(1);
         }
     }
 
@@ -145,7 +184,10 @@ class InvoiceController extends GeneralController
             'pay_date' => ['required', 'date', 'after_or_equal:today'],
         ]);
         $installment = InvoiceInstallments::find($request->id);
+        if ($installment->invoice->status == 3) {
 
+            return response()->json(['status' => false, 'msg' => 'لا يمكن تعديل التاريخ - الفاتورة منتهية'], 200);
+        }
         $installment->history()->create([
             'description' => '  تغيير موعد القسط من يوم ' . $installment->pay_date . ' الى يوم ' . $request->pay_date . '',
             'invoice_id' => $installment->invoice_id,
@@ -192,6 +234,10 @@ class InvoiceController extends GeneralController
             ]);
         }
 
+            if ($installment->invoice->status == 3) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن التأجيل - الفاتورة منتهية'], 200);
+            }
+
         $request->validate([
             'id' => 'required|exists:invoice_installments,id',
             'days_count' => ['required', 'numeric', 'max:' . $validation_dys],
@@ -219,10 +265,15 @@ class InvoiceController extends GeneralController
                 'id' => 'required|exists:invoice_installments,id',
             ]);
             $installment = InvoiceInstallments::find($request->id);
+
+
             $next_bill_id = $request->id + 1;
             $next_bill = InvoiceInstallments::where('id', $next_bill_id)->where('invoice_id', $installment->invoice_id)->first();
             if (!$next_bill) {
                 return response()->json(['status' => false, 'msg' => 'لا يوجد قسط قادم للترحيله اليه القسط الحالي'], 200);
+            }
+            if ($installment->invoice->status == 3) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن الترحيل - الفاتورة منتهية'], 200);
             }
 
 //        $new_date = Carbon::parse($installment->pay_date)->addMonth(1)->format('Y-m-d');
@@ -242,15 +293,85 @@ class InvoiceController extends GeneralController
             $installment->status = InvoiceInstallmentsStatusEnum::deported->value;
             $installment->save();
 
-
-
-         $next_bill->history()->create([
-             'description' => 'تم دمج القسط السابق مع القسط المحدد ',
-             'invoice_id' => $next_bill->invoice_id,
-             'admin_id' => auth()->user()->id,
-         ]);
+             $next_bill->history()->create([
+                 'description' => 'تم دمج القسط السابق مع القسط المحدد ',
+                 'invoice_id' => $next_bill->invoice_id,
+                 'admin_id' => auth()->user()->id,
+             ]);
 
         return response()->json(['status' => true, 'msg' => 'تم الترحيل'], 200);
+        } catch (\Exception $ex) {
+            return response()->json(['status' => false, 'msg' => $ex], 200);
+
+        }
+
+    }
+
+    public function monthExcuse(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required|exists:invoice_installments,id',
+            ]);
+            $installment = InvoiceInstallments::find($request->id);
+            if ($installment->invoice->status == 3) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن اضافة السماحية - الفاتورة منتهية'], 200);
+            }
+            //لا يمكن اضافة سماحية لقسط مرحل
+            if ($installment->status == 7) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن اضافة سماحية لقسط مرحل'], 200);
+            }
+            if ($installment->status == 8) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن اضافة سماحية لقسط مأجل بالسماحية من قبل'], 200);
+            }
+
+            if ($installment->status == 9) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن اضافة سماحية لقسط منتهي بالخصم'], 200);
+            }
+
+            $invoice = Invoice::find($installment->invoice_id);
+            if ($invoice->excuse_1 == null || $invoice->excuse_2 == null) {
+
+                $last_bill = InvoiceInstallments::where('invoice_id', $installment->invoice_id)->orderBy('pay_date', 'desc')->first();
+
+
+//        $new_date = Carbon::parse($installment->pay_date)->addMonth(1)->format('Y-m-d');
+                $pay_date = Carbon::parse($last_bill->pay_date);
+                $pay_date = $pay_date->addMonth(1);
+                $new_installment_data['invoice_id'] = $installment->invoice_id;
+                $new_installment_data['pay_date'] = $pay_date;
+                $new_installment_data['monthly_installment'] = $installment->monthly_installment;
+                $new_installment_data['paid_amount'] = $installment->paid_amount;
+                $new_installment_data['status'] = 2;
+
+
+                $new_installment = InvoiceInstallments::create($new_installment_data);
+                $installment->monthly_installment = 0;
+                $installment->paid_amount = 0;
+                $installment->status = InvoiceInstallmentsStatusEnum::excuse->value;
+                $installment->save();
+
+                $installment->history()->create([
+                    'description' => ' تم تأجيل بالسماحية واضافة شهر اضافي في الفاتورة',
+                    'invoice_id' => $installment->invoice_id,
+                    'admin_id' => auth()->user()->id,
+                ]);
+                $new_installment->history()->create([
+                    'description' => 'تم اضافة شهر اضافي في الفاتورة بالسماحية ',
+                    'invoice_id' => $installment->invoice_id,
+                    'admin_id' => auth()->user()->id,
+                ]);
+                if ($invoice->excuse_1 == null) {
+                    $invoice->excuse_1 = $pay_date;
+                } elseif ($invoice->excuse_2 == null) {
+                    $invoice->excuse_2 = $pay_date;
+                }
+                $invoice->save();
+                return response()->json(['status' => true, 'msg' => 'تم الترحيل'], 200);
+            } else {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن اضافة السماحية لانها استخدمت مرتين في الفاتوره الحالية'], 200);
+
+            }
         } catch (\Exception $ex) {
             return response()->json(['status' => false, 'msg' => $ex], 200);
 
@@ -270,8 +391,8 @@ class InvoiceController extends GeneralController
             $invoice = Invoice::whereId($id)->first();
 
             if ($invoice->invoice_type == 3) {
-                if($invoice->invoice->status != Invoice::FINISHED ){
-                    return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لانها مربوطة بوصلات امانة فاتورة اخرى رقم  '.$invoice->invoice_id], 200);
+                if ($invoice->invoice->status != Invoice::FINISHED) {
+                    return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لانها مربوطة بوصلات امانة فاتورة اخرى رقم  ' . $invoice->invoice_id], 200);
                 }
             }
 
@@ -279,18 +400,88 @@ class InvoiceController extends GeneralController
                 return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - يتم انهاء الفاتوره عند دفع كل الاقساط اولا  '], 200);
             }
 
-
-
-            $invoice->status = Invoice::FINISHED;
-            $invoice->save();
+            $invoice_law_suits = $invoice->unPaidLawSuit;
+            if (count($invoice_law_suits) > 0) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لان يوجد مصاريف قضائية على الفاتورة المختاره '], 200);
+            }
 
             $history_data['description'] = 'تم انهاء الفاتورة';
             $history_data['invoice_id'] = $id;
             $history_data['admin_id'] = auth()->user()->id;
             InvoiceInstallmentsHistory::create($history_data);
 
+            return response()->json(['status' => true, 'msg' => 'تم الانهاء بنجاح'], 200);
+        } catch (\Exception $ex) {
+            return response()->json(['status' => false, 'msg' => $ex], 200);
+        }
 
-        return response()->json(['status' => true, 'msg' => 'تم الانهاء بنجاح'], 200);
+    }
+
+    public function execution(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required|exists:invoices,id',
+            ]);
+            $id = $request->id;
+            $invoice = Invoice::whereId($id)->first();
+            $invoice->status = 4;
+            $invoice->save();
+
+            $history_data['description'] = 'تم اعدام الفاتورة';
+            $history_data['invoice_id'] = $id;
+            $history_data['admin_id'] = auth()->user()->id;
+            InvoiceInstallmentsHistory::create($history_data);
+            return response()->json(['status' => true, 'msg' => 'تم الاعدام بنجاح'], 200);
+        } catch (\Exception $ex) {
+            return response()->json(['status' => false, 'msg' => $ex], 200);
+        }
+
+    }
+
+    public function finishCash(FinishCashRequest $request)
+    {
+        try {
+
+            $data = $request->validated();
+
+            $invoice = Invoice::whereId($data['id'])->first();
+
+            if ($invoice->invoice_type == 3) {
+                if ($invoice->invoice->status != Invoice::FINISHED) {
+                    return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لانها مربوطة بوصلات امانة فاتورة اخرى رقم  ' . $invoice->invoice_id], 200);
+                }
+            }
+
+            $invoice_law_suits = $invoice->unPaidLawSuit;
+            if (count($invoice_law_suits) > 0) {
+                return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لان يوجد مصاريف قضائية على الفاتورة المختاره '], 200);
+            }
+
+            $invoice->status = Invoice::FINISHED;
+            $invoice->save();
+
+            foreach ($invoice->remain_installments as $row) {
+                InvoiceInstallments::where('id', $row->id)->update(['status' => 9]);
+            }
+
+
+            $data['status'] = Invoice::FINISHED;
+            Invoice::whereId($data['id'])->update($data);
+
+
+            $history_data['description'] = 'تم انهاء الفاتورة كاش و تنفيذ خصم بقيمة : ' . $data['discount_value'];
+            $history_data['invoice_id'] = $data['id'];
+            $history_data['admin_id'] = auth()->user()->id;
+            InvoiceInstallmentsHistory::create($history_data);
+
+            DailyHistory::create([
+                'description' => $data['discount_money_collected'] . ' جنية باقي تقفيل اقساط الفاتورة رقم ' . $data['id'] . ' طرف / '
+                    . $invoice->customer->name . ' وتم خصم من الاجمالي ' . $data['discount_value'] . ' جنية',
+                'admin_id' => auth()->user()->id,
+            ]);
+
+            return response()->json(['status' => true, 'msg' => 'تم الانهاء بنجاح'], 200);
         } catch (\Exception $ex) {
 
             return response()->json(['status' => false, 'msg' => $ex], 200);

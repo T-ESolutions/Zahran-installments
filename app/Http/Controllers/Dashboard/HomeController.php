@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\LateInstallmentsExport;
 use App\Exports\MonthInstallmentsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
@@ -23,13 +24,18 @@ class HomeController extends Controller
         $data['installment_requests'] = InstallmentRequest::count();
 
         $daily_history = DailyHistory::whereDate('created_at', Carbon::now())->orderBy('created_at','desc')->get();
-        $late_installments = InvoiceInstallments::where('status',3)->orderBy('created_at','asc')->get();
+        $late_installments = InvoiceInstallments::where('status',3)->orderBy('pay_date','asc')->get();
         $today_installments = InvoiceInstallments::where('pay_date',Carbon::now()->format('Y-m-d'))->orderBy('created_at','asc')->get();
-        $month_installments = InvoiceInstallments::whereMonth('pay_date',Carbon::now()->month)->orderBy('created_at','asc')->get();
+        $month_installments = InvoiceInstallments::whereMonth('pay_date',Carbon::now()->month)->orderBy('pay_date','asc')->get();
         return view('Dashboard.home', compact('data', 'daily_history','late_installments','today_installments','month_installments'));
     }
 
     public function exportMonthInstallments(){
-        return Excel::download(new MonthInstallmentsExport(), 'month_installments.xlsx');
+        return Excel::download(new MonthInstallmentsExport(), 'اقساط الشهر الحالي.xlsx');
     }
+
+    public function exportLateInstallments(){
+        return Excel::download(new LateInstallmentsExport(), 'الاقساط المتأخره.xlsx');
+    }
+
 }

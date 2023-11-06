@@ -26,11 +26,8 @@
     <div class="card">
         <div class="text-right">
             <div class="card-header">
-                @can('create-customer')
-                    <a href="{{route('customers.create')}}"
-                       class="btn btn-sm btn-light-primary font-weight-bolder mr-2">
-                        <i class="fa fa-plus"></i>{{trans('lang.create')}}</a>
-                @endcan
+                <a class=" btn btn-light-success  py-2 px-4" href="{{route('customers.late-list.export')}}" > <i
+                        class="fa fa-download"> </i>طباعة excel</a>
             </div>
         </div>
         <div class="card-body">

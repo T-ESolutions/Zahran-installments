@@ -49,7 +49,7 @@
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;">  وذلك على سبيل الأمانة لتوصيله للسيد / <span> {{settings('third_name')}} </span></p>
+                    <p style=" margin: 0;">  وذلك على سبيل الأمانة لتوصيله للسيد / <span> {{settings('second_name')}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
@@ -99,7 +99,7 @@
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                    <p style=" margin: 0;"> من السيد / <span> {{settings('second_name')}} </span></p>
+                    <p style=" margin: 0;"> من السيد / <span> {{settings('third_name')}} </span></p>
                 </div>
                 <div class="row"
                      style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">

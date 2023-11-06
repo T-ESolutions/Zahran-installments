@@ -90,4 +90,9 @@ class Customer extends Authenticatable
         return $this->hasManyThrough(Lawsuit::class, Invoice::class);
     }
 
+    public function late_installments()
+    {
+        return $this->hasManyThrough(InvoiceInstallments::class, Invoice::class)->where('invoice_installments.status',3);
+    }
+
 }

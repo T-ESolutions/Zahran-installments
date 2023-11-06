@@ -239,6 +239,7 @@
                                             <th class="p-0 min-w-125px text-center">يوم السداد</th>
                                             <th class="p-0 min-w-125px text-center">القسط الشهري</th>
                                             <th class="p-0 min-w-100px text-center">المبلغ المدفوع</th>
+                                            <th class="p-0 min-w-100px text-center">المبلغ المتبقي</th>
                                             <th class="p-0 min-w-110px text-center">الحالة</th>
                                             <th class="p-0 min-w-150px text-center">ملاحظات</th>
                                             <th class="p-0 min-w-150px text-center">الاجراءات</th>
@@ -289,6 +290,10 @@
                                                     {{--                                                <span class="text-muted font-weight-bold">Paid</span>--}}
                                                 </td>
                                                 <td class="text-center">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{$row->monthly_installment - $row->paid_amount}} جنية</span>
+                                                    {{--                                                <span class="text-muted font-weight-bold">Paid</span>--}}
+                                                </td>
+                                                <td class="text-center">
 
                                                 <span
                                                     class="label label-lg label-light-success label-inline">{{trans('lang.status_'.$row->status)}} </span>
@@ -321,10 +326,11 @@
                             <div class="row">
                                 <div class="col-md-6  text-left">
 
-                                <h3 class="text-primary ">الشهر الحالي</h3>
+                                    <h3 class="text-primary ">الشهر الحالي</h3>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <a class=" btn btn-light-success  py-2 px-4" href="{{route('home.export.monthInstallments')}}" > <i
+                                    <a class=" btn btn-light-success  py-2 px-4"
+                                       href="{{route('home.export.monthInstallments')}}"> <i
                                             class="fa fa-download"> </i>تصدير excel</a>
                                 </div>
                             </div>
@@ -341,6 +347,7 @@
                                             <th class="p-0 min-w-125px text-center">يوم السداد</th>
                                             <th class="p-0 min-w-125px text-center">القسط الشهري</th>
                                             <th class="p-0 min-w-100px text-center">المبلغ المدفوع</th>
+                                            <th class="p-0 min-w-100px text-center">المبلغ المتبقي</th>
                                             <th class="p-0 min-w-110px text-center">الحالة</th>
                                             <th class="p-0 min-w-150px text-center">ملاحظات</th>
                                             <th class="p-0 min-w-150px text-center">الاجراءات</th>
@@ -391,6 +398,10 @@
                                                     {{--                                                <span class="text-muted font-weight-bold">Paid</span>--}}
                                                 </td>
                                                 <td class="text-center">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{$row->monthly_installment - $row->paid_amount}} جنية</span>
+                                                    {{--                                                <span class="text-muted font-weight-bold">Paid</span>--}}
+                                                </td>
+                                                <td class="text-center">
 
                                                 <span
                                                     class="text-dark-75 font-weight-bolder d-block font-size-lg">{{trans('lang.status_'.$row->status)}} </span>
@@ -420,7 +431,17 @@
                         <div class="tab-pane fade" id="tab_installment_late" role="tabpanel"
                              aria-labelledby="tab_installment_late">
                             <!--begin::Table-->
-                            <h3 class="text-primary">المتأخره</h3>
+                            <div class="row">
+                                <div class="col-md-6  text-left">
+
+                                    <h3 class="text-primary ">المتأخره</h3>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <a class=" btn btn-light-success  py-2 px-4"
+                                       href="{{route('home.export.lateInstallments')}}"> <i
+                                            class="fa fa-download"> </i>تصدير excel</a>
+                                </div>
+                            </div>
                             <div class="scroll pr-7 mr-n7 ps ps--active-y" data-scroll="true" data-height="400"
                                  data-mobile-height="200" style="height: 400px; overflow: hidden;">
                                 <div class="table-responsive">
@@ -434,6 +455,7 @@
                                             <th class="p-0 min-w-125px text-center">يوم السداد</th>
                                             <th class="p-0 min-w-125px text-center">القسط الشهري</th>
                                             <th class="p-0 min-w-100px text-center">المبلغ المدفوع</th>
+                                            <th class="p-0 min-w-100px text-center">المبلغ المتبقي</th>
                                             <th class="p-0 min-w-110px text-center">ايام التأخر</th>
                                             <th class="p-0 min-w-150px text-center">ملاحظات</th>
                                             <th class="p-0 min-w-150px text-center">الاجراءات</th>
@@ -481,6 +503,10 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{$row->paid_amount}} جنية</span>
+                                                    {{--                                                <span class="text-muted font-weight-bold">Paid</span>--}}
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{$row->monthly_installment - $row->paid_amount}} جنية</span>
                                                     {{--                                                <span class="text-muted font-weight-bold">Paid</span>--}}
                                                 </td>
                                                 <td class="text-center">

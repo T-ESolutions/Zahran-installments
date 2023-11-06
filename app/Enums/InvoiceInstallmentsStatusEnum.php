@@ -11,6 +11,8 @@ enum InvoiceInstallmentsStatusEnum: int
     case inprocess = 5; // ساري
     case delayed = 6; // مؤجل
     case deported = 7; // مرحل
+    case excuse = 8; // سماحية
+    case end_by_discount = 9; // منهي بالخصم
 
 
 
@@ -26,6 +28,8 @@ enum InvoiceInstallmentsStatusEnum: int
             self::inprocess->value => 'ساري',
             self::delayed->value => 'مؤجل',
             self::deported->value => 'مرحل',
+            self::excuse->value => 'سماحية',
+            self::end_by_discount->value => 'منهي بالخصم',
          };
     }
 

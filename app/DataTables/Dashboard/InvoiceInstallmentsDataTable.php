@@ -23,7 +23,10 @@ class InvoiceInstallmentsDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('changeDate', 'Dashboard.Invoice.installmentsParts.changeDate')
             ->editColumn('status', 'Dashboard.Invoice.installmentsParts.status')
-            ->rawColumns(['changeDate','status']);
+            ->addColumn('remain_amount',  function ($model) {
+                return $model->monthly_installment - $model->paid_amount;
+            })
+            ->rawColumns(['changeDate','status','remain_amount']);
     }
 
     /**
@@ -75,6 +78,7 @@ class InvoiceInstallmentsDataTable extends DataTable
             Column::make('pay_date')->title('يوم السداد'),
             Column::make('monthly_installment')->title(trans('lang.monthly_installment')),
             Column::make('paid_amount')->title(trans('lang.paid_amount')),
+            Column::make('remain_amount')->title('المبلغ المتبقي'),
             Column::make('status')->title(trans('lang.status'))->orderable(false),
             Column::make('late_days')->title(trans('lang.late_days'))->orderable(false),
             Column::make('notes')->title(trans('lang.notes')),

@@ -48,6 +48,7 @@ Route::group(
 
         Route::get('customers/black-list', [CustomerController::class,'blackList'])->name('customers.black-list');
         Route::get('customers/late-list', [CustomerController::class,'lateList'])->name('customers.late-list');
+        Route::get('customers/late-list/export', [CustomerController::class,'exportLateList'])->name('customers.late-list.export');
         Route::resource('customers', CustomerController::class);
         Route::post('customers/import', [CustomerController::class,'import'])->name('customers.import');
         Route::get('customers/filter/laws', [CustomerController::class,'lawsCustomers'])->name('customers.laws');
@@ -67,8 +68,12 @@ Route::group(
         Route::post('invoices/chane/installment/add_notes', [InvoiceController::class, 'add_notes'])->name('invoices.installments.add.notes');
         Route::post('invoices/posting/installment', [InvoiceController::class, 'postingInstallment'])->name('invoices.posting.installments');
         Route::post('invoices/month/posting/installment', [InvoiceController::class, 'monthPostingInstallment'])->name('invoices.month.posting.installments');
+        Route::post('invoices/month/excuse', [InvoiceController::class, 'monthExcuse'])->name('invoices.month.excuse');
         Route::post('invoices/installment/pay', [InvoiceController::class, 'pay'])->name('invoices.installments.pay');
         Route::post('invoices/finish', [InvoiceController::class, 'finish'])->name('invoices.finish');
+        Route::post('invoices/execution', [InvoiceController::class, 'execution'])->name('invoices.execution');
+        Route::get('get_month_division/{month_count}/{installment_amount}', [InvoiceController::class, 'getMonthDivision'])->name('invoices.get_month_division');
+        Route::post('invoices/finish_cash', [InvoiceController::class, 'finishCash'])->name('invoices.finish_cash');
 
         Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
 
@@ -77,6 +82,7 @@ Route::group(
 
         Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
         Route::get('/export/monthInstallments', [HomeController::class, 'exportMonthInstallments'])->name('home.export.monthInstallments');
+        Route::get('/export/lateInstallments', [HomeController::class, 'exportLateInstallments'])->name('home.export.lateInstallments');
         Route::get('/update_profile', [AuthController::class, 'index'])->name('update_profile');
         Route::post('/update_profile', [AuthController::class, 'update'])->name('update_profile_post');
 

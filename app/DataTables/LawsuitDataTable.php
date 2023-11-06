@@ -88,6 +88,8 @@ class LawsuitDataTable extends DataTable
             Column::make('created_by')->searchable(false)->title(trans('lang.created_by')),
             Column::make('amount')->title(trans('lang.amount')),
             Column::make('paid_amount')->title(trans('lang.paid_amount')),
+            Column::make('description')->title('الوصف'),
+
             Column::make('status')->title(trans('lang.status')),
             Column::make('action')->title(trans('lang.action')),
         ];

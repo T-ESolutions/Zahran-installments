@@ -76,16 +76,18 @@
                 <span class="font-weight-bold mr-2">@lang('lang.phone') </span>
                 <span class="font-weight-bold ">{{$invoice->customer->phone}}</span>
             </div>
-
-            <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="font-weight-bold mr-2">@lang('lang.phone2') </span>
-                <span class="font-weight-bold ">{{$invoice->customer->phone2}}</span>
-            </div>
-
-            <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="font-weight-bold mr-2">@lang('lang.phone3') </span>
-                <span class="font-weight-bold ">{{$invoice->customer->phone3}}</span>
-            </div>
+            @if($invoice->customer->phone2)
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">@lang('lang.phone2') </span>
+                    <span class="font-weight-bold ">{{$invoice->customer->phone2}}</span>
+                </div>
+            @endif
+            @if($invoice->customer->phone3)
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">@lang('lang.phone3') </span>
+                    <span class="font-weight-bold ">{{$invoice->customer->phone3}}</span>
+                </div>
+            @endif
 
 
             <div class="d-flex align-items-center justify-content-between mb-2">
@@ -108,7 +110,30 @@
                 <span class="font-weight-bold mr-2">@lang('lang.center') </span>
                 <span class="font-weight-bold ">{{$invoice->customer->center}}</span>
             </div>
-
+            @if($invoice->discount_value > 0)
+                <hr>
+                <h3 class="text-primary">انتهاء الفاتورة كاش</h3>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">نسبة الخصم %</span>
+                    <span class="font-weight-bold ">{{$invoice->discount_percentage}}</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">عدد اشهر الخصم</span>
+                    <span class="font-weight-bold ">{{$invoice->discount_month}}</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">السعر المتبقي المنفذ به الخصم</span>
+                    <span class="font-weight-bold ">{{$invoice->discount_remain_installments}}</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">قيمة الخصم</span>
+                    <span class="font-weight-bold ">{{$invoice->discount_value}}</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="font-weight-bold mr-2">المبلغ المراد تحصيلة من العميل</span>
+                    <span class="font-weight-bold ">{{$invoice->discount_money_collected}}</span>
+                </div>
+            @endif
         </div>
     </div>
 

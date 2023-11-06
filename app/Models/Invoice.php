@@ -91,7 +91,7 @@ class Invoice extends Model
 
     public function remain_installments()
     {
-        return $this->hasMany(InvoiceInstallments::class, 'invoice_id')->whereIn('status', [2, 3, 4, 5, 6]);
+        return $this->hasMany(InvoiceInstallments::class, 'invoice_id')->whereIn('status', [2, 3, 4, 5, 6,8]);
     }
 
 

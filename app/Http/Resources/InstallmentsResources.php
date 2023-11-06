@@ -17,10 +17,12 @@ class InstallmentsResources extends JsonResource
         return [
             'invoice_id'=>$this->invoice_id ,
             'customer_name'=>$this->invoice->customer->name ,
+            'customer_code'=>$this->invoice->transaction_number ,
             'id'=>$this->id ,
             'pay_date'=>$this->pay_date ,
             'monthly_installment'=>$this->monthly_installment ,
             'paid_amount'=>$this->paid_amount ,
+            'remain_amount'=>$this->monthly_installment - $this->paid_amount ,
             'status'=>trans('lang.status_'.$this->status) ,
             'moved_days'=>$this->moved_days ,
             'late_days'=>$this->late_days ,

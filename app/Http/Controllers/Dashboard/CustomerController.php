@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\BlockEnum;
 use App\Exports\CustomerLawExport;
+use App\Exports\CustomersLateListExport;
+use App\Exports\MonthInstallmentsExport;
 use App\Http\Requests\Dashboard\CustomerCreateRequest;
 use App\DataTables\Dashboard\CustomerDataTable;
 use App\Http\Controllers\GeneralController;
@@ -54,6 +56,11 @@ class CustomerController extends GeneralController
     {
         $request->merge(['late' => BlockEnum::BLOCKED->value]);
         return $dataTable->render('Dashboard.Customer.lateList');
+    }
+
+
+    public function exportLateList(){
+        return Excel::download(new CustomersLateListExport(), 'العملاء المتأخرين.xlsx');
     }
 
     public function index(CustomerDataTable $dataTable)
