@@ -415,7 +415,7 @@
                     {!! $dataTable->table() !!}
                 </div>
             </div>
-            @if($invoice->status != 3 || $invoice->status != 4 )
+            @if($invoice->status == 1 || $invoice->status == 2 )
                 <div class="card card-custom">
                     <div class="card-body">
                         <button type="button" class="btn btn-success finish_invoice "

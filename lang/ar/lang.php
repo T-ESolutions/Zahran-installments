@@ -2,6 +2,7 @@
 
 return [
 
+    'summary' => 'الملخص',
     'invoice_status_0' => 'جاري',
     'invoice_status_1' => 'جاري',
     'invoice_status_2' => 'بدأت',

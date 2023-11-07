@@ -61,7 +61,7 @@
                 </li>
             @endcan
             @can('read-lawsuit')
-                <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'lawsuits' &&  (request()->segment(4) !='black-list' ||  request()->segment(4) !='late-list')) menu-item-open @endif "
+                <li class="menu-item menu-item-submenu @if(request()->routeIs()  == 'lawsuits.*') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('lawsuits.index')}}" class="menu-link menu-toggle">
                         <i class="menu-icon flaticon-bell"></i>
@@ -69,6 +69,13 @@
                     </a>
                 </li>
             @endcan
+            <li class="menu-item menu-item-submenu @if(request()->routeIs() == 'summary.*') menu-item-open @endif "
+                aria-haspopup="true" data-menu-toggle="hover">
+                <a href="{{route('summary.index')}}" class="menu-link menu-toggle">
+                    <i class="menu-icon flaticon-bell"></i>
+                    <span class="menu-text">{{__('lang.summary')}}</span>
+                </a>
+            </li>
             @can('read-admins')
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'admins') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
@@ -168,7 +175,8 @@
                             class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{auth()->user()->name}}</span>
                         <span class="symbol symbol-lg-35 symbol-25">
 											<span class="symbol-label font-size-h5 font-weight-bold">
-                                                <img style="width: 35px;" src="{{url('/').'/defaults/user_default.png'}}">
+                                                <img style="width: 35px;"
+                                                     src="{{url('/').'/defaults/user_default.png'}}">
                                             </span>
 										</span>
                     </div>

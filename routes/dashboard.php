@@ -9,7 +9,8 @@ use App\Http\Controllers\Dashboard\InstallmentRequestController;
 use App\Http\Controllers\Dashboard\InvoiceController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SettingController;
-use App\Http\Controllers\LawsuitController;
+use App\Http\Controllers\Dashboard\LawsuitController;
+use App\Http\Controllers\Dashboard\SummaryController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -85,6 +86,8 @@ Route::group(
         Route::get('/export/lateInstallments', [HomeController::class, 'exportLateInstallments'])->name('home.export.lateInstallments');
         Route::get('/update_profile', [AuthController::class, 'index'])->name('update_profile');
         Route::post('/update_profile', [AuthController::class, 'update'])->name('update_profile_post');
+
+        Route::resource('summary', SummaryController::class);
 
 
         // admins Route

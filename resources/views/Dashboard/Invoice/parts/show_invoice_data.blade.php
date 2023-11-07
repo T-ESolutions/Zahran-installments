@@ -10,11 +10,23 @@
                 <span class="font-weight-bold mr-2">رقم فاتورة الشراء</span>
                 <span class="font-weight-bold ">{{$invoice->invoice_number}}</span>
             </div>
-
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold mr-2">{{trans('lang.invoice_date')}}</span>
+                <span class="font-weight-bold ">{{$invoice->invoice_date}}</span>
+            </div>
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="font-weight-bold mr-2">@lang('lang.transaction_number') </span>
                 <span class="font-weight-bold ">{{$invoice->transaction_number}}</span>
             </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold mr-2">@lang('lang.pay_day') </span>
+                <span class="font-weight-bold ">{{$invoice->pay_day}}</span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold mr-2">بداية شهر الدفع </span>
+                <span class="font-weight-bold ">{{$invoice->pay_month }}/{{$invoice->pay_year}}</span>
+            </div>
+
 
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="font-weight-bold mr-2">@lang('lang.product') </span>
@@ -22,12 +34,11 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="font-weight-bold mr-2">@lang('lang.total_price') </span>
+                <span class="font-weight-bold mr-2">سعر الكاش </span>
                 <span class="font-weight-bold ">{{$invoice->total_price}}</span>
             </div>
-
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="font-weight-bold mr-2">@lang('lang.deposit') </span>
+                <span class="font-weight-bold mr-2">المقدم النهائي </span>
                 <span class="font-weight-bold ">{{$invoice->deposit}}</span>
             </div>
 
@@ -44,18 +55,18 @@
 
             <div class="d-flex align-items-center justify-content-between mb-2">
                                             <span
-                                                class="font-weight-bold mr-2">@lang('lang.monthly_profit_percent') </span>
+                                                class="font-weight-bold mr-2">النسبة السنوي </span>
                 <span
                     class="font-weight-bold ">{{$invoice->monthly_profit_percent}} %</span>
             </div>
 
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="font-weight-bold mr-2">@lang('lang.profit') </span>
+                <span class="font-weight-bold mr-2">الربح النهائي </span>
                 <span class="font-weight-bold ">{{$invoice->profit}}</span>
             </div>
 
             <div class="d-flex align-items-center justify-content-between mb-2 text-danger">
-                <span class="font-weight-bold mr-2">@lang('lang.remaining_price') </span>
+                <span class="font-weight-bold mr-2">قيمة الاقساط المتبقية </span>
                 <span class="font-weight-bold "
                       id="sum_remaining_amount">{{$sum_remaining_amount}}</span>
             </div>
