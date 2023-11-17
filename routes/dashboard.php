@@ -73,8 +73,10 @@ Route::group(
         Route::post('invoices/installment/pay', [InvoiceController::class, 'pay'])->name('invoices.installments.pay');
         Route::post('invoices/finish', [InvoiceController::class, 'finish'])->name('invoices.finish');
         Route::post('invoices/execution', [InvoiceController::class, 'execution'])->name('invoices.execution');
+        Route::get('execution/invoices/get', [InvoiceController::class, 'getExecution'])->name('invoices.execution.get');
         Route::get('get_month_division/{month_count}/{installment_amount}', [InvoiceController::class, 'getMonthDivision'])->name('invoices.get_month_division');
         Route::post('invoices/finish_cash', [InvoiceController::class, 'finishCash'])->name('invoices.finish_cash');
+        Route::post('invoices/update/note', [InvoiceController::class, 'updateNote'])->name('invoices.update.note');
 
         Route::resource('invoices', InvoiceController::class)->except('edit','update','destroy');
 

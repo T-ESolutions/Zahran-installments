@@ -89,6 +89,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id');
     }
 
+    public function installment_turn()
+    {
+        return $this->hasOne(InvoiceInstallments::class, 'invoice_id')->orderBy('pay_date','asc')->whereIn('status', [2, 3, 4, 5]);
+    }
+
     public function remain_installments()
     {
         return $this->hasMany(InvoiceInstallments::class, 'invoice_id')->whereIn('status', [2, 3, 4, 5, 6,8]);

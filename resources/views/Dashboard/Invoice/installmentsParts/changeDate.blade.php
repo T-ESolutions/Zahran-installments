@@ -39,7 +39,7 @@
                     <label>اكتب ملاحظتك هنا<span
                             class="text-danger">*</span></label>
                     <textarea name="notes"
-                              class="form-control notes_txt" type="number"
+                              class="form-control notes_txt"
                               rows="5">{{$notes}}</textarea>
 
                     <span class="text-danger errors form_error_days_count" role="alert"></span>

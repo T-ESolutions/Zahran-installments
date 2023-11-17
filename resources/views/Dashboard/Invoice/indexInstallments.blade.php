@@ -242,6 +242,10 @@
                             <div class="d-flex align-items-center flex-wrap justify-content-between">
                                 <!--begin::Description-->
                                 <div class="flex-grow-1 text-muted-50 py-2 py-lg-2 mr-5">{{$invoice->note}}
+                                    <a data-toggle="modal" data-target="#invoice_notes_modal"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-light btn-active-primary">تعديل الملاحظات<i
+                                            class="fa fa-pencil-alt"></i></a>
                                 </div>
                                 <!--end::Description-->
                                 <!--begin::Progress-->
@@ -264,6 +268,41 @@
                 <!--end::Body-->
             </div>
             <!--End::Card-->
+            {{--            invoice notes modal--}}
+            <div class="modal fade" id="invoice_notes_modal" data-backdrop="static" tabindex="-1" role="dialog"
+                 aria-labelledby="staticBackdrop" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">تعديل ملاحظات الفاتورة</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <form action="{{route('invoices.update.note')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$invoice->id}}" required>
+                            <div class="modal-body row">
+                                <div class="form-group  col-12">
+                                    <label>اكتب ملاحظتك هنا<span
+                                            class="text-danger">*</span></label>
+                                    <textarea name="note" required
+                                              class="form-control note_txt"
+                                              rows="5">{{$invoice->note}}</textarea>
+                                    <span class="text-danger errors form_error_days_count" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="testTest" class="btn btn-light-primary font-weight-bold "
+                                        data-dismiss="modal">@lang('lang.cancel')</button>
+                                <button type="submit"
+                                        class="btn btn-primary font-weight-bold">@lang('lang.save')</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <!--Begin::Header-->
@@ -432,7 +471,8 @@
                             انهاء الفاتورة كاش
                         </a>
 
-                        <a type="button" class="btn btn-danger finish_invoice_execution "  data-invoice_id="{{$invoice->id}}"
+                        <a type="button" class="btn btn-danger finish_invoice_execution "
+                           data-invoice_id="{{$invoice->id}}"
                            href="javascript:void(0);">
                             <i class="flaticon2-delete"></i>
                             اعدام الفاتورة
@@ -753,7 +793,7 @@
                 });
 
             })
- $('body').on('click', '.finish_invoice_execution', function (event) {
+            $('body').on('click', '.finish_invoice_execution', function (event) {
                 event.preventDefault();
                 let id = $(this).data('invoice_id');
                 let data = new FormData();

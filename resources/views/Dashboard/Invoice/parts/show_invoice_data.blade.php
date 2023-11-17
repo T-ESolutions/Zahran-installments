@@ -48,8 +48,7 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <span
-                                                class="font-weight-bold mr-2">@lang('lang.monthly_installment') </span>
+                <span class="font-weight-bold mr-2">@lang('lang.monthly_installment') </span>
                 <span class="font-weight-bold ">{{$invoice->monthly_installment}}</span>
             </div>
 
@@ -63,6 +62,10 @@
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="font-weight-bold mr-2">الربح النهائي </span>
                 <span class="font-weight-bold ">{{$invoice->profit}}</span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="font-weight-bold mr-2">اجمالي سعر القسط </span>
+                <span class="font-weight-bold ">{{$invoice->installment_price}}</span>
             </div>
 
             <div class="d-flex align-items-center justify-content-between mb-2 text-danger">

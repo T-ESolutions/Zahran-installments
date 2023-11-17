@@ -60,6 +60,13 @@
                     </a>
                 </li>
             @endcan
+            <li class="menu-item menu-item-submenu @if(request()->routeIs('invoices.execution.get')) menu-item-open @endif "
+                aria-haspopup="true" data-menu-toggle="hover">
+                <a href="{{route('invoices.execution.get')}}" class="menu-link menu-toggle">
+                    <i class="menu-icon flaticon2-files-and-folders"></i>
+                    <span class="menu-text">الفواتير المعدومة</span>
+                </a>
+            </li>
             @can('read-lawsuit')
                 <li class="menu-item menu-item-submenu @if(request()->routeIs()  == 'lawsuits.*') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
@@ -127,6 +134,123 @@
             <!--end::Header Menu Wrapper-->
             <!--begin::Topbar-->
             <div class="topbar">
+                <!--begin::Notifications-->
+                <div class="dropdown">
+                    <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
+                        @php $total_new = \App\Models\Notification::not_seen()->orderBy('id','desc')->count() ; @endphp
+                        @if($total_new > 0)
+                            <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-danger">
+                                        <span
+                                            style="color: red;font-weight: bold;font-size: 18px;">{{$total_new}}</span>
+                                <span class="svg-icon svg-icon-xl svg-icon-danger">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Code/Compiling.svg-->
+                                    <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\General\Notifications1.svg--><svg
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path
+            d="M17,12 L18.5,12 C19.3284271,12 20,12.6715729 20,13.5 C20,14.3284271 19.3284271,15 18.5,15 L5.5,15 C4.67157288,15 4,14.3284271 4,13.5 C4,12.6715729 4.67157288,12 5.5,12 L7,12 L7.5582739,6.97553494 C7.80974924,4.71225688 9.72279394,3 12,3 C14.2772061,3 16.1902508,4.71225688 16.4417261,6.97553494 L17,12 Z"
+            fill="#000000"/>
+        <rect fill="#000000" opacity="0.3" x="10" y="16" width="4" height="4" rx="2"/>
+    </g>
+</svg><!--end::Svg Icon-->
+                                    <!--end::Svg Icon-->
+                                        </span>
+                                <span class="pulse-ring"></span>
+                            </div>
+                        @else
+                            <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
+                                        <span class="svg-icon svg-icon-xl svg-icon-primary">
+                                             <!--begin::Svg Icon | path:assets/media/svg/icons/Code/Compiling.svg-->
+                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\General\Notifications1.svg--><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path
+            d="M17,12 L18.5,12 C19.3284271,12 20,12.6715729 20,13.5 C20,14.3284271 19.3284271,15 18.5,15 L5.5,15 C4.67157288,15 4,14.3284271 4,13.5 C4,12.6715729 4.67157288,12 5.5,12 L7,12 L7.5582739,6.97553494 C7.80974924,4.71225688 9.72279394,3 12,3 C14.2772061,3 16.1902508,4.71225688 16.4417261,6.97553494 L17,12 Z"
+            fill="#000000"/>
+        <rect fill="#000000" opacity="0.3" x="10" y="16" width="4" height="4" rx="2"/>
+    </g>
+</svg><!--end::Svg Icon-->
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                <span class="pulse-ring"></span>
+                            </div>
+                        @endif
+                    </div>
+                    <div
+                        class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
+                        <form>
+                            <!--begin::Header-->
+                            <div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top"
+                                 style="background-image: url(/assets/media/misc/bg-1.jpg)">
+                                <!--begin::Title-->
+                                <h4 class="d-flex flex-center rounded-top">
+                                                    <span
+                                                        class="text-white">الاشعارات</span>
+
+                                    <span
+                                        class="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">{{$total_new}} جديد </span>
+                                </h4>
+                                <!--end::Title-->
+                                <!--begin::Tabs-->
+                                <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8"
+                                    role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active show" data-toggle="tab"
+                                           href="#topbar_notifications_events">الاشعارات</a>
+                                    </li>
+
+
+                                </ul>
+                                <!--end::Tabs-->
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Content-->
+                            <div class="tab-content">
+                                <!--begin::Tabpane-->
+
+                                <div class="tab-pane active" id="topbar_notifications_events" role="tabpanel">
+                                    <!--begin::Nav-->
+                                    <div class="navi navi-hover scroll my-4 ps ps--active-y" data-scroll="true"
+                                         data-height="300" data-mobile-height="200"
+                                         style="height: 300px; overflow: hidden;">
+                                    @foreach(\App\Models\Notification::not_seen()->orderBy('id','desc')->get() as $row)
+                                        <!--begin::Item-->
+                                            <a href="{{route($row->route,$row->target_id)}}" class="navi-item">
+                                                <div class="navi-link">
+                                                    <div class="navi-icon mr-2">
+                                                        <i class="flaticon2-paper-plane text-danger"></i>
+                                                    </div>
+                                                    <div class="navi-text">
+                                                        <div class="font-weight-bold">{{$row->title}}</div>
+                                                        <div class="text-muted">{{$row->message}}</div>
+                                                        <div
+                                                            class="text-muted">{{$row->created_at->translatedFormat('Y-m-d g:i a')}}</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <!--end::Item-->
+                                        @endforeach
+                                        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                            <div class="ps__thumb-x" tabindex="0"
+                                                 style="left: 0px; width: 0px;"></div>
+                                        </div>
+                                        <div class="ps__rail-y" style="top: 0px; right: 0px; height: 300px;">
+                                            <div class="ps__thumb-y" tabindex="0"
+                                                 style="top: 0px; height: 107px;"></div>
+                                        </div>
+                                    </div>
+                                    <!--end::Nav-->
+                                </div>
+                                <!--end::Tabpane-->
+                            </div>
+                            <!--end::Content-->
+                        </form>
+                    </div>
+                    <!--end::Dropdown-->
+                </div>
                 <!--begin::Languages-->
             {{--                <div class="dropdown">--}}
             {{--                    <!--begin::Toggle-->--}}

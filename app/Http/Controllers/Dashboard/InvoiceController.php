@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\DataTables\Dashboard\InvoiceExecutionDataTable;
 use App\DataTables\Dashboard\InvoiceInstallmentsDataTable;
 use App\Enums\InvoiceInstallmentsStatusEnum;
 use App\Http\Requests\Dashboard\FinishCashRequest;
@@ -11,6 +12,7 @@ use App\Models\Customer;
 use App\Models\DailyHistory;
 use App\Models\InvoiceInstallments;
 use App\Models\InvoiceInstallmentsHistory;
+use App\Models\Notification;
 use App\Models\Paper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -39,6 +41,12 @@ class InvoiceController extends GeneralController
     {
 
         return $dataTable->render('Dashboard.Invoice.index');
+    }
+
+    public function getExecution(InvoiceExecutionDataTable $dataTable)
+    {
+
+        return $dataTable->render('Dashboard.Invoice.execution');
     }
 
     public function getMonthDivision($month_count, $installment_amount)
@@ -174,6 +182,13 @@ class InvoiceController extends GeneralController
         $sum_monthly_installment = $installments->sum('monthly_installment');
         $sum_paid_amount = $installments->sum('paid_amount');
         $sum_remaining_amount = $sum_monthly_installment - $sum_paid_amount;
+
+//        make seen notification
+        $exist_notify = Notification::where('route', 'invoices.installments')->where('target_id', $id)->where('is_seen', 0)->first();
+        if ($exist_notify) {
+            $exist_notify->is_seen = 1;
+            $exist_notify->save();
+        }
         return $dataTable->with(['id' => $id])->render('Dashboard.Invoice.indexInstallments', compact('invoice', 'sum_remaining_amount'));
     }
 
@@ -437,6 +452,24 @@ class InvoiceController extends GeneralController
             return response()->json(['status' => false, 'msg' => $ex], 200);
         }
 
+    }
+
+    public function updateNote(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:invoices,id',
+            'note' => 'required|string|max:6000',
+        ]);
+        $id = $request->id;
+        $invoice = Invoice::whereId($id)->first();
+        $invoice->note = $request->note;
+        $invoice->save();
+
+        $history_data['description'] = 'تم التعديل على بيانات ملاحظات الفاتورة';
+        $history_data['invoice_id'] = $id;
+        $history_data['admin_id'] = auth()->user()->id;
+        InvoiceInstallmentsHistory::create($history_data);
+        return redirect()->back()->with('success', 'تم التعديل بنجاح');
     }
 
     public function finishCash(FinishCashRequest $request)
