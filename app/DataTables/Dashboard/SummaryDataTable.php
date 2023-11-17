@@ -105,25 +105,39 @@ class SummaryDataTable extends DataTable
             ->orderBy(1)
             ->lengthMenu(
                 [
-                    [10, 25, 50, -1],
+                    [50, 100, 150, -1],
                     [trans('lang.10row'), trans('lang.25row'), trans('lang.50row'), trans('lang.allRows')]])
             ->parameters([
                 'language' => [app()->getLocale() == 'en' ?: 'url' => '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Arabic.json'],
                 'responsive' => true,
                 'scrollX' => true,
-                 'initComplete' => 'function (row, data, start, end, display) {
-            var api = this.api();
-            api.columns(".sum").every(function () {
-                var sum = this
-                    .data()
-                    .reduce(function (a, b) {
-                        return a + b;
-                    }, 0);
-                $(this.footer()).html("Total: "+ sum);
-            });
-        }',
+                'footer' => true, // Enable DataTable footer
+                'drawCallback' => 'function(settings) {
+                var api = this.api();
+                 $(api.column(0).footer()).html(`المجموع`);
 
-            ]);
+                var totalCol5 = api.column(5).data()
+                    .reduce(function (a, b) {
+                        return parseFloat(a) + parseFloat(b);
+                    }, 0);
+                $(api.column(5).footer()).html(totalCol5.toFixed(2)).addClass("text-info");
+
+                 var totalCol16 = api.column(16).data()
+                    .reduce(function (a, b) {
+                        return parseFloat(a) + parseFloat(b);
+                    }, 0);
+                $(api.column(16).footer()).html(totalCol16.toFixed(2)).addClass("text-info");
+
+
+                 var remain = totalCol5  - totalCol16 ;
+    $(api.column(20).footer()).html(`الاجمالي بالارباح عن الاشهر السابقة`);
+                $(api.column(21).footer()).html( remain ).addClass("text-info");
+
+            }',
+
+            ])
+
+            ;
 
     }
 

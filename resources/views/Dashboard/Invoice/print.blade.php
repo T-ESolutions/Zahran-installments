@@ -12,7 +12,7 @@
     <title>Trust Receipt</title>
     <style>
         body {
-            font-size: 15px !important;
+            font-size: 12px !important;
         }
     </style>
 </head>

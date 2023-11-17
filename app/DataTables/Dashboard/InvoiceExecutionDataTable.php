@@ -68,22 +68,32 @@ class InvoiceExecutionDataTable extends DataTable
                 'language' => [app()->getLocale() == 'en' ?: 'url' => '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Arabic.json'],
                 'responsive' => true,
                 'scrollX' => true,
+                'footer' => true, // Enable DataTable footer
+                'drawCallback' => 'function(settings) {
+                var api = this.api();
+                 $(api.column(0).footer()).html(`المجموع`);
 
-                'initComplete' => "function(settings, json) {
-        // Calculate and display the sum in the footer
-        var api = this.api();
+                var totalCol7 = api.column(7).data()
+                    .reduce(function (a, b) {
+                        return parseFloat(a) + parseFloat(b);
+                    }, 0);
+                $(api.column(7).footer()).html(totalCol7.toFixed(2)).addClass("text-info");
 
-        api.columns().every(function() {
-            var column = this;
-            var sum = column.data().reduce(function(a, b) {
-                    return a + b;
-                }, 0);
+                 var totalCol8 = api.column(8).data()
+                    .reduce(function (a, b) {
+                        return parseFloat(a) + parseFloat(b);
+                    }, 0);
+                $(api.column(8).footer()).html(totalCol8.toFixed(2)).addClass("text-info");
 
-            $(column.footer()).html('Sum: ' + sum);
-        });
-    }",
 
-            ]);
+                 var total = totalCol7  + totalCol8 ;
+    $(api.column(10).footer()).html(`الاجمالي = `);
+                $(api.column(11).footer()).html( total ).addClass("text-info");
+
+            }',
+
+            ])
+            ;
     }
 
     /**
