@@ -40,21 +40,21 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
 
-
-        $globalSetting = Cache::get('settings');
-        if (!$globalSetting) {
-            $this->app->singleton('settings', function ($app) {
-                return Cache::rememberForever('settings', function () {
-                    return Setting::pluck('val', 'key');
+        if (Schema::hasTable('settings')) {
+            $globalSetting = Cache::get('settings');
+            if (!$globalSetting) {
+                $this->app->singleton('settings', function ($app) {
+                    return Cache::rememberForever('settings', function () {
+                        return Setting::pluck('val', 'key');
+                    });
                 });
+                $globalSetting = $this->app->make('settings');
+            }
+
+            View::composer('*', function ($view) use ($globalSetting) {
+                $view->with('globalSetting', $globalSetting);
             });
-            $globalSetting = $this->app->make('settings');
         }
-
-        View::composer('*', function ($view) use ($globalSetting) {
-            $view->with('globalSetting', $globalSetting);
-        });
-
         if (Schema::hasTable('invoices')) {
             $installments = InvoiceInstallments::whereNotIn('status', [1, 7, 8, 9])->get();
             foreach ($installments as $row) {
