@@ -29,7 +29,7 @@
 
     @foreach($permissions as $row)
         @php $group_permissions = \Spatie\Permission\Models\Permission::where('path',$row->path)->get(); @endphp
-        <div class="col-lg-3 col-sm-6 mb-3">
+        <div class="col-lg-4 col-sm-6 mb-3">
             <div class="card card-outline-primary h-100">
                 <div class="card-header">
                     <h5 class="">{{trans("lang.".$row->path)}}</h5>
@@ -37,11 +37,13 @@
                 <br>
                 <div class="card-body  {{ $errors->has('permissions') ? 'border-danger' : '' }}">
                     <div class="form-group row">
-                        <label class="col-md-2 col-from-label" for="banner"></label>
-                        <div class="col-md-8">
+
+
                             @foreach($group_permissions as $permission)
+                                <label class="col-md-2 col-from-label" for="banner">{{ trans('lang.'.$permission->name) }}</label>
+                            <div class="col-md-8">
                                 <div class="row align-items-center  gap-3 mb-3">
-                                    <label class="col-from-label text-capitalize">{{ trans('lang.'.$permission->name) }}</label>
+{{--                                    <label class="col-from-label text-capitalize col-md-8"></label>--}}
                                     <span class="switch switch-outline switch-icon swibtn-success mx-3">
                                         <label>
 
@@ -51,8 +53,9 @@
                                         </label>
                                     </span>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+
+                        @endforeach
                     </div>
                 </div>
             </div>

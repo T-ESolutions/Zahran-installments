@@ -243,11 +243,7 @@ class PermissionsSeeder extends Seeder
                 'name' => 'delete-lawsuit',
                 'display_name' => 'delete lawsuit',
             ],
-            [
-                'path' => 'lawsuit',
-                'name' => 'change-activation-lawsuit',
-                'display_name' => 'delete lawsuit',
-            ],
+
 
         ];
         Schema::disableForeignKeyConstraints();
