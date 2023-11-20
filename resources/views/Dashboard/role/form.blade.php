@@ -40,8 +40,8 @@
 
 
                             @foreach($group_permissions as $permission)
-                                <label class="col-md-2 col-from-label" for="banner">{{ trans('lang.'.$permission->name) }}</label>
-                            <div class="col-md-8">
+                                <label class="col-md-8 col-from-label" for="banner">{{ trans('lang.'.$permission->name) }}</label>
+                            <div class="col-md-4">
                                 <div class="row align-items-center  gap-3 mb-3">
 {{--                                    <label class="col-from-label text-capitalize col-md-8"></label>--}}
                                     <span class="switch switch-outline switch-icon swibtn-success mx-3">

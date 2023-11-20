@@ -2,6 +2,10 @@
 
 return [
 
+    'read-invoice-execution' => 'الفواتير المعدمة',
+    'read-invoice-summary' => 'الملخص',
+    'read-customer-black-list' => 'قائمة العملاء السوداء',
+    'read-customer-late' => 'قائمة العملاء المتأخرين',
     'summary' => 'الملخص',
     'invoice_status_0' => 'جاري',
     'invoice_status_1' => 'جاري',
@@ -97,7 +101,7 @@ return [
     'logout' => 'تسجيل الخروج',
     'update_profile' => 'تحديث الملف الشخصي',
     'black_list' => 'قائمه السوداء',
-    'change-activation-customers' => 'تغير قائمه سوداء العملاء',
+    'change-activation-customers' => 'تغير القائمه السوداء للعملاء',
     'guarantor' => 'الضامن',
     'guarantors' => 'الضامنين',
     'unpaid' => 'غير مدفوع',

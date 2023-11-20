@@ -43,28 +43,28 @@ class CustomerSeeder extends Seeder
 //            }
 
 
-            for ($j = 0; $j < 100; $j++) {
-                $data= [
-                    'admin_id' => 1,
-                    'name' => fake()->name(),
-                    'phone' => fake()->unique()->numberBetween(100000000000, 999999999999),
-                    'phone2' => fake()->unique()->numberBetween(100000000000, 999999999999),
-                    'phone3' => fake()->unique()->numberBetween(100000000000, 9999999999),
-                    'id_number' => fake()->unique()->numberBetween(10000000000000, 99999999999999),
-                    'address_id' => fake()->address,
-                    'address' => fake()->address,
-                    'center' => fake()->address,
-                    'governorate' => fake()->address,
-                    'note' => fake()->text(100),
-                    'id_image' => 'image',
-                ];
-                $customer = Customer::create($data);
-                $customer->relatives()->create([
-                    'name' => fake()->name(),
-                    'phone' => fake()->phoneNumber,
-                    'note' => fake()->text(100),
-                ]);
-            }
+//            for ($j = 0; $j < 100; $j++) {
+//                $data= [
+//                    'admin_id' => 1,
+//                    'name' => fake()->name(),
+//                    'phone' => fake()->unique()->numberBetween(100000000000, 999999999999),
+//                    'phone2' => fake()->unique()->numberBetween(100000000000, 999999999999),
+//                    'phone3' => fake()->unique()->numberBetween(100000000000, 9999999999),
+//                    'id_number' => fake()->unique()->numberBetween(10000000000000, 99999999999999),
+//                    'address_id' => fake()->address,
+//                    'address' => fake()->address,
+//                    'center' => fake()->address,
+//                    'governorate' => fake()->address,
+//                    'note' => fake()->text(100),
+//                    'id_image' => 'image',
+//                ];
+//                $customer = Customer::create($data);
+//                $customer->relatives()->create([
+//                    'name' => fake()->name(),
+//                    'phone' => fake()->phoneNumber,
+//                    'note' => fake()->text(100),
+//                ]);
+//            }
         }
 
     }

@@ -172,6 +172,18 @@ class PermissionsSeeder extends Seeder
                 'display_name' => 'activate customer',
             ],
 
+            [
+                'path' => 'customers',
+                'name' => 'read-customer-black-list',
+                'display_name' => 'read customer black list',
+            ],
+
+            [
+                'path' => 'customers',
+                'name' => 'read-customer-late',
+                'display_name' => 'read customer late',
+            ],
+
             // installment_request permissions
 
             [
@@ -218,6 +230,16 @@ class PermissionsSeeder extends Seeder
                 'path' => 'invoices',
                 'name' => 'create-invoice',
                 'display_name' => 'create invoice',
+            ],
+            [
+                'path' => 'invoices',
+                'name' => 'read-invoice-execution',
+                'display_name' => 'read invoice execution',
+            ],
+            [
+                'path' => 'invoices',
+                'name' => 'read-invoice-summary',
+                'display_name' => 'read invoice summary',
             ],
 
 

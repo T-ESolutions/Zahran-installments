@@ -34,7 +34,7 @@ class RoleController extends GeneralController
     public function create()
     {
         // Get Permissions
-        $permissions = Permission::select('path')->groupBy('path')->get();
+        $permissions = Permission::select('path')->groupBy('path')->orderBy('path','asc')->get();
         return view('Dashboard.' . $this->viewPath . '.create', compact('permissions'));
     }
 
