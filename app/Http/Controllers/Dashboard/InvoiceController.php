@@ -69,17 +69,22 @@ class InvoiceController extends GeneralController
             $data = $request->validated();
             $data['admin_id'] = auth()->user()->id;
 //            $data['transaction_number'] = $request->pay_day . '.' . $request->customer_id;
-
             if ($data['paper_amount'] == "") {
                 $data['paper_amount'] = 0;
             }
             if ($data['division_type'] == 'manual') {
                 if ($request->total_sum_division_prices != $data['installment_price']) {
                     return response()->json(['status' => false, 'msg' => 'يجب ان يكون مجموع الاقساط المدخله يدويا يساوي اجمالي سعر القسط'], 200);
-
                 }
             }
             $invoice = Invoice::create($data);
+            $daily_description = $data['deposit'] . ' جنية مقدم بداية قسط طرف / ' . $invoice->customer->name . ' لفاتورة ' . $invoice->product . ' بقيمة ' . $invoice->total_price .
+                ' جنية  ' . ' عن الفاتورة رقم ' . $invoice->id;
+            DailyHistory::create([
+                'description' => $daily_description,
+                'admin_id' => auth()->user()->id,
+            ]);
+
             if ($data['invoice_type'] == 1) {
                 //general data to store
                 $tafqeet = Numbers::TafqeetMoney($data['paper_amount'], 'EGP');
@@ -113,7 +118,7 @@ class InvoiceController extends GeneralController
 //            return response()->json([], 200);
             return response()->json(['status' => true, 'id' => $invoice->id], 200);
         } catch (\Exception $e) {
-            dd($e);
+
             info($e->getMessage());
             DB::rollback();
             return redirect()->back()->with('danger', trans('lang.wrong'));
@@ -475,33 +480,25 @@ class InvoiceController extends GeneralController
     public function finishCash(FinishCashRequest $request)
     {
         try {
-
             $data = $request->validated();
-
             $invoice = Invoice::whereId($data['id'])->first();
-
             if ($invoice->invoice_type == 3) {
                 if ($invoice->invoice->status != Invoice::FINISHED) {
                     return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لانها مربوطة بوصلات امانة فاتورة اخرى رقم  ' . $invoice->invoice_id], 200);
                 }
             }
-
             $invoice_law_suits = $invoice->unPaidLawSuit;
             if (count($invoice_law_suits) > 0) {
                 return response()->json(['status' => false, 'msg' => 'لا يمكن انهاء الفاتورة - لان يوجد مصاريف قضائية على الفاتورة المختاره '], 200);
             }
-
             $invoice->status = Invoice::FINISHED;
             $invoice->save();
 
             foreach ($invoice->remain_installments as $row) {
                 InvoiceInstallments::where('id', $row->id)->update(['status' => 9]);
             }
-
-
             $data['status'] = Invoice::FINISHED;
             Invoice::whereId($data['id'])->update($data);
-
 
             $history_data['description'] = 'تم انهاء الفاتورة كاش و تنفيذ خصم بقيمة : ' . $data['discount_value'];
             $history_data['invoice_id'] = $data['id'];
@@ -513,14 +510,10 @@ class InvoiceController extends GeneralController
                     . $invoice->customer->name . ' وتم خصم من الاجمالي ' . $data['discount_value'] . ' جنية',
                 'admin_id' => auth()->user()->id,
             ]);
-
             return response()->json(['status' => true, 'msg' => 'تم الانهاء بنجاح'], 200);
         } catch (\Exception $ex) {
-
             return response()->json(['status' => false, 'msg' => $ex], 200);
-
         }
-
     }
 
     public function pay(Request $request)
@@ -577,13 +570,13 @@ class InvoiceController extends GeneralController
                 'admin_id' => auth()->user()->id,
             ]);
         }
-        if ($total_paid == 0) {
-
-            $daily_description = $amount . ' جنية بداية قسط طرف / ' . $invoice->customer->name . ' لفاتورة ' . $invoice->product . ' بقيمة ' . $invoice->total_price .
-                ' جنية و مقدم ' . $invoice->deposit . ' جنية - تقسيمة المدفوع  ';
-        } else {
+//        if ($total_paid == 0) {
+//
+//            $daily_description = $amount . ' جنية بداية قسط طرف / ' . $invoice->customer->name . ' لفاتورة ' . $invoice->product . ' بقيمة ' . $invoice->total_price .
+//                ' جنية و مقدم ' . $invoice->deposit . ' جنية - تقسيمة المدفوع  ';
+//        } else {
             $daily_description = $amount . ' جنية  قسط طرف / ' . $invoice->customer->name . '  - تقسيمة المدفوع  ';
-        }
+//        }
         if ($amount > 0) {
             $remain_installments = $installments->whereIn('status', [2, 3, 4, 5, 6])->get();
             $daily_history = '';

@@ -24,7 +24,7 @@
                 </li>
             @endcan
 
-            @can('read-customer')
+            @can('read-customer-black-list')
                 <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'black-list' ) menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('customers.black-list')}}" class="menu-link menu-toggle">
@@ -33,7 +33,7 @@
                     </a>
                 </li>
             @endcan
-            @can('read-customer')
+            @can('read-customer-late')
                 <li class="menu-item menu-item-submenu @if(  request()->segment(4) == 'late-list' ) menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('customers.late-list')}}" class="menu-link menu-toggle">
@@ -60,6 +60,7 @@
                     </a>
                 </li>
             @endcan
+            @can('read-invoice-execution')
             <li class="menu-item menu-item-submenu @if(request()->routeIs('invoices.execution.get')) menu-item-open @endif "
                 aria-haspopup="true" data-menu-toggle="hover">
                 <a href="{{route('invoices.execution.get')}}" class="menu-link menu-toggle">
@@ -67,6 +68,7 @@
                     <span class="menu-text">الفواتير المعدومة</span>
                 </a>
             </li>
+            @endcan
             @can('read-lawsuit')
                 <li class="menu-item menu-item-submenu @if(request()->routeIs()  == 'lawsuits.*') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">
@@ -76,6 +78,7 @@
                     </a>
                 </li>
             @endcan
+            @can('read-invoice-summary')
             <li class="menu-item menu-item-submenu @if(request()->routeIs() == 'summary.*') menu-item-open @endif "
                 aria-haspopup="true" data-menu-toggle="hover">
                 <a href="{{route('summary.index')}}" class="menu-link menu-toggle">
@@ -83,6 +86,7 @@
                     <span class="menu-text">{{__('lang.summary')}}</span>
                 </a>
             </li>
+            @endcan
             @can('read-admins')
                 <li class="menu-item menu-item-submenu @if(request()->segment(3) == 'admins') menu-item-open @endif "
                     aria-haspopup="true" data-menu-toggle="hover">

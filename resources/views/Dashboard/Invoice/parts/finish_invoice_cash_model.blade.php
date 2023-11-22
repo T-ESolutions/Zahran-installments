@@ -48,9 +48,9 @@
                         <div class="form-group  col-4">
                             <label>قيمة الخصم<span
                                     class="text-danger">*</span></label>
-                            <input name="discount_value" id="discount_value" readonly
+                            <input name="discount_value" id="discount_value"
                                    value="{{ old('discount_value', $data->discount_value ?? '') }}"
-                                   class="form-control form-control-solid  {{ $errors->has('discount_value') ? 'border-danger' : '' }}"
+                                   class="form-control  {{ $errors->has('discount_value') ? 'border-danger' : '' }}"
                                    type="number"
                             />
                             <span class="text-danger errors form_error_discount_value" role="alert"></span>
@@ -89,7 +89,7 @@
         let discount_remain_installments = null;
         let discount_value = null;
         $(document).ready(function () {
-
+            discount_month = $('#discount_month').val();
             calculate_discount();
         });
 
@@ -101,6 +101,24 @@
         $("#discount_month").on("keyup", function (e) {
             discount_month = e.target.value
             calculate_discount();
+        });
+
+        $("#discount_value").on("keyup", function (e) {
+            discount_value = e.target.value
+            // calculate_discount();
+
+            discount_percentage = $('#discount_percentage').val();
+
+            discount_remain_installments = $('#discount_remain_installments').val();
+
+            // const first_calc = discount_percentage / 100;
+            const second_calc = discount_percentage * discount_month;
+            const third_calc = second_calc * discount_remain_installments;
+            const fourth_calc = discount_value;
+            const fifth_calc = discount_remain_installments - fourth_calc;
+            // $('#discount_percentage').val(fourth_calc);
+
+            $('#discount_money_collected').val(fifth_calc);
         });
 
 
